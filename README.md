@@ -33,6 +33,24 @@ El rendimiento se entrega solo para el **70 %** de las parcelas. El reto consist
 
 Se puede complementar con cualquier otra información de acceso público. Hay dos conjuntos de índices: **Básico** (Sentinel-2 y Landsat) y **PRO** (Planet). Las ecuaciones están más abajo.
 
+La guía de archivos, unidades y cruces está en [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md).
+
+## Plan de trabajo del equipo
+
+El equipo construye la solución en tres fases. El calendario oficial de FIRA (más abajo) sigue su propio nombre: Etapa 1 es el desarrollo y la entrega; Etapa 2 es la presentación ante el jurado.
+
+| Fase | Trabajo | Herramienta |
+| --- | --- | --- |
+| 1. Análisis de datos | Explorar el dataset, documentar calidad, relaciones y variables candidatas | **R** |
+| 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** |
+| 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** |
+
+**Fase actual: análisis de datos.** El trabajo en curso es la fase 1, en R. Los modelos en Python y el dashboard en Django arrancan cuando esa fase deje una tabla de parcelas y una lectura clara de qué variables entran al modelo.
+
+Cuando las tres fases estén cerradas, el equipo prepara también el [reporte técnico](#reporte-técnico) y el [video de presentación](#aplicación-o-interfaz) (máximo 5 minutos) que pide la convocatoria.
+
+El uso de agentes de desarrollo está permitido. Cada agente que trabaje en el repositorio anota en [`PROMPTS.md`](PROMPTS.md) el modelo y la versión con los que trabajó, el prompt que recibió, las acciones que tomó y las afectaciones que tuvo. Ese registro es la fuente para declarar el uso de inteligencia artificial en el reporte. Las instrucciones operativas están en [`AGENTS.md`](AGENTS.md).
+
 ## Cómo se desarrolla el reto
 
 **Etapa 1.** Desarrollo del modelo y de la aplicación o interfaz web. Los tres equipos con mayor puntaje, según los criterios de esta convocatoria, pasan como finalistas. La notificación llega por la plataforma y al correo del capitán.
@@ -57,7 +75,7 @@ Se sube a la plataforma del reto con esta estructura:
 | Bibliografía | — |
 | Anexos | máximo 2 cuartillas |
 
-En anexos debe describirse la actividad y la aportación de cada integrante. Si el equipo es finalista, el jurado considera esa información. El uso de inteligencia artificial es válido si el escrito indica dónde se usó y anexa los prompts.
+En anexos debe describirse la actividad y la aportación de cada integrante. Si el equipo es finalista, el jurado considera esa información. El uso de inteligencia artificial es válido si el escrito indica dónde se usó y anexa los prompts. La bitácora de esos prompts es [`PROMPTS.md`](PROMPTS.md).
 
 ### Aplicación o interfaz
 
@@ -190,6 +208,9 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 
 - [`Reto Agrocebada Bases.pdf`](Reto%20Agrocebada%20Bases.pdf) — bases de participación.
 - [`Ecuaciones_indices_AgroCebada_FIRA_2026.pdf`](Ecuaciones_indices_AgroCebada_FIRA_2026.pdf) — ecuaciones de los índices satelitales.
+- [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset.
+- [`AGENTS.md`](AGENTS.md) — instrucciones para agentes de desarrollo.
+- [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
 
 ## Licencia
 
