@@ -1,0 +1,10 @@
+estado,municipio,parcelas,entrenamiento,rend_media,rend_sd,area_media_ha
+Puebla,Chignahuapan,100,71,4.48,0.58,5
+Tlaxcala,Calpulalpan,44,30,3,0.37,5.7
+Hidalgo,Singuilucan,23,16,3.08,0.43,8.6
+Hidalgo,Almoloya,14,10,4.52,0.19,12.6
+Hidalgo,Cuautepec de Hinojosa,9,5,4.6,0.15,7.2
+Hidalgo,Emiliano Zapata,3,3,3.5,0,5.9
+Tlaxcala,Nanacamilpa de Mariano Arista,2,1,2.5,,7.9
+Hidalgo,Apan,1,1,3,,11.8
+Hidalgo,Tepeapulco,1,1,4.45,,64.3

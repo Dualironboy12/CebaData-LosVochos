@@ -66,3 +66,60 @@ Grok 4.7
 
 - Historial de git: un commit nuevo en `main`, publicado en el remoto.
 - Sin cambios en el dataset ni en el código de análisis, modelos o dashboard.
+
+## 2026-09-29 — Diseño del plan de KDD en R
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> Necesitamos realizar un KDD en el dataset para entender como se relacionan entre si los datos, y poder visualizarlos mas facilmente y encontrar patrones y relaciones, usaremos R para esto, ayudame a diseñar el plan para ello
+
+**Acciones**
+
+- Se revisaron `README.md`, `AGENTS.md`, la guía del dataset y `PROMPTS.md`. Se comprobó que `analisis/` estaba vacío.
+- Se diseñó un plan de KDD en R con las cinco etapas (selección, preprocesamiento, transformación, minería, interpretación), reglas de cruce heredadas de `AGENTS.md`, lista de figuras y alcance excluido (modelos, imputación, cambios al dataset).
+
+**Afectaciones**
+
+- Sin cambios en el repositorio. El plan quedó en un archivo de planes fuera del repo.
+
+## 2026-09-29 — Implementación del KDD en R
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> KDD del dataset de cebada en R
+>
+> Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+>
+> To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+>
+> (Se omite el plan adjunto: es el diseño de la entrada anterior.)
+
+**Acciones**
+
+- R del sistema no tenía `sf`, `terra`, `rmarkdown` ni pandoc, ni bibliotecas GDAL, y no había acceso de administrador. Con aprobación de la persona se descargó micromamba y se creó un entorno de conda-forge en `~/.local/share/ceba-env` (fuera del repo) con R 4.5, `sf`, `terra`, `tidyverse`, `rmarkdown` y pandoc.
+- Se creó `analisis/` con seis scripts de R (`00_setup.R` a `06_patrones.R`), el informe `informe/kdd.Rmd` y `correr.sh` para ejecutarlo todo.
+- Selección: inventario de las nueve fuentes y verificación de llaves entre shapefile y CSV (197 parcelas, 138 de entrenamiento y 59 de predicción, sin discrepancias).
+- Calidad: fechas tipadas, separación de Sentinel-2, Landsat y Planet, vacíos estructurales frente a vacíos por nube, consistencia (mín ≤ promedio ≤ máx, desviaciones) y rangos. Se detectó una fila de Landsat con VI6T vacío que no se explica por nube (17 578 vacíos contra 17 577 de la guía).
+- Transformación: filtro de nube 0, recorte a abril–octubre de 2025, resumen por parcela y sensor con el sensor en el nombre de la columna. Con ese filtro ninguna parcela queda con menos de 5 observaciones. Se añadieron medias de NDVI por fase (mayo–julio, agosto, septiembre–octubre) después de ver en las trayectorias que la diferencia por rendimiento aparece al final del ciclo.
+- Clima y topografía: estadística zonal con `exact = TRUE` (con `weights = TRUE` las parcelas menores que el píxel devolvían NaN) y polígonos reproyectados a EPSG:6372. Las 197 parcelas caen sobre 25 celdas de clima.
+- Relaciones: mapa, distribuciones, trayectorias del ciclo por cuartil de rendimiento, dispersiones y correlaciones de Spearman globales y dentro de cada estado, con ajuste de Benjamini-Hochberg.
+- Patrones: redundancia entre variables, PCA exploratorio y cuatro perfiles de parcela.
+- Hallazgos principales: el estado y el municipio explican cerca del 50 % y el 67 % de la varianza del rendimiento; la temperatura pierde su asociación dentro de cada estado, la lluvia no; los índices de NDVI tienen señal débil; los perfiles no separan el rendimiento.
+- El informe se escribió en R Markdown porque Quarto no está instalado, como preveía el plan.
+- Se probó el flujo completo desde cero (`bash analisis/correr.sh`) tras borrar `analisis/salida/`.
+
+**Afectaciones**
+
+- Archivos creados: `analisis/README.md`, `analisis/.gitignore`, `analisis/correr.sh`, `analisis/R/00_setup.R` a `06_patrones.R`, `analisis/informe/kdd.Rmd`.
+- Salidas generadas en `analisis/salida/`: `parcelas_trabajo.csv` (197 filas, 101 columnas), `parcelas_trabajo_diccionario.csv`, `kdd.html`, `tablas/` y `figuras/`. `salida/intermedio/` se genera pero no se versiona.
+- `PROMPTS.md`: estas dos entradas.
+- Fuera del repo: entorno de micromamba en `~/.local/share/ceba-env`.
+- Sin cambios en `DATASET_RETO_AGRO_2026/`, en `modelo/` ni en `dashboard/`. Sin commits ni push.

@@ -1,0 +1,4 @@
+sensor,filas,parcelas,fecha_min,fecha_max,obs_por_parcela_min,obs_por_parcela_mediana,obs_por_parcela_max,duplicados_parcela_fecha,filas_con_indice,pct_con_indice,filas_nube_100,filas_nube_vacia
+Sentinel-2,59040,197,2022-01-01,2025-12-31,298,300,301,0,44877,76,14163,0
+Landsat,48626,197,2022-01-05,2025-12-31,195,211,391,0,31048,63.9,14521,3056
+Planet,47804,197,2025-01-01,2025-12-30,233,243,251,0,35747,74.8,12057,0

@@ -1,0 +1,10 @@
+sensor,umbral_nube,observaciones,obs_por_parcela_min,obs_por_parcela_mediana,parcelas_con_menos_de_min
+Sentinel-2,0,5688,14,29,0
+Sentinel-2,10,6267,25,32,0
+Sentinel-2,30,6562,27,33,0
+Landsat,0,3263,8,15,0
+Landsat,10,3360,8,16,0
+Landsat,30,3474,8,16,0
+Planet,0,14578,38,76,0
+Planet,10,15483,53,80,0
+Planet,30,16148,60,84,0

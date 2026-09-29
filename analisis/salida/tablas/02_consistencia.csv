@@ -1,0 +1,20 @@
+prueba,valor
+S2: filas con nube = 100,14163
+"S2: de esas, con NDVI presente (debe ser 0)",0
+S2: filas sin NDVI y con nube < 100 (debe ser 0),0
+S2: nube máxima entre filas con NDVI,96
+S2: filas con NDVI y FAPAR vacío,4
+S2: parcelas distintas en esas filas,4
+Landsat: filas con VI6T vacío,17578
+Landsat: VI6T vacío y nube = 100,14521
+Landsat: VI6T vacío y nube vacía (no recuperables),3056
+Landsat: VI6T vacío con nube entre 0 y 99,1
+Planet: filas con los 4 índices vacíos,12057
+"Planet: de esas, con nube = 100",12057
+Planet: nube máxima entre filas con NDVI,95.996
+S2: violaciones de mín <= promedio <= máx,0
+Planet: violaciones de mín <= promedio <= máx,0
+S2: desviaciones estándar negativas,0
+Planet: desviaciones estándar negativas,0
+Parcelas del Básico ausentes en la tabla base,0
+Parcelas de la tabla base sin datos en PRO,0

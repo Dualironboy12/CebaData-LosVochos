@@ -1,0 +1,4 @@
+modelo,r2_ajustado,grupos
+Rendimiento ~ estado,0.496,3
+Rendimiento ~ municipio,0.667,9
+Rendimiento ~ pixel de clima,0.66,23

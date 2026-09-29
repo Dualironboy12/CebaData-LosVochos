@@ -1,0 +1,10 @@
+fuente,archivo,unidad_de_observacion,filas_o_capas,columnas,periodo,uso_en_el_analisis
+Parcelas,Parcelas_Reto_AGC_CONJUNTO.shp,parcela (polígono),197,6,sin fecha,"Geometría, área, municipio, estado, conjunto"
+Rendimiento,ID_area_rendimiento_70_30_Reto_AgroCebada.csv,parcela,197,4,ciclo abr-oct 2025,Etiqueta (solo 138 con valor)
+Índices Básico,Conjunto_datos_BASICO_AgroCebada2026.csv,parcela x fecha x sensor,107666,96,2022-2025,Sentinel-2 (NDVI...) y Landsat (VI6T)
+Índices PRO,Conjunto_datos_PRO_AgroCebada.csv,parcela x fecha,47804,20,2025,"Planet (NDVI, EVI, LAI, MSAVI)"
+Precipitación CHIRPS,PREC_{año}_{mes}.tif,píxel de 0.05° x mes,48,,2022-2025,Lluvia del ciclo 2025 en el píxel de cada parcela
+Tmin CHIRTS-ERA5,Tmin_{año}_{mes}.tif,píxel de 0.05° x mes,48,,2022-2025,Temperatura mínima del ciclo
+Tmax CHIRTS-ERA5,Tmax_{año}_{mes}.tif,píxel de 0.05° x mes,48,,2022-2025,Temperatura máxima del ciclo
+Elevación INEGI CEM,Elevacion_INEGI_CEM4_120m.tif,píxel de 120 m (EPSG:6372),1,,estático,Elevación zonal por parcela
+Pendiente INEGI CEM,Pendiente_INEGI_CEM4_120m_grados.tif,píxel de 120 m (EPSG:6372),1,,estático,Pendiente zonal por parcela

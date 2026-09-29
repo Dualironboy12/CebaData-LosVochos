@@ -1,0 +1,7 @@
+grupo,variable,rho_global,rho_intra_estado
+Clima,amplitud_ciclo_c,-0.666,-0.0659
+Landsat,vi6t_landsat_max,0.266,0.0848
+Parcela,area_ha,-0.249,-0.0703
+Planet,ndvi_planet_media_sep_oct,0.28,0.143
+Sentinel-2,crc_s2_max,0.3,0.204
+Topografía,elevacion_max_m,0.259,0.0598

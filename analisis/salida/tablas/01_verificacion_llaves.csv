@@ -1,0 +1,12 @@
+prueba,valor
+Parcelas en el shapefile,197
+Parcelas en el CSV de rendimiento,197
+Identificadores únicos en el shapefile,197
+Identificadores presentes en un solo archivo,0
+Diferencia máxima de área shapefile vs CSV (ha),0
+Parcelas con CONJUNTO distinto entre shapefile y CSV,0
+Parcelas ENTRENAMIENTO,138
+Parcelas PREDICCION,59
+ENTRENAMIENTO sin rendimiento (debe ser 0),0
+PREDICCION con rendimiento (debe ser 0),0
+Valores distintos de Cultivo (texto crudo),2
