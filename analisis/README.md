@@ -2,7 +2,11 @@
 
 Proceso KDD sobre el dataset del reto: qué datos hay, qué tan confiables son, cómo se relacionan entre sí y con el rendimiento, y qué variables quedan como candidatas para la fase de modelos. No entrena modelos.
 
-El informe con la lectura completa se genera en `analisis/salida/kdd.html`.
+| Documento | Para qué |
+| --- | --- |
+| [`RESUMEN_DE_ANALISIS.md`](RESUMEN_DE_ANALISIS.md) | Lectura corta e intuitiva para el equipo |
+| [`PROXIMOS_PASOS.md`](PROXIMOS_PASOS.md) | Qué sigue, decisiones humano/agente, CSVs y modelos |
+| [`salida/kdd.html`](salida/kdd.html) | Informe completo con tablas y figuras |
 
 ## Cómo correrlo
 

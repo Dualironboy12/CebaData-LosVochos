@@ -123,3 +123,27 @@ Claude Sonnet 5.5
 - `PROMPTS.md`: estas dos entradas.
 - Fuera del repo: entorno de micromamba en `~/.local/share/ceba-env`.
 - Sin cambios en `DATASET_RETO_AGRO_2026/`, en `modelo/` ni en `dashboard/`. Sin commits ni push.
+
+## 2026-09-30 — Documentos de resumen y próximos pasos
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> Ok, ahora, por favor, estructura esta informacion de cuales son los siguientes pasos, que responsabilidades corresponden a agentes vs humanos, y recomendaciones para pruebas de diferentes CSVs de entrenamiento, eleccion de modelos y filosofia de diseño, y lo que hablamos aqui, en un archivo md llamado PROXIMOS PASOS en la carpeta @analisis/ adicionalmente en esa misma carpeta escribe un RESUMEN DE ANALISIS.md donde hagas una explicacion lo mas sencilla, intuitiva y comprensible posible de las observaciones que hicimos durante el KDD, para poder compartirlo con los demas compañeros asi como para que sea mas facil navegar toda la informacion en el analisis kdd para quienes despues puedan revisar el repo
+
+**Acciones**
+
+- Se escribió `analisis/RESUMEN_DE_ANALISIS.md` con una lectura sencilla de los hallazgos del KDD y una guía de navegación del directorio `analisis/`.
+- Se escribió `analisis/PROXIMOS_PASOS.md` con el orden de trabajo, decisiones humanas vs tareas de agente, filosofía de diseño, variantes de CSV, y criterios Classic ML vs Hugging Face / redes.
+- Se enlazaron ambos documentos desde `analisis/README.md`.
+
+**Afectaciones**
+
+- `analisis/RESUMEN_DE_ANALISIS.md`: archivo nuevo.
+- `analisis/PROXIMOS_PASOS.md`: archivo nuevo.
+- `analisis/README.md`: tabla de documentos al inicio.
+- `PROMPTS.md`: esta entrada.
+- Sin cambios en el dataset, en scripts de R, en salidas regeneradas, ni en `modelo/` o `dashboard/`. Sin commits.
