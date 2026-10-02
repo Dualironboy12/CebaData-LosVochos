@@ -18,45 +18,66 @@ Producto actual de la fase 1: [`salida/parcelas_trabajo.csv`](salida/parcelas_tr
 ## Orden recomendado
 
 ```text
-1. Decidir criterios humanos (ubicación, CSVs, validación)
-2. Congelar 3–5 tablas de entrenamiento (condensamientos)
+1. Decidir criterios humanos (ubicación, CSVs, validación)     ← 1–6 cerradas (2026-10-01)
+2. Regenerar despensa con NUBE_MAX = 30 y armar CSVs de entrenamiento
 3. Abrir fase 2: baseline + classic ML + misma CV espacial
-4. Elegir modelo y CSV ganadores
-5. Predecir las 59 parcelas
-6. Dashboard y, al final, reporte / video
+4. En paralelo: inventario y alineación de datos externos (p. ej. INEGI)
+5. Elegir modelo y CSV ganadores
+6. Predecir las 59 parcelas
+7. Dashboard y, al final, reporte / video
 ```
 
-No hace falta más exploración a ciegas del dataset oficial. Sí hace falta **cerrar decisiones de diseño** y luego **comparar de forma controlada**.
+Las decisiones 1–6 ya están tomadas (sección siguiente). Quedan pendientes las que dependen de resultados de entrenamiento (7–9).
 
 ---
 
-## Decisiones que el equipo tiene que tomar (humanos)
+## Decisiones del equipo (humanos)
 
-Estas no las debe “inventar” un agente solo: cambian el RMSE, la narrativa del reporte y el riesgo de aprender geografía en vez de cultivo.
+Registro de lo que el equipo ya acordó y de lo que sigue abierto. Un agente no debe cambiar estos criterios sin un nuevo acuerdo explícito.
 
-1. **¿Se congela `parcelas_trabajo.csv` como base o se genera una versión reducida?**  
-   El CSV grande es la despensa; para modelar suele convenir un subconjunto documentado.
+### Cerradas (2026-10-01)
 
-2. **¿Se permiten `estado`, `municipio`, coordenadas o `pixel_clima` como features?**  
-   Explican ~50–67 % de la varianza del rendimiento. Suben el RMSE aparente, pero el modelo puede memorizar zona. Hay que decidir el criterio (precisión vs generalización / justificación ante el jurado).
+| # | Pregunta | Decisión |
+| --- | --- | --- |
+| 1 | Tabla base | **Despensa + CSVs derivadas.** Se conserva `parcelas_trabajo.csv` (y sus columnas) como despensa. A partir de ella se generan tablas reducidas o tablas que integren datos nuevos; no se sustituye la despensa por una sola CSV “final” prematura. |
+| 2 | Ubicación como feature | **Tres filosofías a comparar:** (1) sin ubicación de ningún tipo; (2) con *algunos* datos de ubicación; (3) con *todos* los datos de ubicación disponibles (`estado`, `municipio`, coordenadas, `pixel_clima`, etc.). La elección de entrega se hace después de ver CV. |
+| 3 | Años previos | **Dos familias temporales:** datasets solo con el ciclo **2025**, y datasets que usan **todos los ciclos anuales** disponibles (2022–2025 / antecedentes). Se construyen y se comparan; no se mezcla la regla en silencio. |
+| 4 | Umbral de nube | **`NUBE_MAX = 30`**, para maximizar fechas usables al condensar índices (`porcentaje_nubosidad <= 30` en las series Básico y PRO). |
+| 5 | Validación | **Oficial = por municipio.** Además se reporta validación por píxel de clima como chequeo. No se usa corte aleatorio de parcelas como criterio oficial. |
+| 6 | Datos externos | **Dos carriles en paralelo.** Prioridad: empezar entrenamientos con datasets construidos solo con lo entregado por el reto. En paralelo: conseguir, documentar y alinear datos externos (en especial **INEGI**) con los `AGC_###` / geometrías del reto, para armar datasets más ricos más adelante. |
 
-3. **¿Entran los años 2022–2024 como antecedente?**  
-   Hoy solo el ciclo 2025 está en la tabla de trabajo; los años previos existen en intermedios y figuras.
+#### Matriz de CSVs que implica (datos del reto)
 
-4. **¿Umbral de nube definitivo?**  
-   Ahora es 0 (`NUBE_MAX`). 10 y 30 añaden pocas observaciones; conviene congelar uno.
+Cruzar filosofía de ubicación × ventana temporal. Cada celda puede ser una CSV versionada (o un grupo con/sin Planet, etc.):
 
-5. **Esquema de validación oficial del equipo**  
-   Por municipio, por píxel de clima, u otro corte espacial. **No** corte aleatorio de parcelas.
+|  | Solo ciclo 2025 | Todos los ciclos (2022–2025) |
+| --- | --- | --- |
+| Sin ubicación | CSV a construir | CSV a construir |
+| Ubicación parcial | CSV a construir | CSV a construir |
+| Ubicación completa | CSV a construir | CSV a construir |
 
-6. **¿Se buscan datos externos** (suelo, clima público, etc.)?  
-   El reto lo permite; hay que aprobar fuentes y alcance.
+Detalle de “ubicación parcial” (qué columnas exactas entran: p. ej. solo `estado`, o estado + municipio sin coordenadas) **aún se puede afinar** al armar el manifiesto; el principio son las tres filosofías.
 
-7. **Cuándo abrir fase 2 y fase 3**  
-   Según `AGENTS.md`, modelos y Django solo si el equipo lo pide de forma explícita.
+#### Nota sobre el umbral 30 y la despensa actual
 
-8. **Modelo y CSV que se entregan**, métrica de desempate, y si se reporta error aparte en Tlaxcala.
+El KDD y [`salida/parcelas_trabajo.csv`](salida/parcelas_trabajo.csv) se generaron con **`NUBE_MAX = 0`**. La decisión del equipo es modelar con **30**. Antes de congelar CSVs de entrenamiento conviene:
 
+1. Poner `NUBE_MAX <- 30` en `R/00_setup.R` (o parámetro equivalente).
+2. Re-ejecutar al menos transformación → clima/topo → tabla de trabajo (o el pipeline que alimente la despensa).
+3. Documentar en el manifiesto de cada CSV el umbral usado.
+
+Hasta que eso ocurra, la despensa del repo refleja nube 0; no asumir que ya está al 30.
+
+#### Carril externo (INEGI y afines)
+
+- No bloquea el primer entrenamiento con datos del reto.
+- Cada fuente externa debe quedar documentada: origen, licencia/uso, fecha de descarga, cómo se une a `ID_POLIGONO` / geometría, y qué columnas aporta.
+- Los datasets “ricos” que salgan de ese carril se versionan aparte (no se sobrescribe la despensa oficial del reto).
+
+### Pendientes (después de experimentar / acuerdo explícito)
+
+7. **Cuándo abrir fase 2 y fase 3** — modelos y Django solo con pedido explícito (`AGENTS.md`).
+8. **Modelo y CSV de entrega**, métrica de desempate, y si el error en Tlaxcala se reporta aparte.
 9. **Commits, push y textos del reporte / video.**
 
 ---
@@ -104,27 +125,30 @@ Un agente ejecuta, compara y documenta. No fija el criterio de “qué cuenta co
 
 Sí es viable —y recomendable— formar **varias tablas** con más o menos datos (dataset oficial y, si se aprueba, externos), distintos periodos o familias de variables, y entrenar **el mismo protocolo de modelos** sobre cada una.
 
-### Variantes sugeridas (partir de `parcelas_trabajo.csv`)
+### Variantes alineadas a las decisiones del equipo
 
-| ID | Contenido (idea) | Qué pregunta responde |
-| --- | --- | --- |
-| A. Núcleo 2025 | Pocas columnas: p. ej. `ndvi_s2_int`, `ndvi_s2_media_sep_oct`, `crc_s2_media`, `lluvia_ciclo_mm`, `pendiente_grados`, `area_ha` | ¿Basta lo mínimo? |
-| B. Núcleo + clima | A + temperaturas / amplitud | ¿La temperatura aporta o solo copia el estado? |
-| C. Núcleo + Planet | A + columnas Planet (nombres aparte) | ¿El sensor fino suma? |
-| D. + 2022–2024 | Resúmenes de años previos | ¿El historial de la parcela importa? |
-| E. + ubicación | Alguna de las anteriores + estado/municipio/píxel | Techo de RMSE vs riesgo de aprender geografía |
-| F. + externos | Solo si el equipo aprueba fuentes | ¿Vale el costo de integrarlas? |
+Partir de la despensa (tras regenerar con **nube ≤ 30**). Prioridad: datos del reto. Luego, datasets con externos.
 
-No hace falta correr las seis el primer día: **A, C y E** suelen ser el mínimo informativo.
+| Eje | Niveles acordados |
+| --- | --- |
+| Ubicación | Sin ubicación · Parcial · Completa |
+| Tiempo | Solo 2025 · Todos los ciclos anuales |
+| Externos | Solo reto (primera ola) · + INEGI/otros (segunda ola, en paralelo) |
+
+Dentro de cada celda de la matriz ubicación × tiempo, un agente puede proponer subvariantes (núcleo mínimo, + Planet, + clima térmico, etc.) siempre con manifiesto. No hace falta entrenar las 6+ de golpe el primer día: conviene un orden, por ejemplo:
+
+1. Sin ubicación + solo 2025 (núcleo).
+2. Misma base + ubicación parcial y + ubicación completa.
+3. Repetir la mejor filosofía de ubicación con **todos los ciclos**.
+4. Cuando haya capas INEGI alineadas: nueva familia de CSVs versionadas.
 
 ### Cómo compararlas con rigor
 
-- Misma partición / CV espacial en todas.
-- Mismos modelos, mismas semillas, mismas métricas (RMSE, MAE, r²; opcionalmente por estado).
-- Versionar archivos (`parcelas_vA.csv`, …) y un **manifiesto** (columnas, filtro de nube, periodo, fuentes).
-- Reportar también el tamaño efectivo (cuántos municipios / píxeles de clima quedan en cada fold).
-
-Un agente puede generar las CSVs, el manifiesto y la tabla comparativa. El equipo elige cuál se congela para la entrega.
+- Validación **oficial por municipio**; además reportar el mismo experimento con folds por píxel de clima.
+- Mismos modelos, mismas semillas, mismas métricas (RMSE, MAE, r²; opcionalmente por estado / Tlaxcala).
+- Versionar archivos (`parcelas_v….csv`) y un **manifiesto** (columnas, `NUBE_MAX`, ventana temporal, filosofía de ubicación, fuentes).
+- Reportar el tamaño efectivo (municipios / píxeles por fold).
+- Separar claramente la ola “solo reto” de la ola “+ externos”.
 
 ---
 
@@ -166,12 +190,16 @@ No hace falta “algo más moderno” para competir bien. Hace falta **buen cond
 
 ## Checklist de arranque de la fase 2 (cuando el equipo lo pida)
 
-- [ ] Humanos: decidir ubicación sí/no, umbral de nube, CV, y lista de CSVs (A–F).
-- [ ] Agente: crear `modelo/`, leer la(s) CSV, baseline + 1–2 modelos, tabla de métricas.
-- [ ] Humanos: elegir modelo y condensamiento finales.
-- [ ] Agente: predicciones de las 59, artefacto reproducible (modelo + script de inferencia).
-- [ ] Humanos: pedir dashboard cuando el modelo esté estable.
-- [ ] En paralelo: ir pasando hallazgos del KDD al reporte (metodología / resultados).
+- [x] Humanos: decisiones 1–6 (despensa, 3 filosofías de ubicación, 2 ventanas temporales, nube 30, CV municipio + chequeo píxel, externos en paralelo).
+- [ ] Agente / equipo: regenerar despensa con `NUBE_MAX = 30` y documentar el cambio.
+- [ ] Agente: construir CSVs de la matriz (reto) + manifiesto; afinar columnas de “ubicación parcial”.
+- [ ] Humanos: pedir explícitamente abrir `modelo/`.
+- [ ] Agente: baseline + 1–2 modelos, CV por municipio (+ reporte por píxel), tabla de métricas.
+- [ ] En paralelo: inventario INEGI / externos, documentación y alineación a parcelas del reto.
+- [ ] Humanos: elegir modelo y CSV de entrega (decisión 8); criterio Tlaxcala.
+- [ ] Agente: predicciones de las 59, artefacto reproducible.
+- [ ] Humanos: pedir dashboard cuando el modelo esté estable; autorizar commits/push (decisión 9).
+- [ ] Ir pasando hallazgos del KDD al reporte (metodología / resultados).
 
 ## Regla de oro
 

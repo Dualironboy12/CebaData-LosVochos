@@ -147,3 +147,25 @@ Claude Sonnet 5.5
 - `analisis/README.md`: tabla de documentos al inicio.
 - `PROMPTS.md`: esta entrada.
 - Sin cambios en el dataset, en scripts de R, en salidas regeneradas, ni en `modelo/` o `dashboard/`. Sin commits.
+
+## 2026-10-01 — Decisiones humanas 1–6 en PROXIMOS_PASOS
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> 1A conservamos las columnas originales como despensa, generamos a partir de el csv reducidas o integrando nuevos datos, 2B probaremos con datasets con 3 filosofias: sin ubicacion de ningun tipo, con algunos datos de ubicacion, y con todos los datos de ubicacion, 3B formamos dos tipos de dataset, con todos los ciclos anuales vs solo con 2025, 4 Para tratar de maximizar datos usaremos el umbral de 30, 5C, 6B quisiera priorizar el comenzar entrenamientos con datasets construidos con los datos entregados, y en paralelo buscar conseguir, documentar y alinear datos externos, especialmente de Inegi con los datos provistos para el reto para construir nuevos datasets mas ricos para modelos mejor entrenados o mas grandes
+
+**Acciones**
+
+- Se registraron en `analisis/PROXIMOS_PASOS.md` las decisiones 1–6 del equipo (despensa + CSVs derivadas; tres filosofías de ubicación; solo 2025 vs todos los ciclos; NUBE_MAX = 30; CV oficial por municipio + chequeo por píxel; datos del reto primero y externos/INEGI en paralelo).
+- Se actualizaron la matriz de CSVs, la nota de regenerar la despensa (hoy está con nube 0), el orden recomendado y el checklist.
+- Quedaron pendientes las decisiones 7–9 (abrir fases, modelo de entrega, commits/reporte).
+
+**Afectaciones**
+
+- `analisis/PROXIMOS_PASOS.md`: sección de decisiones del equipo y ajustes relacionados.
+- `PROMPTS.md`: esta entrada.
+- Sin cambio de `NUBE_MAX` en el código ni regeneración de `parcelas_trabajo.csv` en esta sesión. Sin commits.
