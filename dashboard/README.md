@@ -28,13 +28,13 @@ Una sola rama de trabajo para el dashboard. Los cambios maduros hacen merge haci
 
 ```text
 main
- └── [rama del dashboard]  →  PR → main
+ └── dev-dashboard  →  PR → main
 ```
 
 **Rama de este track (rellenar):**
 
 ```text
-________________________________
+dev-dashboard
 ```
 
 ## Estado
