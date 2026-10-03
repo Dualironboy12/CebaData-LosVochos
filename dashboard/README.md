@@ -24,7 +24,7 @@ Una sola rama de trabajo para el dashboard. Los cambios maduros hacen merge haci
 
 | Rol | Rama | Notas |
 | --- | --- | --- |
-| Trabajo del dashboard | **_por definir_** | Anotar aquí el nombre cuando se cree (p. ej. `feat/dashboard`). |
+| Trabajo del dashboard | dev-dashboard | Anotar aquí el nombre cuando se cree (p. ej. `feat/dashboard`). |
 
 ```text
 main
