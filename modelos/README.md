@@ -40,29 +40,6 @@ Los nombres internos se ajustan cuando exista el primer entrenamiento real.
 - UI del dashboard (`dashboard/`).
 - Modificar `DATASET_RETO_AGRO_2026/`.
 
-## Flujo de Git en este track
-
-Dos ramas: una **principal de modelos** (dataset original / solo reto) y una **subrama** (modelos sobre dataset extendido). Hacen merge entre sí (la subrama alimenta o se integra en la principal de modelos) **antes** del merge hacia `main` del repositorio.
-
-| Rol | Rama | Contenido típico |
-| --- | --- | --- |
-| Principal de modelos | **_por definir_** | Entrenamientos y artefactos con datos solo del reto |
-| Subrama: dataset extendido | **_por definir_** | Reentrenos / reconstrucciones que aprovechan datos externos |
-
-```text
-main
- └── [rama principal modelos — solo reto]
-       └── [subrama modelos extendido]  →  merge → principal modelos
-             →  luego PR de [principal modelos] → main
-```
-
-**Ramas de este track (rellenar cuando existan):**
-
-```text
-Principal (solo dataset del reto):   ________________________________
-Subrama (dataset extendido):         ________________________________
-```
-
 ## Relación con `dataset_entrenamiento/`
 
 | Entrada (dataset) | Salida típica aquí |
