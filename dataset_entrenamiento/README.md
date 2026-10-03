@@ -67,7 +67,7 @@ Ver detalle en `analisis/PROXIMOS_PASOS.md`:
 
 ## Estado
 
-- [ ] Tres ramas creadas y nombres anotados arriba.
+- [x] Tres ramas creadas y nombres anotados arriba.
 - [ ] Despensa regenerada/congelada (nube 30) en `despensa/`.
 - [ ] Primeras CSVs curadas solo-reto en `curados_reto/`.
 - [ ] Inventario y alineación de fuentes externas en `fuentes/`.
