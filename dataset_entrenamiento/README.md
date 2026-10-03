@@ -36,32 +36,6 @@ dataset_entrenamiento/
 
 Las carpetas internas se crean cuando haya contenido real; no hace falta inventar archivos vacíos.
 
-## Flujo de Git en este track
-
-Tres ramas: una **principal del dataset** (aloja la despensa congelada y lo ya integrado) y **dos subramas** que la alimentan. Primero merge de las subramas hacia la principal del dataset; después merge de esa principal hacia `main` del repositorio.
-
-| Rol | Rama | Contenido típico |
-| --- | --- | --- |
-| Principal del dataset | **_por definir_** | Despensa congelada + datasets ya aceptados para uso del equipo |
-| Subrama: solo datos del reto | **_por definir_** | Curados / variantes sin externos |
-| Subrama: dataset extendido | **_por definir_** | Extensión de despensa + curados con externos + docs de fuentes |
-
-```text
-main
- └── [rama principal dataset]
-       ├── [subrama solo reto]      →  merge → principal dataset
-       └── [subrama extendido]      →  merge → principal dataset
-             →  luego PR de [principal dataset] → main
-```
-
-**Ramas de este track (rellenar cuando existan):**
-
-```text
-Principal (despensa / integración):   ________________________________
-Subrama solo datos del reto:          ________________________________
-Subrama dataset extendido:            ________________________________
-```
-
 ## Criterios ya acordados (recordatorio)
 
 Ver detalle en `analisis/PROXIMOS_PASOS.md`:
