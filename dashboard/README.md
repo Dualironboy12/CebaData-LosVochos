@@ -39,7 +39,7 @@ dev-dashboard
 
 ## Estado
 
-- [ ] Rama creada y nombre anotado arriba.
+- [x] Rama creada y nombre anotado arriba.
 - [ ] Stack y estructura inicial definidos.
 - [ ] Mock de parcelas / predicciones para UI.
 - [ ] Integración con el modelo de entrega (cuando exista en `modelos/`).
