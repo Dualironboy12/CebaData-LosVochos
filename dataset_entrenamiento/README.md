@@ -42,16 +42,16 @@ Tres ramas: una **principal del dataset** (aloja la despensa congelada y lo ya i
 
 | Rol | Rama | Contenido típico |
 | --- | --- | --- |
-| Principal del dataset | **_por definir_** | Despensa congelada + datasets ya aceptados para uso del equipo |
-| Subrama: solo datos del reto | **_por definir_** | Curados / variantes sin externos |
-| Subrama: dataset extendido | **_por definir_** | Extensión de despensa + curados con externos + docs de fuentes |
+| Principal del dataset | dev-dataset | Despensa congelada + datasets ya aceptados para uso del equipo |
+| Subrama: solo datos del reto | predev-dataset | Curados / variantes sin externos |
+| Subrama: dataset extendido | predev-dataset-extendido | Extensión de despensa + curados con externos + docs de fuentes |
 
 ```text
 main
- └── [rama principal dataset]
-       ├── [subrama solo reto]      →  merge → principal dataset
-       └── [subrama extendido]      →  merge → principal dataset
-             →  luego PR de [principal dataset] → main
+ └── dev-dataset
+       ├── predev-dataset      →  merge → principal dataset
+       └── predev-dataset-extendido      →  merge → principal dataset
+             →  luego PR de dev-dataset → main
 ```
 
 **Ramas de este track (rellenar cuando existan):**
