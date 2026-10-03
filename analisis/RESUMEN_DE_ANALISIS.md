@@ -102,6 +102,9 @@ Parcela (AGC_###)
 | Ver un gráfico | [`salida/figuras/`](salida/figuras/) |
 | Cambiar parámetros o re-correr | [`README.md`](README.md) y `R/00_setup.R` |
 | Código de cada etapa | `R/01_seleccion.R` … `R/06_patrones.R` |
+| Congelar CSVs para entrenar | [`../dataset_entrenamiento/`](../dataset_entrenamiento/) |
+| Entrenar modelos / dashboard | [`../modelos/`](../modelos/) · [`../dashboard/`](../dashboard/) |
+| Reglas para agentes | [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) |
 
 Figuras útiles para compartir con el equipo:
 

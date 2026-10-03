@@ -2,11 +2,14 @@
 
 Proceso KDD sobre el dataset del reto: qué datos hay, qué tan confiables son, cómo se relacionan entre sí y con el rendimiento, y qué variables quedan como candidatas para la fase de modelos. No entrena modelos.
 
+Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Despensa/CSVs de entrenamiento: [`../dataset_entrenamiento/`](../dataset_entrenamiento/). Modelos: [`../modelos/`](../modelos/). Dashboard: [`../dashboard/`](../dashboard/).
+
 | Documento | Para qué |
 | --- | --- |
 | [`RESUMEN_DE_ANALISIS.md`](RESUMEN_DE_ANALISIS.md) | Lectura corta e intuitiva para el equipo |
 | [`PROXIMOS_PASOS.md`](PROXIMOS_PASOS.md) | Qué sigue, decisiones humano/agente, CSVs y modelos |
 | [`salida/kdd.html`](salida/kdd.html) | Informe completo con tablas y figuras |
+| [`AGENTS.md`](AGENTS.md) | Lineamientos para desarrollo asistido en esta carpeta |
 
 ## Cómo correrlo
 
@@ -65,4 +68,5 @@ analisis/salida/
 
 - Los datos de `DATASET_RETO_AGRO_2026/` solo se leen.
 - Los cambios de parámetros se hacen en `00_setup.R`, no dentro de una figura.
-- Cada sesión de trabajo se anota en [`PROMPTS.md`](../PROMPTS.md).
+- La despensa de `salida/parcelas_trabajo.csv` alimenta el análisis; al congelar datasets para entrenar se versionan en `dataset_entrenamiento/` (ver `PROXIMOS_PASOS.md`).
+- Cada sesión de agente se anota en [`PROMPTS.md`](../PROMPTS.md).

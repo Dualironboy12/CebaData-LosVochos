@@ -9,8 +9,9 @@ Contexto corto del análisis: [`RESUMEN_DE_ANALISIS.md`](RESUMEN_DE_ANALISIS.md)
 | Fase | Estado | Dónde |
 | --- | --- | --- |
 | 1. Análisis de datos (R) | Hecha: tabla de trabajo + lectura KDD | `analisis/` |
-| 2. Modelos (Python) | Pendiente; solo arranca con pedido explícito del equipo | `modelo/` |
-| 3. Dashboard (Django) | Después de un modelo estable | `dashboard/` |
+| — Despensa / CSVs de entrenamiento | Pendiente: congelar y versionar | `dataset_entrenamiento/` |
+| 2. Modelos (Python) | Pendiente; solo arranca con pedido explícito del equipo | `modelos/` |
+| 3. Dashboard | Después de un modelo estable (stack por acordar; a menudo Django) | `dashboard/` |
 | Reporte y video | Al cerrar el desarrollo | — |
 
 Producto actual de la fase 1: [`salida/parcelas_trabajo.csv`](salida/parcelas_trabajo.csv) (197 filas; rendimiento vacío en las 59 de predicción).
@@ -19,12 +20,12 @@ Producto actual de la fase 1: [`salida/parcelas_trabajo.csv`](salida/parcelas_tr
 
 ```text
 1. Decidir criterios humanos (ubicación, CSVs, validación)     ← 1–6 cerradas (2026-10-01)
-2. Regenerar despensa con NUBE_MAX = 30 y armar CSVs de entrenamiento
-3. Abrir fase 2: baseline + classic ML + misma CV espacial
-4. En paralelo: inventario y alineación de datos externos (p. ej. INEGI)
+2. Regenerar despensa con NUBE_MAX = 30 y versionar CSVs en `dataset_entrenamiento/`
+3. Abrir fase 2 en `modelos/`: baseline + classic ML + misma CV espacial
+4. En paralelo: inventario y alineación de datos externos (p. ej. INEGI) en `dataset_entrenamiento/`
 5. Elegir modelo y CSV ganadores
 6. Predecir las 59 parcelas
-7. Dashboard y, al final, reporte / video
+7. Dashboard (`dashboard/`) y, al final, reporte / video
 ```
 
 Las decisiones 1–6 ya están tomadas (sección siguiente). Quedan pendientes las que dependen de resultados de entrenamiento (7–9).
@@ -76,7 +77,7 @@ Hasta que eso ocurra, la despensa del repo refleja nube 0; no asumir que ya est�
 
 ### Pendientes (después de experimentar / acuerdo explícito)
 
-7. **Cuándo abrir fase 2 y fase 3** — modelos y Django solo con pedido explícito (`AGENTS.md`).
+7. **Cuándo abrir fase 2 y fase 3** — `modelos/` y `dashboard/` solo con pedido explícito (`AGENTS.md`).
 8. **Modelo y CSV de entrega**, métrica de desempate, y si el error en Tlaxcala se reporta aparte.
 9. **Commits, push y textos del reporte / video.**
 
@@ -96,7 +97,7 @@ Un agente ejecuta, compara y documenta. No fija el criterio de “qué cuenta co
 | Entrenar y comparar modelos (métricas) | Sí | **Elige** el modelo de entrega |
 | Ablaciones e importancias (preguntas bonus) | Sí | **Redacta** la justificación |
 | Datos externos | Busca y documenta opciones | **Aprueba** fuentes |
-| Pasar a `modelo/` o `dashboard/` | Solo si se pide | **Pide** explícito |
+| Pasar a `modelos/` o `dashboard/` | Solo si se pide | **Pide** explícito |
 | Commits / push / entregables FIRA | Solo si se pide | **Autoriza** |
 
 ---
@@ -117,7 +118,7 @@ Un agente ejecuta, compara y documenta. No fija el criterio de “qué cuenta co
 
 7. **Explicabilidad cuenta.** El reto pide justificar variables e índices. Un modelo interpretable + ablaciones responde mejor las preguntas bonus que un artefacto opaco.
 
-8. **Reproducible y liviano.** Preferir lo que corra en CPU, con semillas fijas y dependencias claras en `modelo/`.
+8. **Reproducible y liviano.** Preferir lo que corra en CPU, con semillas fijas y dependencias claras en `modelos/`.
 
 ---
 
@@ -191,14 +192,14 @@ No hace falta “algo más moderno” para competir bien. Hace falta **buen cond
 ## Checklist de arranque de la fase 2 (cuando el equipo lo pida)
 
 - [x] Humanos: decisiones 1–6 (despensa, 3 filosofías de ubicación, 2 ventanas temporales, nube 30, CV municipio + chequeo píxel, externos en paralelo).
-- [ ] Agente / equipo: regenerar despensa con `NUBE_MAX = 30` y documentar el cambio.
-- [ ] Agente: construir CSVs de la matriz (reto) + manifiesto; afinar columnas de “ubicación parcial”.
-- [ ] Humanos: pedir explícitamente abrir `modelo/`.
-- [ ] Agente: baseline + 1–2 modelos, CV por municipio (+ reporte por píxel), tabla de métricas.
-- [ ] En paralelo: inventario INEGI / externos, documentación y alineación a parcelas del reto.
+- [ ] Agente / equipo: regenerar despensa con `NUBE_MAX = 30` y versionarla en `dataset_entrenamiento/` (documentar el cambio).
+- [ ] Agente: construir CSVs de la matriz (reto) en `dataset_entrenamiento/` + manifiesto; afinar columnas de “ubicación parcial”.
+- [ ] Humanos: pedir explícitamente abrir trabajo en `modelos/`.
+- [ ] Agente: baseline + 1–2 modelos en `modelos/`, CV por municipio (+ reporte por píxel), tabla de métricas.
+- [ ] En paralelo: inventario INEGI / externos en `dataset_entrenamiento/`, documentación y alineación a parcelas del reto.
 - [ ] Humanos: elegir modelo y CSV de entrega (decisión 8); criterio Tlaxcala.
-- [ ] Agente: predicciones de las 59, artefacto reproducible.
-- [ ] Humanos: pedir dashboard cuando el modelo esté estable; autorizar commits/push (decisión 9).
+- [ ] Agente: predicciones de las 59, artefacto reproducible en `modelos/`.
+- [ ] Humanos: pedir trabajo en `dashboard/` cuando el modelo esté estable; autorizar commits/push (decisión 9).
 - [ ] Ir pasando hallazgos del KDD al reporte (metodología / resultados).
 
 ## Regla de oro

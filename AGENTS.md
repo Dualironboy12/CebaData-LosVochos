@@ -15,12 +15,15 @@ La fase actual es **análisis de datos**.
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
 | 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. El producto es una lectura reproducible y, cuando toque, una tabla de trabajo por parcela | R | `analisis/` |
-| 2. Modelos | Entrenar y evaluar el modelo de rendimiento. Métricas de referencia del reto: RMSE, MAE, r² | Python | `modelo/` |
-| 3. Frontend | Dashboard que ejecute el modelo y permita consultar resultados | Django | `dashboard/` |
+| — | Despensa congelada y CSVs curados (reto y extendidos) para entrenar | — | `dataset_entrenamiento/` |
+| 2. Modelos | Entrenar y evaluar el modelo de rendimiento. Métricas de referencia del reto: RMSE, MAE, r² | Python | `modelos/` |
+| 3. Frontend | Dashboard que ejecute el modelo y permita consultar resultados | Django (u otro stack del equipo) | `dashboard/` |
 
-Fuera de estas tres fases, y solo cuando el desarrollo esté cerrado, quedan el reporte técnico y el video de máximo 5 minutos. Esos entregables ya están descritos en el README (extensiones por sección, video, código fuente).
+El flujo de ramas de `dashboard/`, `dataset_entrenamiento/` y `modelos/` está en el `README.md` de cada una (espacios para anotar el nombre de rama cuando el equipo las cree). Estas tres carpetas y `analisis/` tienen su propio `AGENTS.md` local que **remite a este archivo** y añade reglas del track; al trabajar ahí hay que leer ambos.
 
-Trabajar dentro de la fase actual. Pasar a modelos o a Django solo si la persona lo pide de forma explícita en el prompt. Un script de exploración en Python durante la fase 1 también queda fuera de alcance: el análisis es en R.
+Fuera de estas fases, y solo cuando el desarrollo esté cerrado, quedan el reporte técnico y el video de máximo 5 minutos. Esos entregables ya están descritos en el README (extensiones por sección, video, código fuente).
+
+Trabajar dentro de la fase actual. Versionar la despensa o CSVs curados en `dataset_entrenamiento/` es el puente natural del análisis hacia el entrenamiento y no abre por sí solo la fase 2. Pasar a entrenar en `modelos/` o a implementar `dashboard/` solo si la persona lo pide de forma explícita en el prompt. Un script de exploración en Python durante la fase 1 también queda fuera de alcance: el análisis es en R.
 
 El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA (entrega del proyecto, luego presentación ante el jurado). Esas etapas oficiales conviven con las tres fases de esta tabla.
 

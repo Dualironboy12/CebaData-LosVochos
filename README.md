@@ -37,15 +37,16 @@ La guía de archivos, unidades y cruces está en [`DATASET_RETO_AGRO_2026/README
 
 ## Plan de trabajo del equipo
 
-El equipo construye la solución en tres fases. El calendario oficial de FIRA (más abajo) sigue su propio nombre: Etapa 1 es el desarrollo y la entrega; Etapa 2 es la presentación ante el jurado.
+El equipo construye la solución en tres fases (más la despensa de entrenamiento). El calendario oficial de FIRA (más abajo) sigue su propio nombre: Etapa 1 es el desarrollo y la entrega; Etapa 2 es la presentación ante el jurado.
 
-| Fase | Trabajo | Herramienta |
-| --- | --- | --- |
-| 1. Análisis de datos | Explorar el dataset, documentar calidad, relaciones y variables candidatas | **R** |
-| 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** |
-| 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** |
+| Fase | Trabajo | Herramienta | Carpeta |
+| --- | --- | --- | --- |
+| 1. Análisis de datos | Explorar el dataset, documentar calidad, relaciones y variables candidatas | **R** | [`analisis/`](analisis/) |
+| — | Despensa congelada y CSVs curados (reto y extendidos) para entrenar | — | [`dataset_entrenamiento/`](dataset_entrenamiento/) |
+| 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** | [`modelos/`](modelos/) |
+| 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** (u otro stack que acuerde el equipo) | [`dashboard/`](dashboard/) |
 
-**Fase actual: análisis de datos.** El trabajo en curso es la fase 1, en R. Los modelos en Python y el dashboard en Django arrancan cuando esa fase deje una tabla de parcelas y una lectura clara de qué variables entran al modelo.
+**Fase actual: análisis de datos.** El KDD en R ya dejó una lectura y una tabla de trabajo por parcela; lo que sigue es congelar CSVs en `dataset_entrenamiento/` y, con pedido explícito del equipo, abrir modelos y dashboard. Las instrucciones operativas para agentes están en [`AGENTS.md`](AGENTS.md) (y un `AGENTS.md` local en cada carpeta de trabajo).
 
 Cuando las tres fases estén cerradas, el equipo prepara también el [reporte técnico](#reporte-técnico) y el [video de presentación](#aplicación-o-interfaz) (máximo 5 minutos) que pide la convocatoria.
 
@@ -208,8 +209,12 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 
 - [`Reto Agrocebada Bases.pdf`](Reto%20Agrocebada%20Bases.pdf) — bases de participación.
 - [`Ecuaciones_indices_AgroCebada_FIRA_2026.pdf`](Ecuaciones_indices_AgroCebada_FIRA_2026.pdf) — ecuaciones de los índices satelitales.
-- [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset.
-- [`AGENTS.md`](AGENTS.md) — instrucciones para agentes de desarrollo.
+- [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset oficial (no se altera).
+- [`analisis/`](analisis/) — KDD en R; ver [`analisis/README.md`](analisis/README.md) y [`analisis/RESUMEN_DE_ANALISIS.md`](analisis/RESUMEN_DE_ANALISIS.md).
+- [`dataset_entrenamiento/`](dataset_entrenamiento/) — despensa y CSVs curados para entrenar.
+- [`modelos/`](modelos/) — entrenamiento y artefactos (fase 2).
+- [`dashboard/`](dashboard/) — interfaz web (fase 3).
+- [`AGENTS.md`](AGENTS.md) — instrucciones globales para agentes; cada carpeta de trabajo tiene además su `AGENTS.md` local.
 - [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
 
 ## Licencia

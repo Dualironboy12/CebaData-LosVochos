@@ -302,6 +302,8 @@ El modelo del reto pide **un rendimiento por parcela**. Las series y los ráster
 6. En elevación y pendiente, estadística zonal con los polígonos en EPSG:6372. Ignorar −9999.
 7. Unir todo por `ID_POLIGONO`. El resultado de trabajo es una tabla de 197 filas. Las 138 de entrenamiento ajustan el modelo; las 59 de predicción reciben el estimado.
 
+En este repositorio, la exploración KDD y una primera tabla por parcela están en [`../analisis/`](../analisis/). Las despensas y CSVs **congeladas para entrenar** se versionan en [`../dataset_entrenamiento/`](../dataset_entrenamiento/). Esta carpeta (`DATASET_RETO_AGRO_2026/`) permanece como entrega oficial de solo lectura.
+
 El píxel de clima mide unos 5 km de lado (del orden de 2 500 ha). La parcela media mide 6.6 ha. La precipitación y la temperatura distinguen zonas y municipios, y casi no distinguen parcelas colindantes. El contraste entre vecinos sale de los índices satelitales, del tamaño, de la pendiente y de lo que el equipo agregue de fuentes públicas.
 
 ## Fuentes

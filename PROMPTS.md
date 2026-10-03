@@ -169,3 +169,72 @@ Claude Sonnet 5.5
 - `analisis/PROXIMOS_PASOS.md`: sección de decisiones del equipo y ajustes relacionados.
 - `PROMPTS.md`: esta entrada.
 - Sin cambio de `NUBE_MAX` en el código ni regeneración de `parcelas_trabajo.csv` en esta sesión. Sin commits.
+
+## 2026-10-03 — Carpetas dashboard, dataset_entrenamiento y modelos
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> Ok, en un momento creare las ramas diferentes, de momento, ayudame con lo siguiente: integre 3 nuevas carpetas, cada una con un readme, documenta los readmes y deja un espacio para que pueda poner que rama corresponde el trabajo de esa carpeta una vez las haya creado, @dashboard/ es donde pondremos el desarrollo del dashboard que entregaremos, todavia no tengo nada definido al respecto, Alfredo, un compañero de equipo ha mencionado que el lo puede realizar, unicamente necesitamos una rama aqui, @dataset_entrenamiento/ es donde pondremos nuestra despensa una vez hayamos congelado los datos de entrenamiento que usaremos, los datasets ya curados y preparados para entrenamiento, asi como en su momento el dataset extendido con datos externos, con una extension de la despensa y nuevos datasets curados con datos externos, asi como la informacion de las fuentes de los datos, tendremos 3 ramas aqui, una principal con la despensa congelada del dataset, y 2 subramas que alimentan la rama principal, una para el dataset unicamente con datos provistos, y otra con el dataset extendido, primero haran merge hacia la rama principal del dataset, luego al main, y finalmente @modelos/ donde pondremos los modelos que vayamos entrenando, categorizados por su tipo de arquitectura y si fueron entrenados con datos externos o unicamente el dataset ya existente, tendremos aqui 2 ramas, una "principal" que sera la que aloje los modelos entrenados con el dataset original, y una subrama que tendra los modelos reentrenados o reconstruidos para aprovechar el dataset extendido, haran merge entre si antes de hacer merge al main
+
+**Acciones**
+
+- Se crearon `dashboard/README.md`, `dataset_entrenamiento/README.md` y `modelos/README.md` con propósito, qué sí/no va, flujo de ramas, placeholders para nombres de rama, estructura sugerida y estado.
+- Se actualizó `AGENTS.md` para apuntar a `modelos/` y `dataset_entrenamiento/` (antes decía `modelo/`).
+
+**Afectaciones**
+
+- `dashboard/README.md`, `dataset_entrenamiento/README.md`, `modelos/README.md`: nuevos.
+- `AGENTS.md`: rutas de carpetas de fases.
+- `PROMPTS.md`: esta entrada.
+- Sin código de app ni CSVs; sin creación de ramas git; sin commits.
+
+## 2026-10-03 — AGENTS.md locales en dashboard, dataset y modelos
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> Añade tambien un documento AGENTS.md para cada carpeta que acabamos de mencionar que refieran al @AGENTS.md para mantener buenas practicas y lineamientos con desarrollo asistido
+
+**Acciones**
+
+- Se crearon `dashboard/AGENTS.md`, `dataset_entrenamiento/AGENTS.md` y `modelos/AGENTS.md`, cada uno remitiendo al `AGENTS.md` raíz, a `PROMPTS.md` y a reglas propias del track.
+- Se enlazaron desde los README de cada carpeta y se mencionó en el `AGENTS.md` raíz.
+
+**Afectaciones**
+
+- `dashboard/AGENTS.md`, `dataset_entrenamiento/AGENTS.md`, `modelos/AGENTS.md`: nuevos.
+- `dashboard/README.md`, `dataset_entrenamiento/README.md`, `modelos/README.md`: enlace al AGENTS local.
+- `AGENTS.md` (raíz): nota sobre AGENTS por carpeta.
+- `PROMPTS.md`: esta entrada.
+- Sin ramas git ni commits.
+
+## 2026-10-03 — Revisión de READMEs y AGENTS del repo
+
+**Modelo**
+
+Claude Sonnet 5.5
+
+**Prompt**
+
+> Revisa todos los READMEs y AGENTs del repo, corrigelos si tienen inconsistencias
+
+**Acciones**
+
+- Se unificó la ruta `modelo/` → `modelos/` en `analisis/PROXIMOS_PASOS.md` y se añadió `dataset_entrenamiento/` al mapa de fases.
+- Se alineó el plan de trabajo y la lista de documentos del `README.md` raíz con las carpetas reales y el wording de stack del dashboard.
+- Se creó `analisis/AGENTS.md` (faltaba respecto a las otras carpetas de trabajo) y se actualizó el `AGENTS.md` raíz (AGENTS locales + puente `dataset_entrenamiento/` sin abrir fase 2).
+- Se actualizaron enlaces en `analisis/README.md`, `RESUMEN_DE_ANALISIS.md` y convenciones de los README de `dashboard/`, `dataset_entrenamiento/` y `modelos/`.
+- Se añadió en la guía del dataset oficial un párrafo que apunta a `analisis/` y `dataset_entrenamiento/` sin alterar el carácter de solo lectura de `DATASET_RETO_AGRO_2026/`.
+
+**Afectaciones**
+
+- `README.md`, `AGENTS.md`, `analisis/AGENTS.md` (nuevo), `analisis/README.md`, `analisis/PROXIMOS_PASOS.md`, `analisis/RESUMEN_DE_ANALISIS.md`, `DATASET_RETO_AGRO_2026/README.md`, READMEs de `dashboard/`, `dataset_entrenamiento/`, `modelos/`.
+- `PROMPTS.md`: esta entrada.
+- No se reescribieron entradas históricas de `PROMPTS.md` que mencionan `modelo/`. Sin commits.
