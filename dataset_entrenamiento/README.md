@@ -54,14 +54,6 @@ main
              →  luego PR de dev-dataset → main
 ```
 
-**Ramas de este track (rellenar cuando existan):**
-
-```text
-Principal (despensa / integración):   ________________________________
-Subrama solo datos del reto:          ________________________________
-Subrama dataset extendido:            ________________________________
-```
-
 ## Criterios ya acordados (recordatorio)
 
 Ver detalle en `analisis/PROXIMOS_PASOS.md`:
