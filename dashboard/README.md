@@ -31,12 +31,6 @@ main
  └── dev-dashboard  →  PR → main
 ```
 
-**Rama de este track (rellenar):**
-
-```text
-dev-dashboard
-```
-
 ## Estado
 
 - [x] Rama creada y nombre anotado arriba.
