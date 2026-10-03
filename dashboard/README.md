@@ -24,22 +24,16 @@ Una sola rama de trabajo para el dashboard. Los cambios maduros hacen merge haci
 
 | Rol | Rama | Notas |
 | --- | --- | --- |
-| Trabajo del dashboard | **_por definir_** | Anotar aquí el nombre cuando se cree (p. ej. `feat/dashboard`). |
+| Trabajo del dashboard | dev-dashboard | Anotar aquí el nombre cuando se cree (p. ej. `feat/dashboard`). |
 
 ```text
 main
- └── [rama del dashboard]  →  PR → main
-```
-
-**Rama de este track (rellenar):**
-
-```text
-________________________________
+ └── dev-dashboard  →  PR → main
 ```
 
 ## Estado
 
-- [ ] Rama creada y nombre anotado arriba.
+- [x] Rama creada y nombre anotado arriba.
 - [ ] Stack y estructura inicial definidos.
 - [ ] Mock de parcelas / predicciones para UI.
 - [ ] Integración con el modelo de entrega (cuando exista en `modelos/`).
