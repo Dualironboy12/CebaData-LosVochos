@@ -121,18 +121,6 @@ Estas preguntas, y su justificación, cuentan como puntos extra:
 | Presentación ante el jurado (en línea) | 10 de noviembre de 2026 |
 | Congreso y premiación | 20 de noviembre de 2026 |
 
-## Incentivo
-
-El incentivo es por integrante y lo otorga FIRA, sujeto a normatividad, disponibilidad presupuestal y al cumplimiento de requisitos. La UDI se toma con el valor publicado al 1 de enero de 2026 (**$8.6662 MXN**).
-
-| Lugar | UDIS por integrante | Equivalente aproximado |
-| --- | ---: | ---: |
-| 1.° | 2,884.77 | $25,000 MXN |
-| 2.° | 1,730.86 | $15,000 MXN |
-| 3.° | 1,153.91 | $10,000 MXN |
-
-El equivalente en pesos es el producto del monto en UDIS por la cotización publicada; la entrega ocurre después del congreso.
-
 ## Índices satelitales
 
 Ecuaciones de los conjuntos **Básico** y **PRO**, según la nomenclatura de bandas de cada sensor.
