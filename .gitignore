@@ -1,0 +1,8 @@
+.*
+# Los .gitignore sí se versionan (reglas compartidas por el equipo).
+!.gitignore
+
+# Datos externos crudos (pesados): no se versionan. De cada fuente se conserva solo lo derivado
+# y pequeño dentro de DATASETS_EXTERNOS/despensa_extendida/ (CSV extendido, recortes, documentación).
+DATASETS_EXTERNOS/*
+!DATASETS_EXTERNOS/despensa_extendida/

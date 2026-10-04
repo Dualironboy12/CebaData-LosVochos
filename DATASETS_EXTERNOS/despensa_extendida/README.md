@@ -9,8 +9,8 @@ CSV que amplía la despensa congelada del reto con columnas de fuentes externas.
 
 ## Cruce espacial
 
-1. Se lee la edafología y se le asigna EPSG:6372 (el shapefile no trae `.prj`; ver [`fuentes_edafologia.md`](fuentes_edafologia.md)).
-2. Las parcelas se transforman de EPSG:4326 a EPSG:6372 y se recorta la edafología al área de las parcelas más 5 km.
+1. Se obtiene la edafología recortada. Si existe el shapefile nacional, se le asigna EPSG:6372 (no trae `.prj`; ver [`fuentes_edafologia.md`](fuentes_edafologia.md)), se recorta al área de las parcelas más 5 km y se guarda en `edafologia_recorte_parcelas_v1.gpkg`. Si no existe, se lee directamente ese `.gpkg`.
+2. Las parcelas se transforman de EPSG:4326 a EPSG:6372.
 3. Se intersecta cada parcela con los polígonos de suelo y se elige, por parcela, el polígono con **mayor área de intersección**.
 4. Se unen los atributos al CSV de la despensa por `ID_POLIGONO` (`AGC_###`).
 
@@ -24,6 +24,7 @@ CSV que amplía la despensa congelada del reto con columnas de fuentes externas.
 | --- | --- |
 | `parcelas_despensa_extendida_edaf_v1.csv` | Despensa nube 30 + columnas `edaf_*` (197 filas) |
 | `parcelas_despensa_extendida_edaf_v1_diccionario.csv` | Diccionario de todas las columnas, con la fuente (reto / INEGI) |
+| `edafologia_recorte_parcelas_v1.gpkg` | Recorte de la edafología INEGI (140 polígonos, EPSG:6372, ~0.7 MB). Es la entrada que hace reproducible el cruce sin el shapefile nacional |
 | `fuentes_edafologia.md` | Origen, licencia, CRS y limitaciones de la edafología |
 
 El control del cruce queda en `analisis/salida/tablas/07_edaf_join_resumen.csv` (parcelas por grupo, fracción de área mínima, parcelas sin suelo).
@@ -37,11 +38,11 @@ Rscript analisis/R/07_despensa_extendida_edaf.R   # genera el CSV extendido
 Rscript analisis/R/08_relaciones_edaf.R           # tablas, figuras y mapa suelo + rendimiento
 ```
 
-Estos dos scripts no forman parte de `correr.sh`: son opcionales y dependen de la carpeta de datos externos, que no se versiona completa.
+Estos dos scripts no forman parte de `correr.sh`: son opcionales. Con solo el contenido versionado del repo funcionan (07 lee el `.gpkg`). El shapefile nacional de INEGI, de 225 MB, no se versiona y solo se usa si está presente; con `CEBA_EDAF_RECORTE=1` se fuerza a usar el `.gpkg` aunque esté.
 
 ## Reglas
 
-- Los archivos de `INEGI_EDAFOLOGIA_2025/` y la despensa del reto no se modifican.
+- Los archivos originales de INEGI y la despensa del reto no se modifican. `DATASETS_EXTERNOS/` está en `.gitignore` salvo esta carpeta: los datos crudos nuevos no se suben por accidente.
 - No se imputa nada: una parcela sin polígono de suelo quedaría con `NA` (hoy no hay ninguna).
 - `rendimiento_t_ha` vacío sigue significando etiqueta oculta.
 - Copiar este CSV a `dataset_entrenamiento/curados_extendidos/` es un paso posterior, en la subrama del dataset extendido.

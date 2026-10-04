@@ -267,3 +267,29 @@ Claude Sonnet 5.5 (Cursor).
 - Creados: `analisis/R/07_despensa_extendida_edaf.R`, `analisis/R/08_relaciones_edaf.R`, `analisis/08_lectura_edaf.md`, `analisis/salida/tablas/03_parametros.csv`, `07_*` y `08_*` en `tablas/` y `figuras/`, `dataset_entrenamiento/despensa/` (CSV, diccionario, `MANIFIESTO.md`), `DATASETS_EXTERNOS/despensa_extendida/` (README, `fuentes_edafologia.md`, CSV extendido y diccionario).
 - `PROMPTS.md`: esta entrada.
 - Fuera de la tarea: el shapefile y el zip de INEGI no se movieron ni se copiaron; el CSV extendido no se copió a `dataset_entrenamiento/curados_extendidos/`; `07` y `08` no se agregaron a `correr.sh`; no se entrenó ningún modelo ni se tocó el dashboard; el plan no se editó; sin commits.
+
+## 2026-10-03 — Recorte versionado de la edafología y reglas de gitignore
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor).
+
+**Prompt**
+
+> Realiza entonces el recorte, ajusta las lecturas de datos, y ajusta los gitignore y mds
+
+Contexto: la persona preguntó antes si podía borrar los datos originales de INEGI porque no caben en GitHub.
+
+**Acciones**
+
+- `07_despensa_extendida_edaf.R` ahora escribe el recorte de la edafología (140 polígonos, campos originales de INEGI, EPSG:6372 dentro del archivo) en `DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg` (~0.7 MB) cuando existe el shapefile nacional, y lo lee de ahí cuando no existe (o con `CEBA_EDAF_RECORTE=1`). Se comprobó que ambas rutas dan CSV extendido y tabla de control idénticos (mismos SHA-256) y que `08_relaciones_edaf.R` corre sin cambios.
+- `00_setup.R`: nueva ruta `RUTA_EXT$edaf_recorte`.
+- `.gitignore` raíz: se ignora `DATASETS_EXTERNOS/*` salvo `despensa_extendida/`, y se agregó `!.gitignore`. Antes la regla `.*` ocultaba los dos `.gitignore` (raíz y `analisis/`), así que ninguno se compartía con el equipo.
+- Documentación actualizada en `fuentes_edafologia.md` (metadatos y PDF ya no están en el repo; cómo obtener el original), `despensa_extendida/README.md` y `analisis/README.md`.
+- Hallazgo, sin corregir: el shapefile nacional (`.shp` de 225 MB) ya está en el commit local `b7ee2d5` (aún sin publicar), por lo que `.gitignore` no basta y un push fallaría por el límite de 100 MB de GitHub. Quitarlo exige reescribir esos commits locales; no se hizo sin confirmación.
+
+**Afectaciones**
+
+- Modificados: `analisis/R/00_setup.R`, `analisis/R/07_despensa_extendida_edaf.R`, `analisis/README.md`, `DATASETS_EXTERNOS/despensa_extendida/README.md`, `DATASETS_EXTERNOS/despensa_extendida/fuentes_edafologia.md`, `analisis/salida/tablas/07_edaf_join_resumen.csv` (redondeo de la mediana).
+- Creados: `DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg`, `.gitignore` (ahora versionable).
+- No se borró ni movió el shapefile nacional, no se tocó el índice de git ni el historial y no hubo commits.

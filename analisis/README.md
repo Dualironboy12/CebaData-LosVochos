@@ -45,7 +45,7 @@ Ejecuta en orden los seis scripts `01` a `06` de `analisis/R/` y compila `analis
 
 ### Extensión con datos externos (07 y 08)
 
-No forman parte de `correr.sh`: necesitan la carpeta `DATASETS_EXTERNOS/` (que no se versiona completa) y la despensa congelada en `dataset_entrenamiento/despensa/`. Se corren aparte, en orden y desde la raíz:
+No forman parte de `correr.sh`. Necesitan la despensa congelada en `dataset_entrenamiento/despensa/` y el recorte de edafología versionado en `DATASETS_EXTERNOS/despensa_extendida/`; el shapefile nacional de INEGI (225 MB) no se versiona y solo hace falta para rehacer el recorte. Se corren aparte, en orden y desde la raíz:
 
 ```bash
 Rscript analisis/R/07_despensa_extendida_edaf.R

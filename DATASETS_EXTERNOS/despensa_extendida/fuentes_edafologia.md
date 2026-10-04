@@ -7,11 +7,12 @@
 | Periodo de levantamiento | 2002–2006 |
 | Clasificación | WRB (Base Referencial Mundial del Recurso Suelo, reporte 84, 1999), adaptada por INEGI |
 | Formato | Shapefile (polígonos; 75 491 en el continuo nacional) |
-| Ubicación local | `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/conjunto_de_datos/cdv_edaf_esc_250k_serie II_cont_nac.shp` |
-| Metadatos | `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/metadatos/` |
-| Diccionario de datos | `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/diccionario_de_datos/702825224578_1.pdf` (ficha: <https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825224578>) |
+| Ubicación local del shapefile nacional | `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/conjunto_de_datos/cdv_edaf_esc_250k_serie II_cont_nac.shp` (225 MB; **no se versiona**, está en `.gitignore`) |
+| Recorte versionado | `DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg`: los 140 polígonos del área de las parcelas (+5 km), con los campos usados y el CRS EPSG:6372 dentro del archivo (~0.7 MB) |
+| Metadatos | Se descargan junto con el conjunto de datos en la ficha de INEGI (abajo); no se versionan |
+| Diccionario de datos | PDF `702825224578_1.pdf` en la ficha de INEGI (ficha: <https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825224578>) |
 | Términos de uso | <https://www.inegi.org.mx/inegi/terminos.html> (indicado en los metadatos). Citar al INEGI como fuente. |
-| Archivo comprimido | `conjunto_de_datos.zip` (177 MB) se conserva solo localmente; no copiarlo ni versionarlo |
+| Cómo obtener el original | Descargar el conjunto de datos «Edafología escala 1:250 000 Serie II (continuo nacional)» desde la ficha de INEGI, descomprimirlo en `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/conjunto_de_datos/` y correr `07_despensa_extendida_edaf.R`. Solo hace falta si se quiere cambiar el recorte (otro buffer u otra zona); para reproducir el CSV actual basta el `.gpkg` |
 
 ## Sistema de coordenadas
 

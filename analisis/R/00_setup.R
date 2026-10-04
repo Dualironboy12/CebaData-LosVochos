@@ -47,8 +47,12 @@ RUTA <- list(
 DIR_EXTERNOS <- "DATASETS_EXTERNOS"
 DIR_DESP_EXT <- file.path(DIR_EXTERNOS, "despensa_extendida")
 RUTA_EXT <- list(
+  # Shapefile nacional de INEGI (225 MB): no se versiona; opcional si existe el recorte de abajo.
   edafologia = file.path(DIR_EXTERNOS, "INEGI_EDAFOLOGIA_2025", "conjunto_de_datos",
                          "cdv_edaf_esc_250k_serie II_cont_nac.shp"),
+  # Recorte de la edafología al área de las parcelas (+5 km), con los campos usados y el CRS embebido.
+  # Sí se versiona (unos cientos de KB) y permite reproducir 07 y 08 sin el shapefile nacional.
+  edaf_recorte = file.path(DIR_DESP_EXT, "edafologia_recorte_parcelas_v1.gpkg"),
   # Despensa congelada con NUBE_MAX = 30 (ver dataset_entrenamiento/despensa/MANIFIESTO.md).
   despensa   = file.path("dataset_entrenamiento", "despensa", "parcelas_despensa_nube30_v1.csv"),
   despensa_dic = file.path("dataset_entrenamiento", "despensa", "parcelas_despensa_nube30_v1_diccionario.csv"),

@@ -1,0 +1,6 @@
+# Objetos intermedios regenerables (series limpias, rásteres extraídos)
+salida/intermedio/
+# Restos de compilación del informe
+informe/*_files/
+informe/.quarto/
+*.knit.md

@@ -7,9 +7,14 @@
 # Entradas
 #   dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv (+ diccionario)
 #   DATASET_RETO_AGRO_2026/Parcelas_Reto_AGC_CONJUNTO_70_30/ (parcelas, EPSG:4326)
-#   DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/ (shapefile sin .prj; se asigna EPSG:6372)
+#   Edafología, una de dos fuentes (la primera que exista):
+#     DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/ (shapefile nacional, sin .prj; se asigna EPSG:6372)
+#     DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg (recorte versionado)
+#   Con el shapefile nacional presente se recorta de nuevo y se reescribe el .gpkg; sin él se usa el
+#   .gpkg tal cual. Para forzar el .gpkg aun con el shapefile:  CEBA_EDAF_RECORTE=1
 # Salidas
 #   DATASETS_EXTERNOS/despensa_extendida/parcelas_despensa_extendida_edaf_v1.csv (+ _diccionario.csv)
+#   DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg (si se leyó el nacional)
 #   tablas/07_edaf_join_resumen.csv
 #   intermedio/edaf_recorte.rds, edaf_parcelas_sf.rds (los usa 08_relaciones_edaf.R)
 #
@@ -35,17 +40,31 @@ parc <- st_read(RUTA$parcelas, quiet = TRUE) |>
 stopifnot(setequal(parc$ID_POLIGONO, base$ID_POLIGONO))
 parc$area_m2 <- as.numeric(st_area(parc))
 
-message("Leyendo edafología nacional (puede tardar)...")
-edaf <- suppressWarnings(st_read(RUTA_EXT$edafologia, quiet = TRUE)) |> st_set_crs(CRS_EDAF)
 campos <- c(edaf_grupo = "N_G1", edaf_grupo_cod = "GRUPO1", edaf_textura = "TEXTURA",
             edaf_clase_tex = "CLASE_TEX", edaf_clave_wrb = "CLAVE_WRB")
-stopifnot(all(campos %in% names(edaf)))
 
-zona <- st_as_sfc(st_bbox(parc)) |> st_buffer(BUFFER_M)
-edaf_c <- edaf[lengths(st_intersects(edaf, zona)) > 0, unname(campos)] |>
-  rename(!!!setNames(unname(campos), names(campos)))
-rm(edaf)
-if (!all(st_is_valid(edaf_c))) edaf_c <- st_make_valid(edaf_c)
+usar_recorte <- Sys.getenv("CEBA_EDAF_RECORTE") == "1" || !file.exists(RUTA_EXT$edafologia)
+if (usar_recorte) {
+  if (!file.exists(RUTA_EXT$edaf_recorte)) {
+    stop("No hay edafología: falta el shapefile nacional (", RUTA_EXT$edafologia, ") y el recorte (",
+         RUTA_EXT$edaf_recorte, "). Ver DATASETS_EXTERNOS/despensa_extendida/fuentes_edafologia.md.")
+  }
+  message("Leyendo el recorte versionado de la edafología: ", RUTA_EXT$edaf_recorte)
+  edaf_c <- st_read(RUTA_EXT$edaf_recorte, quiet = TRUE)
+  stopifnot(all(campos %in% names(edaf_c)), st_crs(edaf_c) == st_crs(CRS_EDAF))
+} else {
+  message("Leyendo edafología nacional (puede tardar)...")
+  edaf <- suppressWarnings(st_read(RUTA_EXT$edafologia, quiet = TRUE)) |> st_set_crs(CRS_EDAF)
+  stopifnot(all(campos %in% names(edaf)))
+  zona <- st_as_sfc(st_bbox(parc)) |> st_buffer(BUFFER_M)
+  edaf_c <- edaf[lengths(st_intersects(edaf, zona)) > 0, unname(campos)]
+  rm(edaf)
+  if (!all(st_is_valid(edaf_c))) edaf_c <- st_make_valid(edaf_c)
+  # El recorte conserva los nombres originales de INEGI y el CRS en el propio archivo.
+  st_write(edaf_c, RUTA_EXT$edaf_recorte, layer = "edafologia_recorte", delete_dsn = TRUE, quiet = TRUE)
+  message("Recorte escrito: ", RUTA_EXT$edaf_recorte)
+}
+edaf_c <- edaf_c[, unname(campos)] |> rename(!!!setNames(unname(campos), names(campos)))
 edaf_c$edaf_poligono <- seq_len(nrow(edaf_c))
 message("Polígonos de suelo en el área de las parcelas (+", BUFFER_M / 1000, " km): ", nrow(edaf_c))
 
