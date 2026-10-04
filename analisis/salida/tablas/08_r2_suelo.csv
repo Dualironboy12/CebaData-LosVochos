@@ -1,0 +1,6 @@
+modelo,r2_ajustado,p_aporte_suelo
+Rendimiento ~ estado,0.496,
+Rendimiento ~ grupo de suelo,0.089,
+Rendimiento ~ textura,-0.002,
+Rendimiento ~ estado + grupo de suelo,0.524,0.0199
+Rendimiento ~ estado + textura,0.495,0.416

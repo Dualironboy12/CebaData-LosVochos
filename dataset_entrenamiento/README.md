@@ -69,17 +69,17 @@ Ver detalle en `analisis/PROXIMOS_PASOS.md`:
 - Despensa + CSVs derivadas (no tirar la tabla rica).
 - Tres filosofías de ubicación: ninguna / parcial / completa.
 - Dos ventanas temporales: solo 2025 vs todos los ciclos.
-- Umbral de nube de producción: **30** (la despensa del análisis KDD se generó con 0; regenerar antes de congelar).
+- Umbral de nube de producción: **30**. La despensa `despensa/parcelas_despensa_nube30_v1.csv` ya se generó con ese umbral (ver [`despensa/MANIFIESTO.md`](despensa/MANIFIESTO.md)); la base de nube 0 del primer KDD queda reemplazada.
 - Una fila = una parcela; rendimiento vacío en `PREDICCION`.
 - Sensores separados (Sentinel-2, Landsat, Planet no se funden).
 
 ## Estado
 
 - [ ] Tres ramas creadas y nombres anotados arriba.
-- [ ] Despensa regenerada/congelada (nube 30) en `despensa/`.
+- [x] Despensa regenerada/congelada (nube 30) en `despensa/` (`nube30_v1`, 2026-10-03).
 - [ ] Primeras CSVs curadas solo-reto en `curados_reto/`.
 - [ ] Inventario y alineación de fuentes externas en `fuentes/`.
-- [ ] Primera extensión documentada en `curados_extendidos/`.
+- [ ] Primera extensión documentada en `curados_extendidos/`. (Ya existe un borrador con edafología INEGI en [`../DATASETS_EXTERNOS/despensa_extendida/`](../DATASETS_EXTERNOS/despensa_extendida/README.md); falta copiarlo aquí con su manifiesto cuando la subrama del dataset extendido esté creada.)
 
 ## Convenciones
 

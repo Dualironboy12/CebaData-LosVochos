@@ -1,0 +1,6 @@
+edaf_grupo,parcelas,entrenamiento,prediccion,claves_wrb,estados,fraccion_area_min,fraccion_area_mediana,parcelas_con_varios_suelos
+PHAEOZEM,136,97,39,10,Hidalgo / Puebla / Tlaxcala,0.6008,1,33
+PLANOSOL,28,19,9,2,Hidalgo / Puebla,0.6109,1,10
+UMBRISOL,24,16,8,3,Hidalgo,0.5016,0.99055,12
+VERTISOL,6,4,2,2,Hidalgo / Puebla,0.7065,0.9791000000000001,3
+ANDOSOL,3,2,1,1,Tlaxcala,0.9085,0.9909,2

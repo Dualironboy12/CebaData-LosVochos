@@ -33,4 +33,4 @@ Aplican las del [`../AGENTS.md`](../AGENTS.md) (cruces `AGC_###`, rendimiento va
 
 - Entrenamiento, RMSE/MAE/r² de predicción (`modelos/`).
 - UI del dashboard (`dashboard/`).
-- Integración de fuentes externas nuevas como producto de entrenamiento (`dataset_entrenamiento/`).
+- Integración de fuentes externas nuevas como producto de entrenamiento (`dataset_entrenamiento/`). Los scripts `07` y `08` (edafología) producen la despensa extendida en `DATASETS_EXTERNOS/despensa_extendida/` y su lectura exploratoria; pasarla a `dataset_entrenamiento/curados_extendidos/` es un paso aparte.

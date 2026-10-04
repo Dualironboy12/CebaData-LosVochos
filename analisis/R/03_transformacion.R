@@ -51,6 +51,11 @@ tab_sens <- bind_rows(
 )
 guardar_tab(tab_sens, "03_sensibilidad_nube")
 
+# Parámetros con los que se generó esta corrida (los lee el informe y el manifiesto de la despensa).
+guardar_tab(tibble(parametro = c("NUBE_MAX", "CICLO_INI", "CICLO_FIN", "MIN_OBS_CICLO"),
+                   valor = c(NUBE_MAX, format(CICLO_INI), format(CICLO_FIN), MIN_OBS_CICLO) |> as.character()),
+            "03_parametros")
+
 # ---- Observaciones válidas del ciclo ---------------------------------------------------------
 
 valido <- function(d, ref) en_ciclo(d) |> filter(!is.na(.data[[ref]]), porcentaje_nubosidad <= NUBE_MAX)

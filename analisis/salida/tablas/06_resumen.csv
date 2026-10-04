@@ -1,9 +1,9 @@
 dato,valor
 variables_candidatas,88
-parcelas_en_pca,195
-grupos_redundantes_umbral,46
+parcelas_en_pca,197
+grupos_redundantes_umbral,45
 grupos_con_mas_de_una_variable,22
 componentes_90pct,13
 k_perfiles,4
-kruskal_chi2,3.009
-kruskal_p,0.39
+kruskal_chi2,3.059
+kruskal_p,0.383

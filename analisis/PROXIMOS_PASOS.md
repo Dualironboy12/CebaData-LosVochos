@@ -61,19 +61,16 @@ Detalle de “ubicación parcial” (qué columnas exactas entran: p. ej. solo `
 
 #### Nota sobre el umbral 30 y la despensa actual
 
-El KDD y [`salida/parcelas_trabajo.csv`](salida/parcelas_trabajo.csv) se generaron con **`NUBE_MAX = 0`**. La decisión del equipo es modelar con **30**. Antes de congelar CSVs de entrenamiento conviene:
+**Hecho (2026-10-03).** Se puso `NUBE_MAX <- 30` en `R/00_setup.R`, se re-ejecutó todo el pipeline (`bash analisis/correr.sh`) y [`salida/parcelas_trabajo.csv`](salida/parcelas_trabajo.csv) ya refleja nube ≤ 30. Una copia congelada, con su manifiesto, vive en [`../dataset_entrenamiento/despensa/`](../dataset_entrenamiento/despensa/MANIFIESTO.md) (`parcelas_despensa_nube30_v1.csv`).
 
-1. Poner `NUBE_MAX <- 30` en `R/00_setup.R` (o parámetro equivalente).
-2. Re-ejecutar al menos transformación → clima/topo → tabla de trabajo (o el pipeline que alimente la despensa).
-3. Documentar en el manifiesto de cada CSV el umbral usado.
-
-Hasta que eso ocurra, la despensa del repo refleja nube 0; no asumir que ya está al 30.
+Comprobaciones: 197 filas, rendimiento vacío solo en las 59 de `PREDICCION`, ninguna parcela por debajo de 5 observaciones en ningún sensor. Las lecturas del KDD se mantienen; cambian algunos valores de correlación en los índices de vegetación (por ejemplo, el mejor Landsat pasó de ρ = 0.27 a 0.31) y el mejor Planet pasó de `ndvi_planet_media_sep_oct` a `lai_planet_max`. Los resultados con nube 0 ya no se conservan en `salida/`; sí en el historial de git.
 
 #### Carril externo (INEGI y afines)
 
 - No bloquea el primer entrenamiento con datos del reto.
 - Cada fuente externa debe quedar documentada: origen, licencia/uso, fecha de descarga, cómo se une a `ID_POLIGONO` / geometría, y qué columnas aporta.
 - Los datasets “ricos” que salgan de ese carril se versionan aparte (no se sobrescribe la despensa oficial del reto).
+- **Avance (2026-10-03):** primera fuente integrada, edafología INEGI 1:250 000. CSV extendido (despensa nube 30 + 6 columnas `edaf_*`) en [`../DATASETS_EXTERNOS/despensa_extendida/`](../DATASETS_EXTERNOS/despensa_extendida/README.md); lectura exploratoria en [`08_lectura_edaf.md`](08_lectura_edaf.md): el suelo aporta poco más allá del estado. Falta decidir si pasa a `dataset_entrenamiento/curados_extendidos/` y qué otras fuentes siguen.
 
 ### Pendientes (después de experimentar / acuerdo explícito)
 

@@ -19,7 +19,7 @@ Desde la raíz del repositorio:
 bash analisis/correr.sh
 ```
 
-Ejecuta en orden los seis scripts de `analisis/R/` y compila `analisis/informe/kdd.Rmd`. Cada script también se puede correr solo (`Rscript analisis/R/03_transformacion.R`), siempre desde la raíz, porque leen los resultados que dejó el anterior en `analisis/salida/intermedio/`.
+Ejecuta en orden los seis scripts `01` a `06` de `analisis/R/` y compila `analisis/informe/kdd.Rmd`. Cada script también se puede correr solo (`Rscript analisis/R/03_transformacion.R`), siempre desde la raíz, porque leen los resultados que dejó el anterior en `analisis/salida/intermedio/`.
 
 ### Requisitos
 
@@ -39,7 +39,20 @@ Ejecuta en orden los seis scripts de `analisis/R/` y compila `analisis/informe/k
 | `04_clima_topografia.R` | Transformación | Estadística zonal de lluvia, temperatura, elevación y pendiente; ensambla la tabla de trabajo | `parcelas_trabajo.csv` |
 | `05_relaciones.R` | Minería | Distribución del rendimiento, trayectorias del ciclo y correlaciones (global y dentro de cada estado) | `05_*` |
 | `06_patrones.R` | Minería | Redundancia entre variables, PCA exploratorio y perfiles de parcela | `06_*` |
+| `07_despensa_extendida_edaf.R` | Extensión externa (opcional) | Une la edafología INEGI a la despensa congelada (nube 30) y escribe el CSV extendido en `DATASETS_EXTERNOS/despensa_extendida/` | `07_edaf_join_resumen` |
+| `08_relaciones_edaf.R` | Extensión externa (opcional) | Suelo contra rendimiento: tablas, pruebas exploratorias, boxplot y mapa suelo + rendimiento | `08_*`, [`08_lectura_edaf.md`](08_lectura_edaf.md) |
 | `informe/kdd.Rmd` | Interpretación | Lectura en español con tablas y figuras | `kdd.html` |
+
+### Extensión con datos externos (07 y 08)
+
+No forman parte de `correr.sh`: necesitan la carpeta `DATASETS_EXTERNOS/` (que no se versiona completa) y la despensa congelada en `dataset_entrenamiento/despensa/`. Se corren aparte, en orden y desde la raíz:
+
+```bash
+Rscript analisis/R/07_despensa_extendida_edaf.R
+Rscript analisis/R/08_relaciones_edaf.R
+```
+
+(Con el entorno local, anteponer `PATH`, `PROJ_DATA`, `PROJ_LIB` y `GDAL_DATA` como en `correr.sh`.) Detalle de la fuente, el CRS y las columnas añadidas: [`DATASETS_EXTERNOS/despensa_extendida/`](../DATASETS_EXTERNOS/despensa_extendida/README.md). `patchwork` es opcional: solo se usa para el mapa por estado.
 
 ## Qué produce
 
@@ -55,14 +68,14 @@ analisis/salida/
 
 ## Decisiones que conviene conocer
 
-- **Nubosidad.** Se conservan observaciones con `porcentaje_nubosidad <= 0` (`NUBE_MAX` en `00_setup.R`). La tabla `03_sensibilidad_nube.csv` muestra el efecto de 10 y 30.
+- **Nubosidad.** Se conservan observaciones con `porcentaje_nubosidad <= 30` (`NUBE_MAX` en `00_setup.R`, decisión del equipo; el primer KDD usó 0). La tabla `03_sensibilidad_nube.csv` compara 0, 10 y 30, y `03_parametros.csv` guarda los parámetros de la corrida.
 - **Sensores.** Sentinel-2, Landsat y Planet se resumen por separado y el sensor va en el nombre de la columna (`ndvi_s2_max`, `ndvi_planet_max`, `vi6t_landsat_media`). No se imputan vacíos entre sensores.
 - **Ciclo.** Solo abril–octubre de 2025 entra a la tabla de trabajo. Los años 2022–2024 se usan como contexto en figuras y quedan extraídos en `intermedio/`.
 - **Clima.** Estadística zonal ponderada por la fracción exacta de píxel cubierta (`exact = TRUE`). Con `weights = TRUE`, una parcela menor que el píxel y sin centro de celda adentro devuelve NaN.
 - **Topografía.** Los polígonos se reproyectan a EPSG:6372 antes de la estadística zonal.
 - **Rendimiento.** Se deja vacío en predicción. Ninguna correlación usa esas parcelas.
 - **Correlaciones.** Se reportan globales y dentro de cada estado, con p ajustado por Benjamini-Hochberg. Son exploratorias.
-- **Sin imputación.** Si una parcela no tiene observaciones limpias en una fase del ciclo, esa columna queda vacía (`AGC_016` y `AGC_096`).
+- **Sin imputación.** Si una parcela no tiene observaciones limpias en una fase del ciclo, esa columna queda vacía. Con nube 0 pasaba en `AGC_016` y `AGC_096`; con el umbral 30 vigente no queda ningún vacío.
 
 ## Convenciones
 

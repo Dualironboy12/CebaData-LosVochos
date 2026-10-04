@@ -56,13 +56,13 @@ Los índices de vegetación (NDVI y familia) **no** son la variable mágica.
 
 - La señal más clara de Sentinel-2 ronda correlaciones débiles–moderadas (~0.3) con el rendimiento.
 - Las parcelas de mayor rendimiento no destacan tanto por un máximo de NDVI altísimo, sino porque **mantienen más verdor en septiembre–octubre** (fase final del ciclo).
-- Planet cuenta una historia parecida, con números un poco más altos; **no** es el mismo NDVI que Sentinel-2.
+- Planet cuenta una historia parecida, con asociaciones de tamaño similar; **no** es el mismo NDVI que Sentinel-2.
 
 También aparece señal del **residuo / cobertura** (CRC) y algo de **pendiente**.
 
 ### 4. Hay mucha información repetida
 
-Había ~**88** variables numéricas candidatas; con correlación alta se agrupan en ~**46** grupos. Por ejemplo NDVI, EVI, SAVI, LAI y FAPAR de Sentinel-2 se comportan casi como **una sola familia**.
+Había ~**88** variables numéricas candidatas; con correlación alta se agrupan en ~**45** grupos. Por ejemplo NDVI, EVI, SAVI, LAI y FAPAR de Sentinel-2 se comportan casi como **una sola familia**.
 
 **Lectura:** no hay que meter “todos los índices”. Conviene **un representante por familia** (o un método que tolere colinealidad).
 
@@ -73,9 +73,13 @@ Sin usar el rendimiento, las parcelas se agrupan sobre todo por **geografía y s
 ### 6. Calidad de los datos: usable, con matices
 
 - Las llaves `AGC_###` cuadran entre shapefile y CSV.
-- Con filtro estricto de nube (solo escenas sin nube) **todas** las parcelas tienen suficientes fechas en el ciclo 2025.
+- Con el filtro de nube elegido (≤ 30 %) **todas** las parcelas tienen suficientes fechas en el ciclo 2025 (también las tenían con nube 0, pero con menos fechas).
 - La temporada de lluvias (justo el ciclo) es cuando más nubes hay: por eso el filtro importa.
-- Dos parcelas quedan con un hueco en alguna fase de NDVI; no se imputó.
+- Con nube ≤ 30 la tabla de trabajo no tiene vacíos en los índices (con nube 0 había dos parcelas con una fase vacía). Si vuelve a pasar, no se imputa.
+
+### 7. El suelo (INEGI) aporta poco más allá del estado
+
+Con la edafología de INEGI (despensa extendida) el suelo parece relacionarse con el rendimiento, pero casi todo es el estado: con el mismo suelo (Phaeozem) Puebla rinde ~4.5 t/ha y Tlaxcala ~3.0. Dentro de Puebla no hay diferencia entre suelos, y en Hidalgo el Umbrisol rinde algo menos (~3.4 contra ~3.9, pista débil). Lectura completa: [`08_lectura_edaf.md`](08_lectura_edaf.md).
 
 ## Mapa mental de las fuentes
 
@@ -101,7 +105,8 @@ Parcela (AGC_###)
 | Ver un número concreto (correlaciones, etc.) | [`salida/tablas/`](salida/tablas/) |
 | Ver un gráfico | [`salida/figuras/`](salida/figuras/) |
 | Cambiar parámetros o re-correr | [`README.md`](README.md) y `R/00_setup.R` |
-| Código de cada etapa | `R/01_seleccion.R` … `R/06_patrones.R` |
+| Código de cada etapa | `R/01_seleccion.R` … `R/06_patrones.R` (y `R/07`, `R/08` para la edafología) |
+| Ver cómo se relaciona el suelo con el rendimiento | [`08_lectura_edaf.md`](08_lectura_edaf.md) (figuras `08_*.png`) |
 | Congelar CSVs para entrenar | [`../dataset_entrenamiento/`](../dataset_entrenamiento/) |
 | Entrenar modelos / dashboard | [`../modelos/`](../modelos/) · [`../dashboard/`](../dashboard/) |
 | Reglas para agentes | [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) |

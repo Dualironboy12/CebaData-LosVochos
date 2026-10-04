@@ -1,0 +1,8 @@
+variable,nivel,n,media,sd,mediana,minimo,maximo
+edaf_grupo,Phaeozem,97,3.96,0.86,4.18,2.15,5.59
+edaf_grupo,Planosol,19,4.4,0.63,4.54,2.64,5.46
+edaf_grupo,Umbrisol,16,3.41,0.8,3.3,2,4.69
+edaf_grupo,Vertisol,4,4.51,0.08,4.48,4.45,4.61
+edaf_grupo,Andosol,2,3,0.71,3,2.5,3.5
+edaf_textura,Media,117,3.98,0.83,4.3,2.15,5.59
+edaf_textura,Fina,21,3.81,0.96,4.4,2,5.57

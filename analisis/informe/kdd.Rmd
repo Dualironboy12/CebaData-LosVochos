@@ -26,6 +26,8 @@ serie <- tab("02_resumen_series")
 consist <- tab("02_consistencia")
 cal_rend <- tab("02_calidad_rendimiento")
 sens <- tab("03_sensibilidad_nube")
+params03 <- tab("03_parametros")
+nube_max <- as.numeric(params03$valor[params03$parametro == "NUBE_MAX"])
 pix <- tab("04_pixeles_clima")
 mun <- tab("05_rendimiento_municipio")
 ubic <- tab("05_varianza_ubicacion")
@@ -111,14 +113,14 @@ Tlaxcala solo toma `r cal_rend$valores_distintos[cal_rend$estado == "Tlaxcala"]`
 
 ## Filtro de nubosidad y ciclo
 
-El umbral es un parámetro (`NUBE_MAX` en `00_setup.R`), igual a **0**. Se conservan observaciones sin nube, con índice presente, entre el 1 de abril y el 31 de octubre de 2025.
+El umbral es un parámetro (`NUBE_MAX` en `00_setup.R`), igual a **`r nube_max`** en esta corrida (decisión del equipo; el primer KDD se corrió con 0). Se conservan observaciones con `porcentaje_nubosidad` ≤ `r nube_max`, con índice presente, entre el 1 de abril y el 31 de octubre de 2025.
 
 ```{r sens}
 sens |> kable(col.names = c("Sensor", "Umbral de nube", "Observaciones", "Mín. por parcela", "Mediana por parcela", "Parcelas con menos de 5"),
               format.args = list(big.mark = ","))
 ```
 
-Con nube 0 ninguna parcela queda con menos de 5 observaciones en ningún sensor. Subir el umbral a 10 o 30 añade pocas observaciones, así que el criterio estricto cuesta poco. La parcela más pobre conserva `r sens$obs_por_parcela_min[sens$sensor == "Sentinel-2" & sens$umbral_nube == 0]` fechas de Sentinel-2, `r sens$obs_por_parcela_min[sens$sensor == "Landsat" & sens$umbral_nube == 0]` de Landsat y `r sens$obs_por_parcela_min[sens$sensor == "Planet" & sens$umbral_nube == 0]` de Planet.
+Con el umbral elegido (`r nube_max`) `r sum(sens$parcelas_con_menos_de_min[sens$umbral_nube == nube_max])` parcelas quedan con menos de 5 observaciones, sumando los tres sensores. Pasar de 0 a 10 o 30 añade pocas fechas por sensor, así que el umbral cambia poco el tamaño de la muestra: sube el número de observaciones a costa de admitir escenas con algo de nube. La parcela más pobre conserva `r sens$obs_por_parcela_min[sens$sensor == "Sentinel-2" & sens$umbral_nube == nube_max]` fechas de Sentinel-2, `r sens$obs_por_parcela_min[sens$sensor == "Landsat" & sens$umbral_nube == nube_max]` de Landsat y `r sens$obs_por_parcela_min[sens$sensor == "Planet" & sens$umbral_nube == nube_max]` de Planet.
 
 ```{r ctx, fig.cap="NDVI de Sentinel-2 por mes y año. Los años previos son contexto."}
 fig("03_contexto_ndvi_anual")
@@ -134,7 +136,7 @@ dic |> count(grupo, name = "columnas") |> kable(col.names = c("Grupo", "Columnas
 
 Cada sensor mantiene sus propias columnas (`ndvi_s2_*`, `ndvi_planet_*`, `vi6t_landsat_*`). Los índices de dosel se resumen con máximo, media, integral, día del máximo y heterogeneidad interna; el NDVI además con su media por fase (mayo–julio, agosto, septiembre–octubre). El diccionario completo está en `parcelas_trabajo_diccionario.csv`.
 
-Dos parcelas quedan con una fase vacía por falta de observaciones limpias de Sentinel-2 (`AGC_016` en agosto y `AGC_096` en septiembre–octubre). No se imputaron.
+Con el umbral de nube de esta corrida, `r sum(colSums(is.na(trabajo[setdiff(names(trabajo), "rendimiento_t_ha")])) > 0)` columnas tienen algún vacío (aparte del rendimiento oculto en predicción). Con nube 0, dos parcelas (`AGC_016` en agosto y `AGC_096` en septiembre–octubre) se quedaban sin observaciones limpias de Sentinel-2 en una fase; subir el umbral a 30 lo resuelve. Si vuelve a ocurrir, no se imputa.
 
 ## Clima y topografía
 

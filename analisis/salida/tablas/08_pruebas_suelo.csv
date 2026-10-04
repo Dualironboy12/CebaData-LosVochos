@@ -1,0 +1,7 @@
+prueba,detalle,grupos,n,estadistico,gl,p,eta2
+Kruskal-Wallis,Rendimiento ~ grupo de suelo (global),5,138,14.906,4,0.0049,0.082
+Kruskal-Wallis,Rendimiento ~ textura (global),2,138,0.677,1,0.411,0
+Kruskal-Wallis,Rendimiento sin media de estado ~ grupo de suelo,5,138,10.012,4,0.0402,0.045
+Kruskal-Wallis,Rendimiento sin media de estado ~ textura,2,138,0.127,1,0.722,0
+Kruskal-Wallis,Dentro de Puebla: Phaeozem vs Planosol (niveles con n >= 5),2,70,0.009,1,0.924,0
+Kruskal-Wallis,Dentro de Hidalgo: Phaeozem vs Umbrisol (niveles con n >= 5),2,31,3.342,1,0.0675,0.081

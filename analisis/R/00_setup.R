@@ -43,6 +43,21 @@ RUTA <- list(
   topo_dir   = file.path(DIR_DATOS, "Reto_AgroCebada_Topografia_INEGI_CEM4", "Reto_AgroCebada_Topografia_INEGI_CEM4")
 )
 
+# Fuentes externas (scripts 07 y 08). No forman parte de correr.sh.
+DIR_EXTERNOS <- "DATASETS_EXTERNOS"
+DIR_DESP_EXT <- file.path(DIR_EXTERNOS, "despensa_extendida")
+RUTA_EXT <- list(
+  edafologia = file.path(DIR_EXTERNOS, "INEGI_EDAFOLOGIA_2025", "conjunto_de_datos",
+                         "cdv_edaf_esc_250k_serie II_cont_nac.shp"),
+  # Despensa congelada con NUBE_MAX = 30 (ver dataset_entrenamiento/despensa/MANIFIESTO.md).
+  despensa   = file.path("dataset_entrenamiento", "despensa", "parcelas_despensa_nube30_v1.csv"),
+  despensa_dic = file.path("dataset_entrenamiento", "despensa", "parcelas_despensa_nube30_v1_diccionario.csv"),
+  extendida  = file.path(DIR_DESP_EXT, "parcelas_despensa_extendida_edaf_v1.csv"),
+  extendida_dic = file.path(DIR_DESP_EXT, "parcelas_despensa_extendida_edaf_v1_diccionario.csv")
+)
+# El shapefile de INEGI no trae .prj; sus coordenadas están en EPSG:6372 (metros).
+CRS_EDAF <- 6372
+
 # ---- Parámetros del análisis (se cambian aquí, no dentro de un gráfico) ------
 
 SEMILLA <- 2026
@@ -54,9 +69,10 @@ CICLO_FIN <- as.Date("2025-10-31")
 MESES_CICLO <- 4:10
 
 # Filtro de nubosidad: se conservan observaciones con porcentaje_nubosidad <= NUBE_MAX.
-# Punto de partida de la guía del dataset: 0. La sensibilidad a 10 y 30 se reporta
-# en 03_transformacion.R.
-NUBE_MAX <- 0
+# Decisión del equipo (2026-10-01): 30, para maximizar las fechas usables al condensar
+# los índices. El primer KDD se corrió con 0 (punto de partida de la guía del dataset).
+# La sensibilidad a 0, 10 y 30 se reporta en 03_transformacion.R.
+NUBE_MAX <- 30
 
 # Mínimo de observaciones válidas en el ciclo para considerar confiable el resumen de una parcela.
 MIN_OBS_CICLO <- 5

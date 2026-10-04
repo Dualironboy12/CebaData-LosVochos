@@ -238,3 +238,32 @@ Claude Sonnet 5.5
 - `README.md`, `AGENTS.md`, `analisis/AGENTS.md` (nuevo), `analisis/README.md`, `analisis/PROXIMOS_PASOS.md`, `analisis/RESUMEN_DE_ANALISIS.md`, `DATASET_RETO_AGRO_2026/README.md`, READMEs de `dashboard/`, `dataset_entrenamiento/`, `modelos/`.
 - `PROMPTS.md`: esta entrada.
 - No se reescribieron entradas históricas de `PROMPTS.md` que mencionan `modelo/`. Sin commits.
+
+## 2026-10-03 — Despensa nube 30 congelada y despensa extendida con edafología INEGI
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor).
+
+**Prompt**
+
+> Despensa extendida con edafología INEGI y análisis R — Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself. To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+>
+> (Se omite el contenido del plan adjunto, que ya consta en el chat; resumen: regenerar y congelar la despensa con umbral de nube 30; crear `DATASETS_EXTERNOS/despensa_extendida/`; script R 07 de cruce espacial con la edafología INEGI; script R 08 de relaciones suelo–rendimiento con mapa de suelo y rendimiento; rutas, READMEs y bitácora.)
+
+**Acciones**
+
+- Se cambió `NUBE_MAX` a 30 en `analisis/R/00_setup.R` y se agregó `03_parametros.csv` para que el informe lea el umbral real en lugar de tenerlo escrito a mano. Se regeneró todo con `bash analisis/correr.sh`. Verificación: 197 filas, rendimiento vacío solo en las 59 de predicción, ninguna parcela por debajo de 5 observaciones (mínimos: Sentinel-2 27, Landsat 8, Planet 60) y sin vacíos en los índices (con nube 0 había dos). Las conclusiones del informe se mantuvieron; cambiaron algunos valores de correlación y la mejor variable de Planet.
+- Se congeló la despensa en `dataset_entrenamiento/despensa/` (CSV, diccionario y `MANIFIESTO.md` con SHA-256). Una segunda corrida completa dio el mismo hash.
+- Se documentó `DATASETS_EXTERNOS/despensa_extendida/` (README y `fuentes_edafologia.md`: fuente, licencia, CRS asignado EPSG:6372 por falta de `.prj`, campos y limitaciones).
+- Script `07_despensa_extendida_edaf.R`: recorte de la edafología al área de las parcelas más 5 km (140 polígonos), intersección en EPSG:6372, polígono de mayor área por parcela y 6 columnas `edaf_*`. Resultado: 197 filas × 107 columnas, 138 con rendimiento, 0 parcelas sin suelo. Dominan 5 grupos (Phaeozem 136, Planosol 28, Umbrisol 24, Vertisol 6, Andosol 3) y 22 polígonos distintos.
+- Script `08_relaciones_edaf.R`: tablas de rendimiento por suelo, suelo por estado, pruebas Kruskal-Wallis (global, sin la media del estado y dentro de estado) y R² ajustado; boxplot por grupo y textura; mapa de suelo con el rendimiento encima (general y por estado). Lectura en `analisis/08_lectura_edaf.md`: el estado pesa mucho más que el suelo; el Umbrisol rinde algo menos dentro de Hidalgo (p ≈ 0.07); la textura no aporta.
+- Se actualizaron los textos que decían «nube 0» o citaban `AGC_016`/`AGC_096` en `kdd.Rmd`, `analisis/README.md`, `RESUMEN_DE_ANALISIS.md` y `PROXIMOS_PASOS.md`.
+- Incidencia: los archivos nuevos creados con la herramienta de escritura salieron en cp1252 en vez de UTF-8; se reconvirtieron y se comprobó que todos los archivos tocados son UTF-8 válido.
+
+**Afectaciones**
+
+- Modificados: `analisis/R/00_setup.R` (NUBE_MAX = 30, rutas y CRS de externos), `analisis/R/03_transformacion.R` (tabla de parámetros), `analisis/informe/kdd.Rmd`, `analisis/README.md`, `analisis/AGENTS.md`, `analisis/RESUMEN_DE_ANALISIS.md`, `analisis/PROXIMOS_PASOS.md`, `dataset_entrenamiento/README.md`, y todas las salidas regeneradas de `analisis/salida/` (tablas, figuras, `parcelas_trabajo*.csv`, `kdd.html`).
+- Creados: `analisis/R/07_despensa_extendida_edaf.R`, `analisis/R/08_relaciones_edaf.R`, `analisis/08_lectura_edaf.md`, `analisis/salida/tablas/03_parametros.csv`, `07_*` y `08_*` en `tablas/` y `figuras/`, `dataset_entrenamiento/despensa/` (CSV, diccionario, `MANIFIESTO.md`), `DATASETS_EXTERNOS/despensa_extendida/` (README, `fuentes_edafologia.md`, CSV extendido y diccionario).
+- `PROMPTS.md`: esta entrada.
+- Fuera de la tarea: el shapefile y el zip de INEGI no se movieron ni se copiaron; el CSV extendido no se copió a `dataset_entrenamiento/curados_extendidos/`; `07` y `08` no se agregaron a `correr.sh`; no se entrenó ningún modelo ni se tocó el dashboard; el plan no se editó; sin commits.
