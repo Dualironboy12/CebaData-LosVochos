@@ -18,28 +18,8 @@ Contexto del proyecto: [`../README.md`](../README.md). Reglas globales: [`../AGE
 - CSVs de entrenamiento ni la despensa curada (`dataset_entrenamiento/`).
 - Artefactos de modelos entrenados (`modelos/`), salvo el contrato de carga/inferencia que el dashboard necesite consumir.
 
-## Flujo de Git en este track
-
-Una sola rama de trabajo para el dashboard. Los cambios maduros hacen merge hacia `main` del repositorio (vía PR cuando el equipo lo autorice).
-
-| Rol | Rama | Notas |
-| --- | --- | --- |
-| Trabajo del dashboard | **_por definir_** | Anotar aquí el nombre cuando se cree (p. ej. `feat/dashboard`). |
-
-```text
-main
- └── [rama del dashboard]  →  PR → main
-```
-
-**Rama de este track (rellenar):**
-
-```text
-________________________________
-```
-
 ## Estado
 
-- [ ] Rama creada y nombre anotado arriba.
 - [ ] Stack y estructura inicial definidos.
 - [ ] Mock de parcelas / predicciones para UI.
 - [ ] Integración con el modelo de entrega (cuando exista en `modelos/`).
