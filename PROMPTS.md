@@ -293,3 +293,24 @@ Contexto: la persona preguntó antes si podía borrar los datos originales de IN
 - Modificados: `analisis/R/00_setup.R`, `analisis/R/07_despensa_extendida_edaf.R`, `analisis/README.md`, `DATASETS_EXTERNOS/despensa_extendida/README.md`, `DATASETS_EXTERNOS/despensa_extendida/fuentes_edafologia.md`, `analisis/salida/tablas/07_edaf_join_resumen.csv` (redondeo de la mediana).
 - Creados: `DATASETS_EXTERNOS/despensa_extendida/edafologia_recorte_parcelas_v1.gpkg`, `.gitignore` (ahora versionable).
 - No se borró ni movió el shapefile nacional, no se tocó el índice de git ni el historial y no hubo commits.
+
+## 2026-10-04 — Push rechazado por el shapefile de INEGI: limpieza de commits locales
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor).
+
+**Prompt**
+
+> Tengo este tema: (salida de `git push`: GitHub rechaza `cdv_edaf_esc_250k_serie II_cont_nac.shp`, 224.90 MB, por superar el límite de 100 MB)
+
+**Acciones**
+
+- Se comprobó que el archivo seguía en el historial local sin publicar: aparecía en `b7ee2d5` y, aunque el commit `50d4cea` ya lo quitaba, el blob viajaba en el push.
+- Se creó la rama de respaldo `respaldo-antes-de-limpiar` y se reescribieron solo los tres commits locales (`origin/main..HEAD`) con `git filter-branch`, quitando `DATASETS_EXTERNOS/INEGI_EDAFOLOGIA_2025/`. Los commits de `origin/main` no se tocaron, así que el push no necesita `--force`.
+- Verificación: el árbol final es idéntico al anterior a la limpieza y el objeto más grande del rango sin publicar pesa 2.3 MB.
+
+**Afectaciones**
+
+- Historial local: `main` reescrito (hashes nuevos en los tres commits sin publicar). `PROMPTS.md`: esta entrada, sin commitear.
+- No se hizo push. La rama `respaldo-antes-de-limpiar` conserva el blob grande; borrarla (y correr `git gc`) cuando ya no haga falta.
