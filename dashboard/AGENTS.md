@@ -2,7 +2,7 @@
 
 Instrucciones para quien (o qué agente) trabaje en esta carpeta. **No reemplazan** las reglas del repositorio: al empezar, leer también [`../AGENTS.md`](../AGENTS.md). Al cerrar la tarea, anotar en [`../PROMPTS.md`](../PROMPTS.md).
 
-Contexto de esta carpeta: [`README.md`](README.md). Decisiones de datos/modelos: [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md).
+Contexto de esta carpeta: [`README.md`](README.md). Decisiones de datos/modelos: [`../README.md#roadmap`](../README.md#roadmap).
 
 ## Alcance
 

@@ -1,0 +1,289 @@
+---
+title: "KDD del dataset AgroCebada 2026: lectura de la fase de análisis de datos"
+subtitle: "Equipo Los Vochos · Reto AgroCebada FIRA 2026"
+lang: es
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, out.width = "100%", fig.align = "center")
+options(knitr.kable.NA = "")
+library(readr); library(dplyr); library(knitr); library(stringr)
+
+tab <- function(nombre) read_csv(file.path("..", "salida", "tablas", paste0(nombre, ".csv")), show_col_types = FALSE, progress = FALSE)
+fig <- function(nombre) knitr::include_graphics(file.path("..", "salida", "figuras", paste0(nombre, ".png")))
+f2 <- function(x) formatC(x, format = "f", digits = 2)
+f3 <- function(x) formatC(x, format = "f", digits = 3)
+
+verif <- tab("01_verificacion_llaves")
+inv <- tab("01_inventario_fuentes")
+serie <- tab("02_resumen_series")
+consist <- tab("02_consistencia")
+cal_rend <- tab("02_calidad_rendimiento")
+sens <- tab("03_sensibilidad_nube")
+params03 <- tab("03_parametros")
+nube_max <- as.numeric(params03$valor[params03$parametro == "NUBE_MAX"])
+pix <- tab("04_pixeles_clima")
+mun <- tab("05_rendimiento_municipio")
+ubic <- tab("05_varianza_ubicacion")
+corr <- tab("05_correlaciones")
+mejor <- tab("05_mejor_por_fuente")
+grupos <- tab("06_grupos_redundantes")
+res6 <- tab("06_resumen")
+r6 <- function(d) res6$valor[res6$dato == d]
+pca_var <- tab("06_pca_varianza")
+pca_rend <- tab("06_pca_vs_rendimiento")
+perf <- tab("06_perfiles_resumen")
+trabajo <- read_csv(file.path("..", "salida", "parcelas_trabajo.csv"), show_col_types = FALSE, progress = FALSE)
+dic <- read_csv(file.path("..", "salida", "parcelas_trabajo_diccionario.csv"), show_col_types = FALSE, progress = FALSE)
+
+val <- function(p) as.numeric(verif$valor[verif$prueba == p])
+cons <- function(p) as.numeric(consist$valor[consist$prueba == p])
+r <- function(v) corr[corr$variable == v, ]
+n_pix <- pix$valor[str_detect(pix$dato, "distintos")]
+```
+
+# Qué es este documento
+
+Este informe recorre las etapas de un proceso KDD (selección, preprocesamiento, transformación, minería e interpretación) sobre el dataset del reto, con R. Es la lectura de la **fase 1** del repositorio. No entrena modelos: describe qué hay en los datos, qué tan confiable es cada fuente, cómo se relacionan las variables entre sí y con el rendimiento, y qué queda como candidato para la fase de modelos.
+
+Todo lo que se muestra sale de los scripts de `analisis/datos_fira/R/`, ejecutados en orden. Las tablas y figuras están en `analisis/datos_fira/salida/`. Los datos oficiales de `DATASET_RETO_AGRO_2026/` no se modifican.
+
+La etiqueta es el rendimiento del ciclo **abril–octubre de 2025**, visible en 138 parcelas de entrenamiento y oculta en 59 de predicción. Todas las correlaciones con el rendimiento usan solo esas 138.
+
+# Lo esencial
+
+```{r esencial}
+lluvia <- r("lluvia_ciclo_mm"); ampl <- r("amplitud_ciclo_c"); ndvi_int <- r("ndvi_s2_int")
+```
+
+1. **La ubicación explica más del rendimiento que cualquier índice por separado.** Solo el estado explica cerca de `r round(100 * ubic$r2_ajustado[1])` % de la varianza del rendimiento (R² ajustado) y el municipio cerca de `r round(100 * ubic$r2_ajustado[2])` %. La mitad de las parcelas está en Chignahuapan.
+2. **El clima "importa" sobre todo porque distingue estados.** La amplitud térmica del ciclo tiene ρ = `r f2(ampl$rho_global)` con el rendimiento, pero dentro de cada estado baja a `r f2(ampl$rho_intra_estado)`. La lluvia del ciclo es distinta: conserva ρ = `r f2(lluvia$rho_intra_estado)` dentro de cada estado.
+3. **Los índices de vegetación del ciclo dan señal débil.** La mejor asociación univariada de Sentinel-2 ronda ρ ≈ `r f2(ndvi_int$rho_global)` (integral de NDVI) y se debilita dentro de cada estado. Con nubosidad filtrada, la diferencia entre parcelas de alto y bajo rendimiento aparece al final del ciclo (septiembre–octubre), no en el máximo.
+4. **El clima cubre las 197 parcelas con solo `r n_pix` píxeles.** Es una variable de zona, no de parcela.
+5. **Hay mucha redundancia.** Las `r r6("variables_candidatas")` variables candidatas se reducen a `r r6("grupos_redundantes_umbral")` grupos con |ρ| ≥ 0.90; `r r6("grupos_con_mas_de_una_variable")` de esos grupos tienen varias variables casi idénticas, sobre todo en las familias de dosel y de humedad de Sentinel-2.
+6. **Los perfiles de parcela que salen sin usar el rendimiento no lo separan.** Los grupos reflejan geografía y sensor, no productividad.
+
+# Selección
+
+`r nrow(inv)` fuentes entran al análisis.
+
+```{r inventario}
+inv |> select(fuente, unidad_de_observacion, filas_o_capas, periodo, uso_en_el_analisis) |>
+  kable(col.names = c("Fuente", "Unidad de observación", "Filas o capas", "Periodo", "Uso"), format.args = list(big.mark = ","))
+```
+
+La unión por `AGC_###` cuadra por completo: `r val("Parcelas en el shapefile")` parcelas en el shapefile y en el CSV de rendimiento, ningún identificador en un solo archivo, diferencia máxima de área de `r val("Diferencia máxima de área shapefile vs CSV (ha)")` ha y el mismo `CONJUNTO` en ambos. Hay `r val("Parcelas ENTRENAMIENTO")` parcelas de entrenamiento y `r val("Parcelas PREDICCION")` de predicción, y ninguna tiene el rendimiento en el lado equivocado.
+
+# Calidad
+
+## Cobertura de las series
+
+```{r series}
+serie |> select(sensor, filas, parcelas, fecha_min, fecha_max, obs_por_parcela_mediana, pct_con_indice, filas_nube_100) |>
+  kable(col.names = c("Sensor", "Filas", "Parcelas", "Desde", "Hasta", "Obs. por parcela (mediana)", "% con índice", "Filas con nube 100"),
+        format.args = list(big.mark = ","))
+```
+
+- Ninguna serie tiene duplicados de parcela y fecha.
+- Los vacíos de índice son de dos tipos. **Estructurales**: Sentinel-2 no trae VI6T y Landsat no trae ningún otro índice; no se imputan. **Por nube**: con `porcentaje_nubosidad = 100` los índices vienen vacíos (`r format(cons("S2: filas con nube = 100"), big.mark = ",")` filas de Sentinel-2, `r format(cons("Planet: filas con los 4 índices vacíos"), big.mark = ",")` de Planet).
+- Las pruebas de consistencia pasan: con nube 100 nunca hay índice; nunca falta el índice con nube menor a 100 en Sentinel-2; el orden mínimo ≤ promedio ≤ máximo se cumple; no hay desviaciones estándar negativas.
+- Excepciones puntuales: `r cons("S2: filas con NDVI y FAPAR vacío")` filas de Sentinel-2 (4 parcelas, 7 de diciembre de 2022) sin FAPAR, y `r cons("Landsat: VI6T vacío con nube entre 0 y 99")` fila de Landsat sin VI6T que no se explica por nube. La guía del dataset cuenta 17 577 vacíos en VI6T; aquí hay 17 578 por esa fila.
+
+```{r nube, fig.cap="Proporción de escenas totalmente nubladas por mes."}
+fig("02_nubosidad_mensual")
+```
+
+La temporada de lluvias (mayo a octubre) coincide con el ciclo del cultivo y concentra las escenas nubladas. Es justo el periodo de la etiqueta, así que el filtro de nube pesa más ahí que en cualquier otra época del año.
+
+## La etiqueta
+
+```{r cal-rend}
+cal_rend |> kable(col.names = c("Estado", "Entren.", "Predic.", "Mín", "Media", "Mediana", "Máx", "Valores distintos"))
+```
+
+Tlaxcala solo toma `r cal_rend$valores_distintos[cal_rend$estado == "Tlaxcala"]` valores distintos entre 2.5 y 3.5 t/ha. Es una característica del dato reportado, no una distribución continua, y limita lo que un modelo puede aprender dentro de ese estado.
+
+# Transformación
+
+## Filtro de nubosidad y ciclo
+
+El umbral es un parámetro (`NUBE_MAX` en `00_setup.R`), igual a **`r nube_max`** en esta corrida (decisión del equipo; el primer KDD se corrió con 0). Se conservan observaciones con `porcentaje_nubosidad` ≤ `r nube_max`, con índice presente, entre el 1 de abril y el 31 de octubre de 2025.
+
+```{r sens}
+sens |> kable(col.names = c("Sensor", "Umbral de nube", "Observaciones", "Mín. por parcela", "Mediana por parcela", "Parcelas con menos de 5"),
+              format.args = list(big.mark = ","))
+```
+
+Con el umbral elegido (`r nube_max`) `r sum(sens$parcelas_con_menos_de_min[sens$umbral_nube == nube_max])` parcelas quedan con menos de 5 observaciones, sumando los tres sensores. Pasar de 0 a 10 o 30 añade pocas fechas por sensor, así que el umbral cambia poco el tamaño de la muestra: sube el número de observaciones a costa de admitir escenas con algo de nube. La parcela más pobre conserva `r sens$obs_por_parcela_min[sens$sensor == "Sentinel-2" & sens$umbral_nube == nube_max]` fechas de Sentinel-2, `r sens$obs_por_parcela_min[sens$sensor == "Landsat" & sens$umbral_nube == nube_max]` de Landsat y `r sens$obs_por_parcela_min[sens$sensor == "Planet" & sens$umbral_nube == nube_max]` de Planet.
+
+```{r ctx, fig.cap="NDVI de Sentinel-2 por mes y año. Los años previos son contexto."}
+fig("03_contexto_ndvi_anual")
+```
+
+## Tabla de trabajo
+
+`analisis/datos_fira/salida/parcelas_trabajo.csv` tiene `r nrow(trabajo)` filas (una por parcela) y `r ncol(trabajo)` columnas. El rendimiento queda vacío en las 59 parcelas de predicción.
+
+```{r dic}
+dic |> count(grupo, name = "columnas") |> kable(col.names = c("Grupo", "Columnas"))
+```
+
+Cada sensor mantiene sus propias columnas (`ndvi_s2_*`, `ndvi_planet_*`, `vi6t_landsat_*`). Los índices de dosel se resumen con máximo, media, integral, día del máximo y heterogeneidad interna; el NDVI además con su media por fase (mayo–julio, agosto, septiembre–octubre). El diccionario completo está en `parcelas_trabajo_diccionario.csv`.
+
+Con el umbral de nube de esta corrida, `r sum(colSums(is.na(trabajo[setdiff(names(trabajo), "rendimiento_t_ha")])) > 0)` columnas tienen algún vacío (aparte del rendimiento oculto en predicción). Con nube 0, dos parcelas (`AGC_016` en agosto y `AGC_096` en septiembre–octubre) se quedaban sin observaciones limpias de Sentinel-2 en una fase; subir el umbral a 30 lo resuelve. Si vuelve a ocurrir, no se imputa.
+
+## Clima y topografía
+
+```{r pix}
+pix |> slice_head(n = 3) |> kable(col.names = c("Dato", "Valor"))
+```
+
+```{r pix-top}
+pp <- pix |> filter(str_detect(dato, "^Píxeles con")) |> mutate(k = as.integer(str_extract(dato, "\\d+"))) |> arrange(desc(k))
+```
+
+Las 197 parcelas caen sobre solo `r n_pix` celdas del ráster de clima. Una celda concentra `r pp$k[1]` parcelas y otra `r pp$k[2]`. Parcelas colindantes comparten lluvia y temperatura, y ese valor sirve para distinguir zonas. Elevación y pendiente (120 m) sí varían entre parcelas, pero la pendiente describe la ladera, no el microrrelieve dentro del lote.
+
+# Relaciones con el rendimiento
+
+## Dónde y cuánto
+
+```{r mapa, fig.cap="Parcelas y rendimiento observado."}
+fig("05_mapa_rendimiento")
+```
+
+```{r mun}
+mun |> kable(col.names = c("Estado", "Municipio", "Parcelas", "Entren.", "Rend. medio", "Desv. est.", "Área media (ha)"))
+```
+
+```{r ubic}
+ubic |> kable(col.names = c("Modelo descriptivo", "R² ajustado", "Grupos"))
+```
+
+El rendimiento cambia mucho entre municipios del mismo estado (Singuilucan promedia `r f2(mun$rend_media[mun$municipio == "Singuilucan"])` t/ha; Almoloya, `r f2(mun$rend_media[mun$municipio == "Almoloya"])`, ambos en Hidalgo). El píxel de clima explica una proporción parecida a la del municipio porque ambos parten el territorio de forma parecida. Por eso una validación cruzada con corte aleatorio sobrestimaría el desempeño: hay que cortar por municipio o por píxel.
+
+```{r box, fig.cap="Rendimiento por estado."}
+fig("05_rendimiento_estado")
+```
+
+```{r hist, fig.cap="Distribución del rendimiento por estado."}
+fig("05_hist_rendimiento")
+```
+
+## Trayectoria del ciclo
+
+```{r tray, fig.cap="NDVI del ciclo 2025 por cuartil de rendimiento. Cada sensor en su panel."}
+fig("05_trayectoria_ndvi")
+```
+
+Las trayectorias tienen la misma forma en Sentinel-2 y Planet: suelo desnudo hasta junio, subida rápida en julio, pico en agosto–septiembre y descenso en octubre. Las parcelas del cuartil de mayor rendimiento mantienen un NDVI más alto en septiembre y octubre. El máximo casi no discrimina. Por eso la tabla de trabajo incluye el NDVI medio de septiembre a octubre.
+
+Planet da un NDVI absoluto mayor que Sentinel-2 para las mismas fechas. Son historias paralelas de la misma parcela, no una sola medición.
+
+## Correlaciones
+
+```{r corr-top, fig.cap="Variables con mayor correlación de Spearman con el rendimiento."}
+fig("05_correlaciones_top")
+```
+
+Hay dos lecturas de cada variable: la global (138 parcelas) y la que queda al restar la media de cada estado. Cuando la segunda cae a cero, la variable estaba describiendo el estado.
+
+```{r corr-tab}
+corr |>
+  slice_max(abs(rho_global), n = 15) |>
+  transmute(Variable = variable, Fuente = grupo, `ρ global` = f2(rho_global), `ρ dentro del estado` = f2(rho_intra_estado),
+            `p ajustado (dentro)` = formatC(p_intra_bh, format = "g", digits = 2)) |>
+  kable()
+```
+
+- **Temperatura** (amplitud, Tmin, Tmedia): fuerte global y prácticamente nula dentro del estado. Es una etiqueta del estado más que un factor del rendimiento.
+- **Lluvia** (acumulada del ciclo y mes más lluvioso): relación negativa moderada que se mantiene dentro del estado (p ajustado menor a 0.001). Con solo `r n_pix` celdas de clima, el número efectivo de valores independientes es pequeño; hay que leerla como una asociación entre zonas.
+- **Sentinel-2:** la mayor señal es de residuo (`crc_s2_*`) y de integral de NDVI, ambas positivas y cercanas a ρ = 0.2–0.3.
+- **Pendiente:** positiva y sostenida dentro del estado (ρ ≈ 0.27), aunque describe la ladera y no el lote.
+- **Con unas 80 variables comparadas**, dentro del estado solo sobreviven al ajuste por comparaciones múltiples (Benjamini-Hochberg) la lluvia, la pendiente y `crc_s2_media`; los índices de NDVI no. Son pistas, no pruebas.
+
+```{r mejor}
+mejor |> transmute(Fuente = grupo, Variable = variable, `ρ global` = f2(rho_global), `ρ dentro del estado` = f2(rho_intra_estado)) |> kable()
+```
+
+```{r disp, fig.cap="Rendimiento contra NDVI del ciclo."}
+fig("05_dispersion_ndvi")
+```
+
+```{r disp2, fig.cap="Rendimiento contra clima, topografía y área."}
+fig("05_dispersion_clima_topografia")
+```
+
+# Patrones entre variables y parcelas
+
+## Redundancia
+
+```{r red-heat, fig.cap="Correlación entre variables candidatas, ordenada por agrupamiento."}
+fig("06_correlacion_variables")
+```
+
+```{r red-grupos}
+grupos |> group_by(grupo) |> summarise(tamano = first(tamano), variables = paste(variable, collapse = ", "), .groups = "drop") |>
+  arrange(desc(tamano)) |> slice_head(n = 10) |> select(-grupo) |>
+  kable(col.names = c("Tamaño", "Variables casi idénticas (|ρ| ≥ 0.90)"))
+```
+
+NDVI, EVI, SAVI, LAI y FAPAR de Sentinel-2 se comportan como una sola señal, igual que NDWI/ENDWI/MSI/EMSI en humedad y STI/NDTI en residuo. Elevación media, mínima y máxima también son prácticamente la misma variable. Para la fase de modelos, conviene un representante por grupo o un método que tolere colinealidad, y no sumar índices por su cantidad.
+
+## PCA exploratorio
+
+```{r pca, fig.cap="Parcelas en las dos primeras componentes."}
+fig("06_pca_parcelas")
+```
+
+Con las variables estandarizadas, las primeras 5 componentes explican `r round(100 * pca_var$acumulada[5])` % de la varianza. Las parcelas de predicción caen dentro de la nube de las de entrenamiento: el reparto oficial no deja zonas sin representación en este espacio.
+
+La única componente con relación clara con el rendimiento es la quinta (ρ = `r f2(pca_rend$rho_rendimiento[pca_rend$componente == "PC5"])`). Está cargada por amplitud térmica, temperatura mínima y elevación, es decir, por el eje que separa a Tlaxcala de Puebla. Confirma la lectura de arriba: la señal más fuerte es territorial.
+
+## Perfiles de parcela
+
+Se agruparon las parcelas con un método jerárquico (Ward) sobre las componentes principales, sin usar el rendimiento.
+
+```{r perf}
+perf |> kable(col.names = c("Perfil", "Parcelas", "Hidalgo", "Puebla", "Tlaxcala", "Entren.", "Predic.", "Rend. medio", "Desv. est."))
+```
+
+```{r perf-fig, fig.cap="Rendimiento por perfil de parcela."}
+fig("06_perfiles_rendimiento")
+```
+
+Los perfiles se distinguen sobre todo por estado, y sus rendimientos medios se parecen entre sí. La prueba de Kruskal-Wallis no detecta diferencias (p = `r r6("kruskal_p")`). Los datos no forman clases naturales de productividad; el rendimiento depende de una combinación de variables, no de una etiqueta de grupo. Es una advertencia: la ubicación explica mucho entre municipios, pero dentro de un mismo municipio no alcanza para distinguir parcelas.
+
+# Respuesta preliminar a las preguntas guía del reto
+
+Estas respuestas son descriptivas. La respuesta con evidencia de predicción corresponde a la fase de modelos.
+
+1. **Índice más importante.** Entre los índices del ciclo, la mayor asociación univariada es la de la integral de NDVI de Sentinel-2 y la del residuo de cultivo (CRC). El NDVI de septiembre–octubre es el que mejor separa cuartiles de rendimiento en las trayectorias. Dentro de un mismo estado ninguno es concluyente por sí solo.
+2. **Variable climática con mayor peso.** La lluvia del ciclo es la única variable climática cuya asociación se sostiene dentro del estado. La temperatura tiene mayor correlación global, pero por diferencias entre estados.
+3. **Mejor combinación.** No se puede responder aún. Lo que se sabe: el dosel (NDVI en la fase final), el clima de zona y la topografía aportan información distinta; los índices dentro de una misma familia no.
+
+# Qué queda para la fase de modelos
+
+- **Tabla base:** `parcelas_trabajo.csv`, 197 filas.
+- **Validación:** cortar por municipio o por píxel de clima, no de forma aleatoria. Los vecinos comparten territorio y manejo.
+- **Reducir redundancia** con un representante por familia (por ejemplo `ndvi_s2_int`, `ndvi_s2_media_sep_oct`, `crc_s2_media`, `lluvia_ciclo_mm`, `pendiente_grados`).
+- **Sensores separados:** Sentinel-2, Landsat y Planet no se funden. Planet cubre solo 2025, lo que coincide con la etiqueta.
+- **Tlaxcala:** rendimiento con tres valores; considerar su error por separado.
+- **No usar** `lon`, `lat` ni `pixel_clima` como variables sin decidir antes el riesgo de aprender únicamente la ubicación.
+- **Pendiente para después:** los años 2022–2024 (antecedente climático y de vegetación) no entraron a la tabla; están extraídos en los intermedios por si se decide usarlos.
+
+# Cómo reproducir
+
+Desde la raíz del repositorio:
+
+```bash
+bash analisis/correr.sh
+```
+
+Ejecuta en orden `analisis/datos_fira/R/01_seleccion.R` a `06_patrones.R` y compila este informe en `analisis/datos_fira/salida/kdd.html`. Los paquetes necesarios y la nota sobre GDAL están en `analisis/README.md`.

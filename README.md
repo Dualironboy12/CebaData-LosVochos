@@ -46,11 +46,78 @@ El equipo construye la solución en tres fases (más la despensa de entrenamient
 | 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** | [`modelos/`](modelos/) |
 | 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** (u otro stack que acuerde el equipo) | [`dashboard/`](dashboard/) |
 
-**Fase actual: análisis de datos.** El KDD en R ya dejó una lectura y una tabla de trabajo por parcela; lo que sigue es congelar CSVs en `dataset_entrenamiento/` y, con pedido explícito del equipo, abrir modelos y dashboard. Las instrucciones operativas para agentes están en [`AGENTS.md`](AGENTS.md) (y un `AGENTS.md` local en cada carpeta de trabajo).
+**Fase actual: análisis de datos.** El KDD del reto (FIRA) y el de edafología INEGI ya tienen lectura; el carril SoilGrids está en curso. Lo que sigue es congelar CSVs en `dataset_entrenamiento/` y, con pedido explícito, abrir modelos y dashboard. Detalle operativo abajo (§ Roadmap). Instrucciones para agentes: [`AGENTS.md`](AGENTS.md).
+
+## Roadmap
+
+Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin acuerdo nuevo del equipo. Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.md), [`analisis/RESUMEN_DATOS_INEGI.md`](analisis/RESUMEN_DATOS_INEGI.md), [`analisis/RESUMEN_DATOS_SOILGRIDS.md`](analisis/RESUMEN_DATOS_SOILGRIDS.md).
+
+### Dónde estamos
+
+| Fase | Estado | Dónde |
+| --- | --- | --- |
+| 1. Análisis (R) | FIRA e INEGI hechos; SoilGrids en curso | `analisis/datos_*` |
+| Despensa / CSVs | Despensa nube 30 congelada; CSVs curadas pendientes | `dataset_entrenamiento/` |
+| 2. Modelos (Python) | Solo con pedido explícito | `modelos/` |
+| 3. Dashboard | Después de un modelo estable | `dashboard/` |
+| Reporte y video | Al cerrar el desarrollo | — |
+
+### Orden recomendado
+
+```text
+1. Criterios humanos 1–6 (cerrados 2026-10-01)
+2. Despensa NUBE_MAX=30 versionada (hecho) + CSVs en dataset_entrenamiento/
+3. Fase 2 en modelos/: baseline + classic ML + misma CV espacial
+4. En paralelo: externos (INEGI hecho; SoilGrids en curso) documentados y alineados
+5. Elegir modelo y CSV ganadores → predecir las 59
+6. Dashboard y, al final, reporte / video
+```
+
+### Decisiones cerradas (2026-10-01)
+
+| # | Pregunta | Decisión |
+| --- | --- | --- |
+| 1 | Tabla base | Despensa + CSVs derivadas |
+| 2 | Ubicación | Tres filosofías: ninguna / parcial / completa |
+| 3 | Años previos | Solo 2025 y todos los ciclos (comparar) |
+| 4 | Umbral de nube | `NUBE_MAX = 30` |
+| 5 | Validación | Oficial por municipio; chequeo por píxel de clima |
+| 6 | Datos externos | Dos carriles en paralelo: solo reto primero; INEGI/SoilGrids en paralelo |
+
+**Matriz de CSVs (reto):** ubicación × ventana temporal. Cada celda se versiona con manifiesto.
+
+**Despensa:** `dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv` (nube ≤ 30, 197×101).
+
+**Carril externo:** cada fuente con origen, licencia, CRS, join a `AGC_###`. INEGI edafología: CSV en `DATASETS_EXTERNOS/despensa_extendida/`. SoilGrids: KDD en `analisis/datos_soilgrids/`.
+
+**Pendientes humanas:** cuándo abrir fase 2/3; modelo y CSV de entrega; commits/push/textos del reporte.
+
+### Agente vs humano
+
+El agente reproduce, construye CSVs, entrena y documenta. El equipo aprueba sets de columnas, abre fases, elige el modelo de entrega y autoriza commits. Regla: *el agente ejecuta y compara; el equipo fija criterios y firma lo que se entrega.*
+
+### Filosofía de diseño (resumen)
+
+Una fila = una parcela; el condensamiento es una hipótesis; misma CV en todos los experimentos; 3–5 CSVs y pocos modelos; sensores separados; baseline primero; explicabilidad; reproducible en CPU.
+
+### Modelos (cuando se abra la fase 2)
+
+Priorizar classic ML (ridge, RF, LightGBM) entrenado aquí sobre tablas propias. Baseline media por municipio → LightGBM/RF sobre 3–5 CSVs → elegir por CV espacial. Hugging Face / LLM no sustituyen el predictor de t/ha.
+
+### Checklist fase 2 (cuando el equipo lo pida)
+
+- [x] Decisiones 1–6
+- [x] Despensa nube 30 en `dataset_entrenamiento/despensa/`
+- [ ] CSVs de la matriz (reto) + manifiesto
+- [ ] Pedido explícito de abrir `modelos/`
+- [ ] Baseline + 1–2 modelos, CV municipio (+ píxel)
+- [ ] Externos alineados (INEGI / SoilGrids) documentados
+- [ ] Elegir modelo y CSV de entrega; predicciones de las 59
+- [ ] Pedido de `dashboard/`; autorizar commits/push
 
 Cuando las tres fases estén cerradas, el equipo prepara también el [reporte técnico](#reporte-técnico) y el [video de presentación](#aplicación-o-interfaz) (máximo 5 minutos) que pide la convocatoria.
 
-El uso de agentes de desarrollo está permitido. Cada agente que trabaje en el repositorio anota en [`PROMPTS.md`](PROMPTS.md) el modelo y la versión con los que trabajó, el prompt que recibió, las acciones que tomó y las afectaciones que tuvo. Ese registro es la fuente para declarar el uso de inteligencia artificial en el reporte. Las instrucciones operativas están en [`AGENTS.md`](AGENTS.md).
+El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md) modelo, prompt, acciones y afectaciones. Instrucciones: [`AGENTS.md`](AGENTS.md).
 
 ## Cómo se desarrolla el reto
 
@@ -198,7 +265,7 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 - [`Reto Agrocebada Bases.pdf`](Reto%20Agrocebada%20Bases.pdf) — bases de participación.
 - [`Ecuaciones_indices_AgroCebada_FIRA_2026.pdf`](Ecuaciones_indices_AgroCebada_FIRA_2026.pdf) — ecuaciones de los índices satelitales.
 - [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset oficial (no se altera).
-- [`analisis/`](analisis/) — KDD en R; ver [`analisis/README.md`](analisis/README.md) y [`analisis/RESUMEN_DE_ANALISIS.md`](analisis/RESUMEN_DE_ANALISIS.md).
+- [`analisis/`](analisis/) — KDD en R (carriles FIRA / INEGI / SoilGrids); ver [`analisis/README.md`](analisis/README.md) y los `RESUMEN_DATOS_*.md`.
 - [`dataset_entrenamiento/`](dataset_entrenamiento/) — despensa y CSVs curados para entrenar.
 - [`modelos/`](modelos/) — entrenamiento y artefactos (fase 2).
 - [`dashboard/`](dashboard/) — interfaz web (fase 3).

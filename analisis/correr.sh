@@ -1,23 +1,29 @@
 #!/usr/bin/env bash
-# Ejecuta todo el análisis KDD desde la raíz del repositorio:
-#   bash analisis/correr.sh
-#
-# Si existe un entorno local con sf/terra (micromamba) en
-# ~/.local/share/ceba-env/env, se usa; si no, se usa el R del sistema.
+# Orquestador de los tres carriles de análisis. Desde la raíz del repo:
+#   bash analisis/correr.sh              # solo FIRA (por defecto)
+#   bash analisis/correr.sh fira
+#   bash analisis/correr.sh inegi
+#   bash analisis/correr.sh soilgrids
+#   bash analisis/correr.sh todo
 set -euo pipefail
 cd "$(dirname "$0")/.."
+CARRIL="${1:-fira}"
 
-ENTORNO="${CEBA_ENV:-$HOME/.local/share/ceba-env/env}"
-if [ -x "$ENTORNO/bin/Rscript" ]; then
-  export PATH="$ENTORNO/bin:$PATH"
-  export PROJ_DATA="$ENTORNO/share/proj" PROJ_LIB="$ENTORNO/share/proj" GDAL_DATA="$ENTORNO/share/gdal"
-fi
+correr() {
+  local c="$1"
+  echo "======== Carril: $c ========"
+  bash "analisis/datos_${c}/correr.sh"
+}
 
-for f in analisis/R/0[1-6]_*.R; do
-  echo "==> $f"
-  Rscript "$f"
-done
-
-echo "==> analisis/informe/kdd.Rmd"
-Rscript -e 'rmarkdown::render("analisis/informe/kdd.Rmd", output_dir = "analisis/salida", quiet = TRUE)'
-echo "Listo. Informe: analisis/salida/kdd.html"
+case "$CARRIL" in
+  fira|inegi|soilgrids) correr "$CARRIL" ;;
+  todo)
+    correr fira
+    correr inegi
+    correr soilgrids
+    ;;
+  *)
+    echo "Uso: bash analisis/correr.sh [fira|inegi|soilgrids|todo]" >&2
+    exit 1
+    ;;
+esac

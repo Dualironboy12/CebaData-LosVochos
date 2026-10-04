@@ -314,3 +314,51 @@ Claude Sonnet 5.5 (Cursor).
 
 - Historial local: `main` reescrito (hashes nuevos en los tres commits sin publicar). `PROMPTS.md`: esta entrada, sin commitear.
 - No se hizo push. La rama `respaldo-antes-de-limpiar` conserva el blob grande; borrarla (y correr `git gc`) cuando ya no haga falta.
+
+## 2026-10-04 — Entorno de Python y exploración de SoilGrids
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor).
+
+**Prompt**
+
+> Primero crea la carpeta dentro de @DATASETS_EXTERNOS/ y dentro crea y prepara el entorno para python, luego prueba a instalar "pip install soilgrids", luego prueba a usarlo para descargar datos, si funciona, primero genera un documento temporal con los datos que hay disponibles, para despues elegir cuales integraremos al nuevo analisis
+
+**Acciones**
+
+- Se creó `DATASETS_EXTERNOS/soilgrids/` con `preparar_entorno.sh`, que crea el venv y, si falta `python3-venv`, lo crea sin pip y arranca pip con `get-pip.py` (era el caso en esta máquina). Se instaló `soilgrids` 0.1.5 y se fijaron versiones en `requirements.txt`.
+- `explorar_disponibles.py` listó los 12 servicios de SoilGrids (336 capas) y descargó dos capas de prueba (pH y arcilla, 0–5 cm) sobre la caja de las 197 parcelas, en EPSG:152160 a 250 m, sin errores. Se midió su variación entre parcelas: la arcilla da 86 valores distintos, el pH solo 12.
+- Se escribió `DISPONIBLES_TEMPORAL.md` (capas, unidades y factores de conversión, advertencias y tabla de candidatas por marcar) y un `README.md` de la carpeta.
+- Se añadió la excepción `!DATASETS_EXTERNOS/soilgrids/` al `.gitignore` raíz; `.venv/` y `temporal/` quedan ignorados dentro de la carpeta.
+- Incidencia: ejecutado desde el AppImage de Cursor, Python no reconoce el venv salvo con entorno limpio (`env -i`); documentado en el README.
+
+**Afectaciones**
+
+- Creados: `DATASETS_EXTERNOS/soilgrids/` (`README.md`, `DISPONIBLES_TEMPORAL.md`, `preparar_entorno.sh`, `requirements.txt`, `explorar_disponibles.py`, `.gitignore`; `.venv/` y `temporal/` locales y sin versionar). Modificados: `.gitignore` raíz y `PROMPTS.md`.
+- Fuera de la tarea: no se integró ninguna variable a la despensa ni al análisis, no se tocó el código R y no hubo commits. Python se usa solo para adquisición de datos; el análisis sigue en R.
+
+## 2026-10-04 — Reorganización analisis/ (3 carriles) y KDD SoilGrids (336 capas)
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor).
+
+**Prompt**
+
+> Reorganización de análisis y KDD SoilGrids (336 capas) — Implement the plan as specified…
+
+**Acciones**
+
+- Se reorganizó `analisis/` en `datos_fira/`, `datos_inegi/` y `datos_soilgrids/` con salidas propias; setup compartido en `R/00_setup.R` (`CEBA_CARRIL`); orquestador `bash analisis/correr.sh [fira|inegi|soilgrids|todo]`.
+- El roadmap de `PROXIMOS_PASOS.md` pasó al README raíz (§ Roadmap). Quedaron 4 MD en `analisis/`: README + `RESUMEN_DATOS_FIRA.md`, `RESUMEN_DATOS_INEGI.md`, `RESUMEN_DATOS_SOILGRIDS.md`. Se actualizaron enlaces en dataset_entrenamiento, modelos, dashboard y AGENTS.
+- Se descargaron las 336 capas SoilGrids (~11 MB) con `descargar_capas.py` (reintentos; 1 fallo recuperado). Documentación: `CAPAS.md`, `fuentes_soilgrids.md`.
+- Pipeline R 09–12: zonal (197×344), correlaciones, heatmaps, PCA, ranking. Informe `datos_soilgrids/salida/kdd_soilgrids.html`. Variable prioritaria: `sg_nitrogen_0-5cm_mean`; 94 capas proxy de estado.
+- Carril FIRA regenerado con éxito tras el move. SoilGrids CRS: string Homolosine (EPSG:152160 no resolvía en PROJ local).
+
+**Afectaciones**
+
+- Movidos/creados: estructura `analisis/datos_*`, runners, scripts 09–12, informe SoilGrids, CSV `parcelas_despensa_extendida_soilgrids_v1.csv`, GeoTIFF en `DATASETS_EXTERNOS/soilgrids/datos/`.
+- Eliminados: `analisis/PROXIMOS_PASOS.md`, `RESUMEN_DE_ANALISIS.md`, `08_lectura_edaf.md`.
+- Modificados: README raíz, AGENTS, READMEs de tracks, `00_setup.R`, docs SoilGrids/despensa_extendida.
+- Sin commits. No se copió a `curados_extendidos/` ni se entrenó modelos.

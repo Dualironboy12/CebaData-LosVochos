@@ -1,0 +1,141 @@
+---
+title: "KDD SoilGrids — propiedades del suelo y rendimiento"
+author: "Los Vochos · Reto AgroCebada FIRA 2026"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: flatly
+    fig_caption: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, out.width = "100%", fig.align = "center")
+options(knitr.kable.NA = "")
+library(readr); library(dplyr); library(knitr); library(stringr)
+sal <- file.path("..", "salida")
+tab <- function(nombre) read_csv(file.path(sal, "tablas", paste0(nombre, ".csv")), show_col_types = FALSE, progress = FALSE)
+fig <- function(nombre) knitr::include_graphics(file.path(sal, "figuras", paste0(nombre, ".png")))
+f2 <- function(x) formatC(x, digits = 2, format = "f")
+inv <- tab("09_inventario_tif")
+cal <- tab("10_calidad_capas")
+corr <- tab("11_correlaciones")
+rank <- tab("12_ranking_variables")
+incluir <- tab("12_variables_recomendada")
+res <- tab("12_resumen")
+pca_var <- tab("12_pca_varianza")
+```
+
+# Qué se analizó
+
+Las **`r inv$n_geotiff`** capas de [SoilGrids 2.0](https://www.isric.org/explore/soilgrids) (ISRIC) recortadas al área de las 197 parcelas del reto (Homolosine, 250 m). Valores convertidos a unidades físicas. Una fila por parcela en el CSV extendido.
+
+Solo las **138** parcelas de entrenamiento entran a las correlaciones con el rendimiento. Es exploración, no prueba.
+
+```{r}
+cal |> count(servicio, name = "capas") |>
+  kable(col.names = c("Servicio", "Capas con estadística zonal"))
+```
+
+# Calidad
+
+```{r}
+cal |> summarise(
+  capas = n(),
+  con_na = sum(n_na > 0),
+  mediana_distintos = median(n_distintos),
+  min_distintos = min(n_distintos),
+  max_distintos = max(n_distintos)
+) |> kable()
+```
+
+Píxeles distintos por parcela: la mediana es `r median(cal$n_distintos)`. Capas casi constantes aportan poco (p. ej. algunas WRB con probabilidad casi 0 en la zona).
+
+# Correlación con el rendimiento
+
+Dos lecturas: **global** (138 parcelas) e **intra-estado** (tras restar la media de cada estado). Cuando la segunda cae a cero, la variable describe el estado más que el lote.
+
+```{r, fig.cap="Heatmap de ρ intra-estado para las capas mean por servicio y profundidad."}
+fig("11_heatmap_mean_intra")
+```
+
+```{r, fig.cap="Top 15 capas por |ρ| intra-estado."}
+fig("11_top_correlaciones")
+```
+
+```{r}
+corr |> slice_max(abs(rho_intra_estado), n = 12) |>
+  transmute(Capa = capa, Servicio = servicio, Estadístico = estadistico,
+            `ρ global` = f2(rho_global), `ρ intra` = f2(rho_intra_estado),
+            `p BH intra` = formatC(p_intra_bh, format = "g", digits = 2)) |>
+  kable()
+```
+
+Lectura breve:
+
+- **Nitrógeno 0–5 cm (mean)** destaca dentro del estado (ρ ≈ `r f2(corr$rho_intra_estado[corr$capa=="nitrogen_0-5cm_mean"])`) y también en global.
+- Muchas capas con ρ global alto (SOC, fragmentos, WRB) **se debilitan dentro del estado**: son proxies territoriales (94 capas etiquetadas así en el ranking).
+- Los cuantiles a veces ganan al mean en |ρ| crudo; el ranking prioriza mean cuando ya captura la señal y evita inflar columnas.
+
+```{r, fig.cap="Mapas de las 6 capas mean con mayor |ρ| intra-estado."}
+fig("11_mapas_top6")
+```
+
+# Redundancia y PCA
+
+Con las `r res$n_mean` capas *mean*, `|ρ| ≥ 0.9` las agrupa en `r res$n_grupos_redundantes` grupos. Textura (arcilla/arena/limo) y carbono/nitrógeno están muy ligados.
+
+```{r, fig.cap="Matriz de correlación entre capas mean."}
+fig("12_correlacion_variables")
+```
+
+```{r, fig.cap="Parcelas en PC1–PC2 de SoilGrids mean."}
+fig("12_pca_parcelas")
+```
+
+Las primeras 5 componentes explican `r round(100 * pca_var$acumulada[5])` % de la varianza de las capas mean.
+
+# Ranking: qué incluir
+
+Criterios (en orden): |ρ| intra-estado con BH &lt; 0.1; variación entre parcelas; un representante por grupo redundante; preferir `mean`.
+
+```{r}
+rank |> count(recomendacion) |> arrange(desc(n)) |>
+  kable(col.names = c("Recomendación", "Capas"))
+```
+
+## Lista recomendada (corta)
+
+```{r}
+incluir |>
+  transmute(Capa = capa, Servicio = servicio, Profundidad = profundidad,
+            `ρ intra` = f2(rho_intra_estado), `p BH` = formatC(p_intra_bh, format = "g", digits = 2),
+            `ρ global` = f2(rho_global), Distintos = n_distintos) |>
+  kable()
+```
+
+**Incluir con prioridad** (señal intra-estado más clara): `nitrogen_0-5cm_mean`.
+
+**Considerar** (pista, p BH &gt; 0.1 o efecto menor): OCD profundo, arena profunda, CIC, pH profundo, limo superficial, fragmentos, SOC profundo.
+
+**No priorizar** en la primera ola de CSVs: la mayoría de cuantiles e incertidumbres (salvo control de calidad), ni las 94 capas que actúan como proxy de estado.
+
+# Comparación con INEGI (WRB)
+
+```{r}
+if (file.exists(file.path(sal, "tablas", "11_wrb_vs_inegi.csv"))) {
+  wrb <- tab("11_wrb_vs_inegi")
+  wrb |> slice_max(parcelas, n = 15) |> kable()
+}
+```
+
+SoilGrids aporta **probabilidades** por grupo WRB y propiedades continuas a 250 m; INEGI aporta un polígono dominante a 1:250 000. No sustituyen: se complementan (y ambos se entrelazan con el estado).
+
+# Cómo regenerar
+
+```bash
+bash analisis/correr.sh soilgrids
+```
+
+CSV: `DATASETS_EXTERNOS/despensa_extendida/parcelas_despensa_extendida_soilgrids_v1.csv`. Lectura corta: `analisis/RESUMEN_DATOS_SOILGRIDS.md`.

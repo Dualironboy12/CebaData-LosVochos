@@ -6,3 +6,4 @@
 # y pequeño dentro de DATASETS_EXTERNOS/despensa_extendida/ (CSV extendido, recortes, documentación).
 DATASETS_EXTERNOS/*
 !DATASETS_EXTERNOS/despensa_extendida/
+!DATASETS_EXTERNOS/soilgrids/

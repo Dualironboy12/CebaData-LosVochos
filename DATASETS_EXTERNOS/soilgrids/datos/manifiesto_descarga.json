@@ -1,0 +1,2386 @@
+{
+ "fecha": "2026-10-04",
+ "crs": "urn:ogc:def:crs:EPSG::152160",
+ "bbox_m": {
+  "west": -10987806.202418547,
+  "south": 2172100.610518175,
+  "east": -10942053.166449264,
+  "north": 2225736.6444956143
+ },
+ "margen_m": 1500,
+ "resolucion_m": [
+  250,
+  250
+ ],
+ "nodata": -32768,
+ "factores": {
+  "bdod": 100,
+  "cec": 10,
+  "cfvo": 10,
+  "clay": 10,
+  "nitrogen": 100,
+  "phh2o": 10,
+  "sand": 10,
+  "silt": 10,
+  "soc": 10,
+  "ocs": 1,
+  "ocd": 10,
+  "wrb": 1
+ },
+ "cita": "Poggio et al. (2021) SoilGrids 2.0, SOIL 7, 217–240. https://doi.org/10.5194/soil-7-217-2021",
+ "licencia": "CC BY 4.0 (ISRIC SoilGrids)",
+ "capas": {
+  "bdod_0-5cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_0-5cm_Q0.5.tif",
+   "bytes": 24691,
+   "sha256": "932065b57ac7cc39eb173f40b5bb0072c8cc575d960cfa2a998675d091e3fc02",
+   "estado": "existente"
+  },
+  "bdod_0-5cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_0-5cm_Q0.05.tif",
+   "bytes": 28614,
+   "sha256": "23066fb60b8f152d92a496dc95de733fd388400d0ba5e7764eeccfd0bb84b47c",
+   "estado": "existente"
+  },
+  "bdod_0-5cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_0-5cm_Q0.95.tif",
+   "bytes": 26207,
+   "sha256": "c960fd6d81df89286932f355d0315bbf1e326c1ee25ed9ce40def4f66d78d090",
+   "estado": "existente"
+  },
+  "bdod_0-5cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_0-5cm_mean.tif",
+   "bytes": 24912,
+   "sha256": "da3ee8c69780e30fb9acb911a398a02c25d1730707c3e1af335f5008f520ef56",
+   "estado": "existente"
+  },
+  "bdod_0-5cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_0-5cm_uncertainty.tif",
+   "bytes": 13365,
+   "sha256": "5053ce5d065c867c04a86675b2473a45a933e24e1c46bc11101942385a83e98b",
+   "estado": "existente"
+  },
+  "bdod_5-15cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_5-15cm_Q0.5.tif",
+   "bytes": 23766,
+   "sha256": "6a756ac3eb541c2eb435e265c591bf078dfd660630496f0f6aa13ef4447bf40c",
+   "estado": "existente"
+  },
+  "bdod_5-15cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_5-15cm_Q0.05.tif",
+   "bytes": 27806,
+   "sha256": "6ff8359f76d68ce4677d5ef393e674309b7253bdc694ddd5d760dc20c39e4b71",
+   "estado": "existente"
+  },
+  "bdod_5-15cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_5-15cm_Q0.95.tif",
+   "bytes": 26035,
+   "sha256": "6f99e59a22ba9941d0af3dd699ae7fff47a0a84796480dfdb6360b578075991e",
+   "estado": "existente"
+  },
+  "bdod_5-15cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_5-15cm_mean.tif",
+   "bytes": 23950,
+   "sha256": "95211f1964981ff9dd5bfd74701321dd5a0cfecf2e0bf6de36656dbb3f290947",
+   "estado": "existente"
+  },
+  "bdod_5-15cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_5-15cm_uncertainty.tif",
+   "bytes": 13202,
+   "sha256": "d70c1dec0a862bc77e22c69d3bea02f0006ff2ea1b2ed8147a8340827d4227dd",
+   "estado": "existente"
+  },
+  "bdod_15-30cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_15-30cm_Q0.5.tif",
+   "bytes": 23042,
+   "sha256": "b3c465762ee95aa89701ea5887d4522bbe5d437d06ef184a84a38b8d4067b6c5",
+   "estado": "existente"
+  },
+  "bdod_15-30cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_15-30cm_Q0.05.tif",
+   "bytes": 27930,
+   "sha256": "ee35972f04eb0517b121c7fcbc1817c0131c620b7288c599d9e8aff873160cfd",
+   "estado": "existente"
+  },
+  "bdod_15-30cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_15-30cm_Q0.95.tif",
+   "bytes": 25270,
+   "sha256": "a808752200022491fbddf6fcd7952ea7a71835a55e815fdc591e0ebfb8fc1095",
+   "estado": "existente"
+  },
+  "bdod_15-30cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_15-30cm_mean.tif",
+   "bytes": 24317,
+   "sha256": "71932a0fe97aece73c9ab6ce0720dc2ee1f40d346ad110fa50ff6fb8d564d3d3",
+   "estado": "existente"
+  },
+  "bdod_15-30cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_15-30cm_uncertainty.tif",
+   "bytes": 13205,
+   "sha256": "0ac10048c65c5d47990b703b459beb5abb17961d7b412789d841dc115cfef330",
+   "estado": "existente"
+  },
+  "bdod_30-60cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_30-60cm_Q0.05.tif",
+   "bytes": 26028,
+   "sha256": "b09676516c47cdb33ddc9c73b62a624d3059cd17d4bdd8d59244b5bd59eeecd1",
+   "estado": "existente"
+  },
+  "bdod_30-60cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_30-60cm_Q0.5.tif",
+   "bytes": 23534,
+   "sha256": "3034032ff2adeeaf82192483afe9e674757d59830c238539a83b3f97b0858dd3",
+   "estado": "existente"
+  },
+  "bdod_30-60cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_30-60cm_Q0.95.tif",
+   "bytes": 23437,
+   "sha256": "ffaa98ca8b1cafcb5995d403ef5a4356cc102f04da42623fac92742b8c74f439",
+   "estado": "existente"
+  },
+  "bdod_30-60cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_30-60cm_mean.tif",
+   "bytes": 23231,
+   "sha256": "dc95ead606f424f4e318cf2fb3c45e1e666fb9fbc1aaf194013a62bfb9153fc4",
+   "estado": "existente"
+  },
+  "bdod_30-60cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_30-60cm_uncertainty.tif",
+   "bytes": 12325,
+   "sha256": "296c683e1669ac23b3e86ee770b4476a391c04ccc8caded0dcd0066fa1ecda19",
+   "estado": "existente"
+  },
+  "bdod_60-100cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_60-100cm_Q0.05.tif",
+   "bytes": 25821,
+   "sha256": "54e1ce4f12181ce421fc65bb8b9e0c17e74a8eba6303cf9a4adc9d67f8f81ebe",
+   "estado": "existente"
+  },
+  "bdod_60-100cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_60-100cm_Q0.5.tif",
+   "bytes": 23313,
+   "sha256": "4f6c77b43454ab01d53f66bc1fd3bc32df395c200c08cf4a1d86501ba8cdbe2f",
+   "estado": "existente"
+  },
+  "bdod_60-100cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_60-100cm_Q0.95.tif",
+   "bytes": 24493,
+   "sha256": "b043b8715c49fe40fdcbb43e5448de2992774703cfa3fa1cef3318e7eb72411b",
+   "estado": "existente"
+  },
+  "bdod_60-100cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_60-100cm_mean.tif",
+   "bytes": 23533,
+   "sha256": "6814d7695d7dbe918cde70d2833442da3631f8ceec20c9eae1bcdd43f2571595",
+   "estado": "existente"
+  },
+  "bdod_60-100cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_60-100cm_uncertainty.tif",
+   "bytes": 12479,
+   "sha256": "833de19ab424cf4e7931608f14e3cf2ab6ef52f715bdbb2cb230d2435b38b05f",
+   "estado": "existente"
+  },
+  "bdod_100-200cm_Q0.05": {
+   "servicio": "bdod",
+   "archivo": "bdod_100-200cm_Q0.05.tif",
+   "bytes": 25119,
+   "sha256": "4a438fe9fb09ba135378a8267516b34adf9c417bbab4c12a6fc792bff5d60e72",
+   "estado": "existente"
+  },
+  "bdod_100-200cm_Q0.5": {
+   "servicio": "bdod",
+   "archivo": "bdod_100-200cm_Q0.5.tif",
+   "bytes": 23604,
+   "sha256": "7e9698a17c01c146042eb22a740e459bcb235f1693e8880839a7f51e7464def9",
+   "estado": "existente"
+  },
+  "bdod_100-200cm_Q0.95": {
+   "servicio": "bdod",
+   "archivo": "bdod_100-200cm_Q0.95.tif",
+   "bytes": 24944,
+   "sha256": "288eab31220459e0c5a3b373f90f70f8310c22d458ab032f868c39f61119dc77",
+   "estado": "existente"
+  },
+  "bdod_100-200cm_mean": {
+   "servicio": "bdod",
+   "archivo": "bdod_100-200cm_mean.tif",
+   "bytes": 23513,
+   "sha256": "4b29b299704c193a9f3329191edfef587fe4f897b50d5844e51a576c4dbd192e",
+   "estado": "existente"
+  },
+  "bdod_100-200cm_uncertainty": {
+   "servicio": "bdod",
+   "archivo": "bdod_100-200cm_uncertainty.tif",
+   "bytes": 12476,
+   "sha256": "53fb4fdcba28709c14db33a3f687e2c2a4d7f7115de5b3b31c7e4b8ad0854611",
+   "estado": "existente"
+  },
+  "cec_0-5cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_0-5cm_Q0.05.tif",
+   "bytes": 25830,
+   "sha256": "c8e63494914fb143faef82ad5e78ec1224eaf8e385727f9cd55f965d474ea8ef",
+   "estado": "existente"
+  },
+  "cec_0-5cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_0-5cm_Q0.5.tif",
+   "bytes": 36047,
+   "sha256": "d831f31f0bb6d4e0c478605ebceb47f136cd64c220f0b2a7e39bd48d19dc187d",
+   "estado": "existente"
+  },
+  "cec_0-5cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_0-5cm_Q0.95.tif",
+   "bytes": 33820,
+   "sha256": "c9412cdc6cc126911be5b3230e0da643c482db4eeb83a4d19c29c851039ac217",
+   "estado": "existente"
+  },
+  "cec_0-5cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_0-5cm_mean.tif",
+   "bytes": 33462,
+   "sha256": "895fd0273d0dd5e2062fd4d91016342366e1887fea54711c56b404c1c6c30a8e",
+   "estado": "existente"
+  },
+  "cec_0-5cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_0-5cm_uncertainty.tif",
+   "bytes": 22697,
+   "sha256": "f61b34464c84e776af6e5273839f084dc1e3dda1a40ddf23f15106b694134ee6",
+   "estado": "existente"
+  },
+  "cec_5-15cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_5-15cm_Q0.05.tif",
+   "bytes": 25223,
+   "sha256": "3f3a2dcaec64c74f53355afc6cd6bca402a465e70642902f0f271f7d60442faf",
+   "estado": "existente"
+  },
+  "cec_5-15cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_5-15cm_Q0.5.tif",
+   "bytes": 34956,
+   "sha256": "d670af756817036551cc9786bf410dc9a3acfb554399c5c94ab4cd1be328a506",
+   "estado": "existente"
+  },
+  "cec_5-15cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_5-15cm_Q0.95.tif",
+   "bytes": 35632,
+   "sha256": "df680ac14ff5b775c27cd28da7c38c27575154b1e040ca7d0147b53a4a4ce10e",
+   "estado": "existente"
+  },
+  "cec_5-15cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_5-15cm_mean.tif",
+   "bytes": 33485,
+   "sha256": "c585e1feee7a623d9a00e9fdcb66ec79430998a6499facbefb35ee98cd2f46fd",
+   "estado": "existente"
+  },
+  "cec_5-15cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_5-15cm_uncertainty.tif",
+   "bytes": 23352,
+   "sha256": "aeea532419ce1a0b343aa253e11828400d0f71d54767cecc94e26865f5fab49a",
+   "estado": "existente"
+  },
+  "cec_15-30cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_15-30cm_Q0.5.tif",
+   "bytes": 35570,
+   "sha256": "350efee6fadfa1dddbd8d7d3bae86c0d50460da99d645d59c7bf53d3a9905ca1",
+   "estado": "existente"
+  },
+  "cec_15-30cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_15-30cm_Q0.05.tif",
+   "bytes": 25310,
+   "sha256": "1a56a049819355a75d8d7e505f477fc41f0bb7d7c158e13680458db3b62dc132",
+   "estado": "existente"
+  },
+  "cec_15-30cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_15-30cm_Q0.95.tif",
+   "bytes": 35813,
+   "sha256": "cb16e1a8ff4c1cdcced959a464b1eb2c4d2e30cee0b193d8711d8bc48d5d6cec",
+   "estado": "existente"
+  },
+  "cec_15-30cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_15-30cm_mean.tif",
+   "bytes": 33428,
+   "sha256": "8635e282baecc1d466d8511feb03dcf631e45052d6760ce6e1ceb7658429924a",
+   "estado": "existente"
+  },
+  "cec_15-30cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_15-30cm_uncertainty.tif",
+   "bytes": 23959,
+   "sha256": "9de94904d82f5e1811198c70efc984a1ff2a0cfdaa8a69da0e9696006aac358e",
+   "estado": "existente"
+  },
+  "cec_30-60cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_30-60cm_Q0.05.tif",
+   "bytes": 24344,
+   "sha256": "b9100ac765cc977a9ce7f669f2e714ed40fda1504feeed15560bab7dcd4d96b1",
+   "estado": "existente"
+  },
+  "cec_30-60cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_30-60cm_Q0.5.tif",
+   "bytes": 34956,
+   "sha256": "ac5f45d1b626185196e5891deffbdd1d9fa4e8d0302db6b0caf722971000c55d",
+   "estado": "existente"
+  },
+  "cec_30-60cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_30-60cm_Q0.95.tif",
+   "bytes": 36039,
+   "sha256": "900397c3881a61844f0372948836c30f9f3610db3c46cb559823dd411b15cef1",
+   "estado": "existente"
+  },
+  "cec_30-60cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_30-60cm_mean.tif",
+   "bytes": 33441,
+   "sha256": "81a6d1defefd015bdd2220240ef5784b41bafb9aefa838532da90c78987b02f0",
+   "estado": "existente"
+  },
+  "cec_30-60cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_30-60cm_uncertainty.tif",
+   "bytes": 23813,
+   "sha256": "e3f963558df46f454d73cfbc71d515c696750094c14bb6c6f40f57ba92b7efea",
+   "estado": "existente"
+  },
+  "cec_60-100cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_60-100cm_Q0.5.tif",
+   "bytes": 33890,
+   "sha256": "9de1871fd8f1ad494b0ac69d73e10a54f116b776d4391490e00e03c0b7ac9359",
+   "estado": "existente"
+  },
+  "cec_60-100cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_60-100cm_Q0.05.tif",
+   "bytes": 24289,
+   "sha256": "c845a6047ce93568927c924862bba1ef194b3cfd869933c75b0277aa7ca78f4e",
+   "estado": "existente"
+  },
+  "cec_60-100cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_60-100cm_Q0.95.tif",
+   "bytes": 37907,
+   "sha256": "a8e20372a5970ed711c2f06dea6a97d3be55807564c39c45827a201e36f1c0ca",
+   "estado": "existente"
+  },
+  "cec_60-100cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_60-100cm_mean.tif",
+   "bytes": 34177,
+   "sha256": "71906cc55354d90542d5eec34fab12f8899aa74365e52edbf90a42de90607990",
+   "estado": "existente"
+  },
+  "cec_60-100cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_60-100cm_uncertainty.tif",
+   "bytes": 25414,
+   "sha256": "cb87656cf096021b6f540237d21a096740a79e7e4a1d919b5bb13354bc24fb88",
+   "estado": "existente"
+  },
+  "cec_100-200cm_Q0.5": {
+   "servicio": "cec",
+   "archivo": "cec_100-200cm_Q0.5.tif",
+   "bytes": 33879,
+   "sha256": "813b4b347086126471daa88508f860ab3c70235f131479f7d890471fbe45bc7b",
+   "estado": "existente"
+  },
+  "cec_100-200cm_Q0.05": {
+   "servicio": "cec",
+   "archivo": "cec_100-200cm_Q0.05.tif",
+   "bytes": 24029,
+   "sha256": "7114f219a67c4871750342b266e86efb8ee52f76ad4362494322b616fbfcc8bc",
+   "estado": "existente"
+  },
+  "cec_100-200cm_Q0.95": {
+   "servicio": "cec",
+   "archivo": "cec_100-200cm_Q0.95.tif",
+   "bytes": 38414,
+   "sha256": "28b678c200e9d9534f0efb6ce74a7575b8f82c153635a5a8c374ae874bd328fe",
+   "estado": "existente"
+  },
+  "cec_100-200cm_mean": {
+   "servicio": "cec",
+   "archivo": "cec_100-200cm_mean.tif",
+   "bytes": 34069,
+   "sha256": "5bc40788930fe17c0401a33d46cbf8ea3f2a4ff68638fbad8973e0e547e98458",
+   "estado": "existente"
+  },
+  "cec_100-200cm_uncertainty": {
+   "servicio": "cec",
+   "archivo": "cec_100-200cm_uncertainty.tif",
+   "bytes": 24974,
+   "sha256": "3c2e2a2bbb058ff7565901b404a96da71b37dfe7adaa283ea6e47ccc9bd993e1",
+   "estado": "existente"
+  },
+  "cfvo_0-5cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_0-5cm_Q0.05.tif",
+   "bytes": 1278,
+   "sha256": "a9fcd30c2f81d55cc44f18805ff491aef6cc731aff24b4071e4cdd12894fefae",
+   "estado": "existente"
+  },
+  "cfvo_0-5cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_0-5cm_Q0.5.tif",
+   "bytes": 33166,
+   "sha256": "d85ad3b8b232568624297749ce815d8b50f082edb345a152f01f030dc3547199",
+   "estado": "existente"
+  },
+  "cfvo_0-5cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_0-5cm_Q0.95.tif",
+   "bytes": 47269,
+   "sha256": "a4f2df7b5cb864e209730db01354ba6c21acb7120534455840adfc3abbba9a58",
+   "estado": "existente"
+  },
+  "cfvo_0-5cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_0-5cm_mean.tif",
+   "bytes": 41619,
+   "sha256": "eeb287bae0b08461567d636536499f52093e74d9f3dc05dd8097a59b980ac2a9",
+   "estado": "existente"
+  },
+  "cfvo_0-5cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_0-5cm_uncertainty.tif",
+   "bytes": 47414,
+   "sha256": "b62a5483b17a7e25a04cee47a6a4bffb790701f7e80b843752f00aa3412fc577",
+   "estado": "existente"
+  },
+  "cfvo_5-15cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_5-15cm_Q0.5.tif",
+   "bytes": 32445,
+   "sha256": "ee517ac954949ed379e0625816c2d362f4ec0cf76c74b574a539b8ab5ca8bbdf",
+   "estado": "existente"
+  },
+  "cfvo_5-15cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_5-15cm_Q0.05.tif",
+   "bytes": 1278,
+   "sha256": "a9fcd30c2f81d55cc44f18805ff491aef6cc731aff24b4071e4cdd12894fefae",
+   "estado": "existente"
+  },
+  "cfvo_5-15cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_5-15cm_Q0.95.tif",
+   "bytes": 48687,
+   "sha256": "225b5706c5e247633315ca97db56be9eb9a392c716221ecd93003347520dfac5",
+   "estado": "existente"
+  },
+  "cfvo_5-15cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_5-15cm_mean.tif",
+   "bytes": 41870,
+   "sha256": "703feced80b061c92d555a87588ef92a6be80d0c711a426823a6b302009de118",
+   "estado": "existente"
+  },
+  "cfvo_5-15cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_5-15cm_uncertainty.tif",
+   "bytes": 48176,
+   "sha256": "56f90f969f946561831fbbd766b96a8683eb4c7c6f3bd7aa5070bb1b18dfb0b8",
+   "estado": "existente"
+  },
+  "cfvo_15-30cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_15-30cm_Q0.5.tif",
+   "bytes": 35076,
+   "sha256": "68f080ed1099ce78b5df52ee3550f7c59b549e1fa49c9c53a4244b1f004ab943",
+   "estado": "existente"
+  },
+  "cfvo_15-30cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_15-30cm_Q0.05.tif",
+   "bytes": 1287,
+   "sha256": "ac59f3b43120f708ca2e00330edde0545cd98b17362e42f767b57333265bdf3f",
+   "estado": "existente"
+  },
+  "cfvo_15-30cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_15-30cm_Q0.95.tif",
+   "bytes": 48901,
+   "sha256": "23bf4fa9818f3e5c010efed92bec44a9876ecbade424903dc4e6ffd996410ff9",
+   "estado": "existente"
+  },
+  "cfvo_15-30cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_15-30cm_mean.tif",
+   "bytes": 43260,
+   "sha256": "78a17469f09c8ed72e05d797b30d44cdac13c41c56df927a98f4b28c084f22b5",
+   "estado": "existente"
+  },
+  "cfvo_15-30cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_15-30cm_uncertainty.tif",
+   "bytes": 48551,
+   "sha256": "ac3f2244bac737f04f22f14e8be74c1961900d31e740a2fbe17979a671bac28f",
+   "estado": "existente"
+  },
+  "cfvo_30-60cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_30-60cm_Q0.5.tif",
+   "bytes": 36861,
+   "sha256": "43a6637fc8c342f4b7e5d7b5b647d737ee40a21b506e370af553bd719722702f",
+   "estado": "existente"
+  },
+  "cfvo_30-60cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_30-60cm_Q0.05.tif",
+   "bytes": 1278,
+   "sha256": "a9fcd30c2f81d55cc44f18805ff491aef6cc731aff24b4071e4cdd12894fefae",
+   "estado": "existente"
+  },
+  "cfvo_30-60cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_30-60cm_Q0.95.tif",
+   "bytes": 45511,
+   "sha256": "e3d8c65ebad5f2519015a919b22ede1e871f6e9bf601b900320ebfb23218b907",
+   "estado": "existente"
+  },
+  "cfvo_30-60cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_30-60cm_mean.tif",
+   "bytes": 44100,
+   "sha256": "8a0e81120d88c9d24cb42b3d0efdde85783f3f7077345f15db34836f97ae309c",
+   "estado": "existente"
+  },
+  "cfvo_30-60cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_30-60cm_uncertainty.tif",
+   "bytes": 48251,
+   "sha256": "82c6b6175a8aa8a90cc1f21b01cf98e25fcfd720f4cc3379f09fc163eb4418f2",
+   "estado": "existente"
+  },
+  "cfvo_60-100cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_60-100cm_Q0.05.tif",
+   "bytes": 1278,
+   "sha256": "a9fcd30c2f81d55cc44f18805ff491aef6cc731aff24b4071e4cdd12894fefae",
+   "estado": "existente"
+  },
+  "cfvo_60-100cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_60-100cm_Q0.5.tif",
+   "bytes": 39682,
+   "sha256": "4e41369bfdf521405cb28257ae367eea95e2d5751ca051f32d8922a898af1a56",
+   "estado": "existente"
+  },
+  "cfvo_60-100cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_60-100cm_Q0.95.tif",
+   "bytes": 45193,
+   "sha256": "d2a1163f7c034b0a6e478b4fde215ee9de367fdd7981720b53ec614725680563",
+   "estado": "existente"
+  },
+  "cfvo_60-100cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_60-100cm_mean.tif",
+   "bytes": 44302,
+   "sha256": "fb43bd42d366d5a57bc80648e13628577e27447605771279e6ffc193b18f9187",
+   "estado": "existente"
+  },
+  "cfvo_60-100cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_60-100cm_uncertainty.tif",
+   "bytes": 47616,
+   "sha256": "f38d66354fbe5454ab9706df93c89adee774681e385b878bfe60928abe8d73c1",
+   "estado": "existente"
+  },
+  "cfvo_100-200cm_Q0.05": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_100-200cm_Q0.05.tif",
+   "bytes": 1278,
+   "sha256": "a9fcd30c2f81d55cc44f18805ff491aef6cc731aff24b4071e4cdd12894fefae",
+   "estado": "existente"
+  },
+  "cfvo_100-200cm_Q0.5": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_100-200cm_Q0.5.tif",
+   "bytes": 40798,
+   "sha256": "baf81b78fb7b8578dc55a79226746ec12984dea98bab7d58bd46d5f973edc237",
+   "estado": "existente"
+  },
+  "cfvo_100-200cm_Q0.95": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_100-200cm_Q0.95.tif",
+   "bytes": 43490,
+   "sha256": "099d772cfb99099dcc6a2b08ed450a8e99eb0845932b51d751014bda99ae4d19",
+   "estado": "existente"
+  },
+  "cfvo_100-200cm_mean": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_100-200cm_mean.tif",
+   "bytes": 44082,
+   "sha256": "5fb2583a1dd4d8096e3c3e12343bfd024bdc0c1c54fd7c0937b58344a7c86d2f",
+   "estado": "existente"
+  },
+  "cfvo_100-200cm_uncertainty": {
+   "servicio": "cfvo",
+   "archivo": "cfvo_100-200cm_uncertainty.tif",
+   "bytes": 46760,
+   "sha256": "8bef9fb2d3fb82aebd872a15339ad39cb1b852dae40adfbf66f93359019de4aa",
+   "estado": "existente"
+  },
+  "clay_0-5cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_0-5cm_Q0.05.tif",
+   "bytes": 34212,
+   "sha256": "8f94f0093612dfabc25aef8861c136db30733e1c3654ea1aafb5fec623f3bf8c",
+   "estado": "existente"
+  },
+  "clay_0-5cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_0-5cm_Q0.5.tif",
+   "bytes": 35778,
+   "sha256": "19100d65b6e73565b65206fa1c4e7aa65aaadd942e2156f2e36c9b46c351f113",
+   "estado": "existente"
+  },
+  "clay_0-5cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_0-5cm_Q0.95.tif",
+   "bytes": 44848,
+   "sha256": "f57583fdcbb64ca246e0b6e34c7e03bc23de16756b843d765366c5c986c5dd4b",
+   "estado": "existente"
+  },
+  "clay_0-5cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_0-5cm_mean.tif",
+   "bytes": 35117,
+   "sha256": "a7dc89d88bfbe499d7ec6e09fb581d5e20aafbb38dfc9748e7b42796f5d7b0a4",
+   "estado": "existente"
+  },
+  "clay_0-5cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_0-5cm_uncertainty.tif",
+   "bytes": 22776,
+   "sha256": "0356ac5a078c4020827267d0ffd95880e8632c5699d7e1e49a33903f46583ba3",
+   "estado": "existente"
+  },
+  "clay_5-15cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_5-15cm_Q0.05.tif",
+   "bytes": 35222,
+   "sha256": "b23bdb429526a93f4a23a7412c860b3a30dc41911af7e87cf1fa1357d1a2db55",
+   "estado": "existente"
+  },
+  "clay_5-15cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_5-15cm_Q0.5.tif",
+   "bytes": 36210,
+   "sha256": "f75c14f8cc0f22070f74810ea1b0cc3665cf30737932a19e7cd5ee974975e638",
+   "estado": "existente"
+  },
+  "clay_5-15cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_5-15cm_Q0.95.tif",
+   "bytes": 44820,
+   "sha256": "15890ed4b4d30ce86ce1c8c2afe883962cd0729c020b253e87934de263d30fc6",
+   "estado": "existente"
+  },
+  "clay_5-15cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_5-15cm_mean.tif",
+   "bytes": 35857,
+   "sha256": "6d5a63d40ee0a9dfb43bf6c7492dca8feb0ba447ea0f6ac0aedf16f8ef46bb52",
+   "estado": "existente"
+  },
+  "clay_5-15cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_5-15cm_uncertainty.tif",
+   "bytes": 22188,
+   "sha256": "997d862d451825d87634ab0db8bf14339c1234e17920742121eadbc66a9b637b",
+   "estado": "existente"
+  },
+  "clay_15-30cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_15-30cm_Q0.05.tif",
+   "bytes": 35410,
+   "sha256": "b78977c58832fa0b3ac5950ebbc0a4655caf47b6dabdbd02156a9feba8da9651",
+   "estado": "existente"
+  },
+  "clay_15-30cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_15-30cm_Q0.5.tif",
+   "bytes": 39266,
+   "sha256": "0e706a7e96414585283901281612a1d464fffbb1c1e992b8830f140de5ee4d93",
+   "estado": "existente"
+  },
+  "clay_15-30cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_15-30cm_Q0.95.tif",
+   "bytes": 43832,
+   "sha256": "dd3800a3928400c75fc3bc342555d4c63a23be53866da55758813f3f057ea0dd",
+   "estado": "existente"
+  },
+  "clay_15-30cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_15-30cm_mean.tif",
+   "bytes": 37886,
+   "sha256": "116ded12c57ea8cce74f858cfeae7410ea0938f804f890097cff25c4d3186639",
+   "estado": "existente"
+  },
+  "clay_15-30cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_15-30cm_uncertainty.tif",
+   "bytes": 21036,
+   "sha256": "fedbcdf1b791559496ca01c6d93bec358796b86feb65ecb64d2b3b0847a872cc",
+   "estado": "existente"
+  },
+  "clay_30-60cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_30-60cm_Q0.5.tif",
+   "bytes": 40790,
+   "sha256": "b245f997cffb47fb6ba7d881dc8ce168e26510b77f824b16ae2acfeec7be774c",
+   "estado": "existente"
+  },
+  "clay_30-60cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_30-60cm_Q0.05.tif",
+   "bytes": 35915,
+   "sha256": "928c3dae804c6c0ee8fd481d4dd027869cf4f3c2711e725abca82ce69b94019c",
+   "estado": "existente"
+  },
+  "clay_30-60cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_30-60cm_Q0.95.tif",
+   "bytes": 44052,
+   "sha256": "c432deedd2ba1858668df2ca8565bd416b95b9d17ff1599297cd7cf7d54bb265",
+   "estado": "existente"
+  },
+  "clay_30-60cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_30-60cm_mean.tif",
+   "bytes": 38884,
+   "sha256": "a234e9148044e67f9dbc1635c29a3e82dab9ea57fa59eaf4150427e04dd1d533",
+   "estado": "existente"
+  },
+  "clay_30-60cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_30-60cm_uncertainty.tif",
+   "bytes": 21054,
+   "sha256": "77b5d1472c27c6a0457f3e0f89bc3949aa69712c942e3a9c1581b0df891616e3",
+   "estado": "existente"
+  },
+  "clay_60-100cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_60-100cm_Q0.05.tif",
+   "bytes": 35705,
+   "sha256": "007c14f8686c99521b755b6a40aa2baa4262c4107e5ca4ca7bccb44834372ed6",
+   "estado": "existente"
+  },
+  "clay_60-100cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_60-100cm_Q0.5.tif",
+   "bytes": 41213,
+   "sha256": "cda4850e21b136bd256d401eb3de265eb7e7fa94f8e154d685d27ccabb12cf3c",
+   "estado": "existente"
+  },
+  "clay_60-100cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_60-100cm_Q0.95.tif",
+   "bytes": 44073,
+   "sha256": "1edb7841dab10043b7c171e3ca451fc3b460d917491d56f444f44c114a56e39f",
+   "estado": "existente"
+  },
+  "clay_60-100cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_60-100cm_mean.tif",
+   "bytes": 38869,
+   "sha256": "5672ac7080bbc7d1313fccb340ade41fbe8f641c4a95061a545fd9a0a186faca",
+   "estado": "existente"
+  },
+  "clay_60-100cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_60-100cm_uncertainty.tif",
+   "bytes": 20996,
+   "sha256": "b522784d2ecbf8843f11c562edcc52a093e2a8a968992185294ce0f18552b0f2",
+   "estado": "existente"
+  },
+  "clay_100-200cm_Q0.5": {
+   "servicio": "clay",
+   "archivo": "clay_100-200cm_Q0.5.tif",
+   "bytes": 41071,
+   "sha256": "82b5ab24b1723f265644dec991556635042ce6fe996fcc90b94751fc13394024",
+   "estado": "existente"
+  },
+  "clay_100-200cm_Q0.05": {
+   "servicio": "clay",
+   "archivo": "clay_100-200cm_Q0.05.tif",
+   "bytes": 34488,
+   "sha256": "645cc6bf0d6159d783619f41d0de4eaf5c344bbadd8a2e7b09e8a642158fb26c",
+   "estado": "existente"
+  },
+  "clay_100-200cm_Q0.95": {
+   "servicio": "clay",
+   "archivo": "clay_100-200cm_Q0.95.tif",
+   "bytes": 44271,
+   "sha256": "0a60d9dfc23bc4b4bb6fba50eafbc3f4cd8afcaef1739ebb4198b94d9238b153",
+   "estado": "existente"
+  },
+  "clay_100-200cm_mean": {
+   "servicio": "clay",
+   "archivo": "clay_100-200cm_mean.tif",
+   "bytes": 39066,
+   "sha256": "969a8079f7e58f26ed7a1f20e4c0dfdb2293136db6dfe8d3f618d9a2ea30547b",
+   "estado": "existente"
+  },
+  "clay_100-200cm_uncertainty": {
+   "servicio": "clay",
+   "archivo": "clay_100-200cm_uncertainty.tif",
+   "bytes": 21635,
+   "sha256": "067c251c88786c5a5a4785c24eae329d29e41b199bc59ec1ad0960943aec0488",
+   "estado": "existente"
+  },
+  "nitrogen_0-5cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_0-5cm_Q0.05.tif",
+   "bytes": 25592,
+   "sha256": "02c6fe9cab5cda6a58067cc88ced94e4298e114fadca8d90cabf47f2a973b58e",
+   "estado": "existente"
+  },
+  "nitrogen_0-5cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_0-5cm_Q0.5.tif",
+   "bytes": 37334,
+   "sha256": "1b69380b117a7d90006049907459246afb51bf74d0f037dc2fe10fc118cc4a63",
+   "estado": "existente"
+  },
+  "nitrogen_0-5cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_0-5cm_Q0.95.tif",
+   "bytes": 42086,
+   "sha256": "4274570772036488b83a0964b01b7341e629af6246b680bdbbfeb0a363bc831b",
+   "estado": "existente"
+  },
+  "nitrogen_0-5cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_0-5cm_mean.tif",
+   "bytes": 45833,
+   "sha256": "46723541b681cfc445545981c5c0162daaa290d317eb9adf6fdb732a9eca1e3e",
+   "estado": "existente"
+  },
+  "nitrogen_0-5cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_0-5cm_uncertainty.tif",
+   "bytes": 32057,
+   "sha256": "fbf081ab7d01f804c315be858791bd0add7dea1c0dbbb87d1d2540df41e7f9cb",
+   "estado": "existente"
+  },
+  "nitrogen_5-15cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_5-15cm_Q0.5.tif",
+   "bytes": 31518,
+   "sha256": "3a335aedaacfaa47b596deeb441bee961e13bf00c82b9048a55491d99410f427",
+   "estado": "existente"
+  },
+  "nitrogen_5-15cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_5-15cm_Q0.05.tif",
+   "bytes": 25691,
+   "sha256": "87aaa770bc090aeb537de1089eafceeb312ae77933cf8137d92bd1245d440cfe",
+   "estado": "existente"
+  },
+  "nitrogen_5-15cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_5-15cm_Q0.95.tif",
+   "bytes": 45722,
+   "sha256": "ca5ae094662654a062c1239e9f4835e030bdedf69bd6fd6217a54ab478d425d6",
+   "estado": "existente"
+  },
+  "nitrogen_5-15cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_5-15cm_mean.tif",
+   "bytes": 40834,
+   "sha256": "52dd1d1bd3257ce2c0db4ceb4e1a7ca874ffe63df69f78fd6cb3341d2f219665",
+   "estado": "existente"
+  },
+  "nitrogen_5-15cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_5-15cm_uncertainty.tif",
+   "bytes": 29987,
+   "sha256": "fa9d44ddaccdcc5f5a4532dccc14f65b3de8e1266619cd829e035cc898fccb0d",
+   "estado": "existente"
+  },
+  "nitrogen_15-30cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_15-30cm_Q0.05.tif",
+   "bytes": 24163,
+   "sha256": "67a62c6249e05e62de15a6faa3ca34dbc3cc8d270cc80b82b8ff8863261b84d3",
+   "estado": "existente"
+  },
+  "nitrogen_15-30cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_15-30cm_Q0.5.tif",
+   "bytes": 29320,
+   "sha256": "21d46e988b18d1b68b6af5d0b09e045daa94c7e9d20886ae4dde35a908d3e1ac",
+   "estado": "existente"
+  },
+  "nitrogen_15-30cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_15-30cm_Q0.95.tif",
+   "bytes": 40947,
+   "sha256": "8fb0c62e55b686c923429f4b46a91accd32d6adc464455bcc7ac5b5062406077",
+   "estado": "existente"
+  },
+  "nitrogen_15-30cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_15-30cm_mean.tif",
+   "bytes": 36421,
+   "sha256": "9285bd0fd06a3b3c652e82b00eda86832380ebc710218464b5cc002b926a9ba0",
+   "estado": "existente"
+  },
+  "nitrogen_15-30cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_15-30cm_uncertainty.tif",
+   "bytes": 28292,
+   "sha256": "bab968ce87d39cbb4dcaf33b5d8f9bcd9999b61b3b2f2853470a4b918374c3a8",
+   "estado": "existente"
+  },
+  "nitrogen_30-60cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_30-60cm_Q0.05.tif",
+   "bytes": 18717,
+   "sha256": "8cf7e2e068288f0706b519a11e02df172cde01f739d3a1ac2f5333db43e84498",
+   "estado": "existente"
+  },
+  "nitrogen_30-60cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_30-60cm_Q0.5.tif",
+   "bytes": 25426,
+   "sha256": "6e734f5c301d06bf6a2bb21b2534f89378c5a307317d329edf28572f90e1f61d",
+   "estado": "existente"
+  },
+  "nitrogen_30-60cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_30-60cm_Q0.95.tif",
+   "bytes": 39662,
+   "sha256": "fefc506b5edcdbe54225eaa8b8d5b6f5fab28495bd189c79132bdae91fc9dc89",
+   "estado": "existente"
+  },
+  "nitrogen_30-60cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_30-60cm_mean.tif",
+   "bytes": 35834,
+   "sha256": "14bdcb9e7d8e53548b6a90e8f79070db0ce103b7808e3ea378b47ab45977889a",
+   "estado": "existente"
+  },
+  "nitrogen_30-60cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_30-60cm_uncertainty.tif",
+   "bytes": 28592,
+   "sha256": "cf35df2d2c284940762437e60fc47dcf804c9929045ef4dec765372b2ae57c3e",
+   "estado": "existente"
+  },
+  "nitrogen_60-100cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_60-100cm_Q0.05.tif",
+   "bytes": 23247,
+   "sha256": "ebfde86c121a89f17284a244404e752a4d243a97cf70d80244236c68409a2569",
+   "estado": "existente"
+  },
+  "nitrogen_60-100cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_60-100cm_Q0.5.tif",
+   "bytes": 25093,
+   "sha256": "933efb6765e2ae50981e1466b1bf5f651979dbced5295754a98ed20ab7fdb08a",
+   "estado": "existente"
+  },
+  "nitrogen_60-100cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_60-100cm_Q0.95.tif",
+   "bytes": 34837,
+   "sha256": "4baf2056db0f9d8730226212d86a6528c124ab2908d8cd4dec172fb6222665f4",
+   "estado": "existente"
+  },
+  "nitrogen_60-100cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_60-100cm_mean.tif",
+   "bytes": 34923,
+   "sha256": "c383a896274239dcdd0aea6a9a0d9964b6dc239f69bd252082422c2d9bf2181c",
+   "estado": "existente"
+  },
+  "nitrogen_60-100cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_60-100cm_uncertainty.tif",
+   "bytes": 28466,
+   "sha256": "8df19c84cedda5d26f9d02e331d97ba67d0ab7e9af91add60b7c8477a8569e5d",
+   "estado": "existente"
+  },
+  "nitrogen_100-200cm_Q0.05": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_100-200cm_Q0.05.tif",
+   "bytes": 14638,
+   "sha256": "88c2ae610452388c6f87fd16af8c58e281940715e32fc96fbeb5b6c4eee90319",
+   "estado": "existente"
+  },
+  "nitrogen_100-200cm_Q0.5": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_100-200cm_Q0.5.tif",
+   "bytes": 23891,
+   "sha256": "89e180bfe5d75fa2d57926299a9868a83475bd52b241a6a9082060c3f665069c",
+   "estado": "existente"
+  },
+  "nitrogen_100-200cm_Q0.95": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_100-200cm_Q0.95.tif",
+   "bytes": 35616,
+   "sha256": "5dd9aabd2b0dadbf3c689fe08b07af880c279029cec9a2780aa3ec0dabf94814",
+   "estado": "existente"
+  },
+  "nitrogen_100-200cm_mean": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_100-200cm_mean.tif",
+   "bytes": 34124,
+   "sha256": "78dcb8f39b77141747abab554369dff7c9602c03daba4d4c1f8b92e12f202505",
+   "estado": "existente"
+  },
+  "nitrogen_100-200cm_uncertainty": {
+   "servicio": "nitrogen",
+   "archivo": "nitrogen_100-200cm_uncertainty.tif",
+   "bytes": 29064,
+   "sha256": "77922eb568cf751dd72ebf90bd411931cb6c72df92316eab70b63d8fb26cfbeb",
+   "estado": "existente"
+  },
+  "phh2o_0-5cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_0-5cm_Q0.05.tif",
+   "bytes": 18832,
+   "sha256": "67d8aafbc386274c34f9a29101d73c982ea3ad70c6193e2fd0f6a343a7618396",
+   "estado": "existente"
+  },
+  "phh2o_0-5cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_0-5cm_Q0.5.tif",
+   "bytes": 19701,
+   "sha256": "0ca320657f293519db84919ec5797d9de685bba340d62d678033edc1ec67384d",
+   "estado": "existente"
+  },
+  "phh2o_0-5cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_0-5cm_Q0.95.tif",
+   "bytes": 18500,
+   "sha256": "f5b31fa77efe680b6738035f523a41ff15ed1fd0c65fc2ad535ce4dbee32c234",
+   "estado": "existente"
+  },
+  "phh2o_0-5cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_0-5cm_mean.tif",
+   "bytes": 18524,
+   "sha256": "1b833eaf16e82227fb549ad01481718939327b96fe65eb068f5520fb6bdcd3ae",
+   "estado": "existente"
+  },
+  "phh2o_0-5cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_0-5cm_uncertainty.tif",
+   "bytes": 11081,
+   "sha256": "e740f7c4be0cb2a18d684d6c1fabeb4f242e662b607930d2b6be4d1cf93c418a",
+   "estado": "existente"
+  },
+  "phh2o_5-15cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_5-15cm_Q0.5.tif",
+   "bytes": 19594,
+   "sha256": "329acf2ec9dd047c2751d49ee40aac51623d10c6967d0f03101d8d226da95d68",
+   "estado": "existente"
+  },
+  "phh2o_5-15cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_5-15cm_Q0.05.tif",
+   "bytes": 18849,
+   "sha256": "fd9247e4e16a597821e421dccaac66f22726de2131697f293ad88704605ffb30",
+   "estado": "existente"
+  },
+  "phh2o_5-15cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_5-15cm_Q0.95.tif",
+   "bytes": 20238,
+   "sha256": "c133ba4f71ad3e8183a8da423e72e4421290f507f194af127a2a01f8db8d58f3",
+   "estado": "existente"
+  },
+  "phh2o_5-15cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_5-15cm_mean.tif",
+   "bytes": 18340,
+   "sha256": "94df55a175c5c509e47aea20d960518a43d98e3d9b3943eb9e3aa142581b3b62",
+   "estado": "existente"
+  },
+  "phh2o_5-15cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_5-15cm_uncertainty.tif",
+   "bytes": 11236,
+   "sha256": "283a67618ea31b244103a4474f9bd9d5dddec5ace60e8ea73ad3352a70acf257",
+   "estado": "existente"
+  },
+  "phh2o_15-30cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_15-30cm_Q0.05.tif",
+   "bytes": 19244,
+   "sha256": "d15402ff3ab7755143bbf7f1f72b2d2cba3f19f36f72b817b87a237cb9652616",
+   "estado": "existente"
+  },
+  "phh2o_15-30cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_15-30cm_Q0.5.tif",
+   "bytes": 19576,
+   "sha256": "31bbd4ba3a748a22e2fa029d47b17f898dafd0eb7d5952923d574caba0cf87f1",
+   "estado": "existente"
+  },
+  "phh2o_15-30cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_15-30cm_Q0.95.tif",
+   "bytes": 20527,
+   "sha256": "f926a52eee4f847ba5f43c4775c241a7fdb0ef192f5118b2b12ea08ecda5fb72",
+   "estado": "existente"
+  },
+  "phh2o_15-30cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_15-30cm_mean.tif",
+   "bytes": 18469,
+   "sha256": "a2a30ff48707751c4e20d5424c95a066d08ca494a9f4824f04119562761bb3d8",
+   "estado": "existente"
+  },
+  "phh2o_15-30cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_15-30cm_uncertainty.tif",
+   "bytes": 11357,
+   "sha256": "ccd0f89d45ef8d33b6bfd1b353a0dbf254af176d6f094f48d390102276792188",
+   "estado": "existente"
+  },
+  "phh2o_30-60cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_30-60cm_Q0.05.tif",
+   "bytes": 20402,
+   "sha256": "be158209b4ea8a931208ee86f2d7c37be21549039000e523c9656f97561e894b",
+   "estado": "existente"
+  },
+  "phh2o_30-60cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_30-60cm_Q0.5.tif",
+   "bytes": 18972,
+   "sha256": "6d6e01c6d7b664eea2117b7a1ef318c1ad1e80543379a0d4b6409a9e884759f0",
+   "estado": "existente"
+  },
+  "phh2o_30-60cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_30-60cm_Q0.95.tif",
+   "bytes": 20785,
+   "sha256": "f8eb9b68a9552f254a343d6efb5262cf5aed0ebf67b7cb0e9d8e905fe4c90c5d",
+   "estado": "existente"
+  },
+  "phh2o_30-60cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_30-60cm_mean.tif",
+   "bytes": 18058,
+   "sha256": "64736d66f5b2e9786d26196918c5fc011986e419e659ddc108f036f756a6d9e7",
+   "estado": "existente"
+  },
+  "phh2o_30-60cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_30-60cm_uncertainty.tif",
+   "bytes": 9769,
+   "sha256": "c6eea323b57402e09129a1e6ce3976043e62576f6b7db5a0b53fb1f3cc371087",
+   "estado": "existente"
+  },
+  "phh2o_60-100cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_60-100cm_Q0.5.tif",
+   "bytes": 19983,
+   "sha256": "57744bec76ffa40832f3d779fa437b77cc8f6d4219fc556dba84ff27307615e7",
+   "estado": "existente"
+  },
+  "phh2o_60-100cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_60-100cm_Q0.05.tif",
+   "bytes": 20462,
+   "sha256": "b8d85dbb19ed4e552ef4031906ba1189861a38bedb4ff231340aac414800c3be",
+   "estado": "existente"
+  },
+  "phh2o_60-100cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_60-100cm_Q0.95.tif",
+   "bytes": 20078,
+   "sha256": "f2e4ef6be7f0d8138da2482f9e4f0d685f7285adc8aa8586e1f99410a280f590",
+   "estado": "existente"
+  },
+  "phh2o_60-100cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_60-100cm_mean.tif",
+   "bytes": 18093,
+   "sha256": "74f0f2d13d71166a1413d0b482c240ab25fead2b445e3e6a704ba83f66e6103d",
+   "estado": "existente"
+  },
+  "phh2o_60-100cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_60-100cm_uncertainty.tif",
+   "bytes": 9983,
+   "sha256": "34fc86b9a11e3ead87678eed58c2c9da685a6389462e1ab8be56b6ba06ceac30",
+   "estado": "existente"
+  },
+  "phh2o_100-200cm_Q0.05": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_100-200cm_Q0.05.tif",
+   "bytes": 20330,
+   "sha256": "203d950fa5e49d0dc46f3af1749b548bcd3018910ffe491470c94129bd06eb1c",
+   "estado": "existente"
+  },
+  "phh2o_100-200cm_Q0.5": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_100-200cm_Q0.5.tif",
+   "bytes": 20704,
+   "sha256": "4c920dc484dfcc7091e01d8f7c2ceba02f12515200fd3dccf4adeb68697cc1dd",
+   "estado": "existente"
+  },
+  "phh2o_100-200cm_Q0.95": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_100-200cm_Q0.95.tif",
+   "bytes": 20424,
+   "sha256": "8a2831d94fff902f5b9fdf62184dd2015cf337b1aa7e98c1f180df4f50ab3886",
+   "estado": "existente"
+  },
+  "phh2o_100-200cm_mean": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_100-200cm_mean.tif",
+   "bytes": 18179,
+   "sha256": "649e868d1a60b411d047c2bdb2c6146bd55e34b23f6587e1f7a529b8e05a3479",
+   "estado": "existente"
+  },
+  "phh2o_100-200cm_uncertainty": {
+   "servicio": "phh2o",
+   "archivo": "phh2o_100-200cm_uncertainty.tif",
+   "bytes": 9846,
+   "sha256": "5e06d23fcf56a1403272f63469b497425ccb7b1611df7b31de4ca1bea27bcc07",
+   "estado": "existente"
+  },
+  "sand_0-5cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_0-5cm_Q0.05.tif",
+   "bytes": 39699,
+   "sha256": "f196eb8a2179e4090e154ddacd9a316a4975b1b08fd280c0f9d01399c8903bcb",
+   "estado": "existente"
+  },
+  "sand_0-5cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_0-5cm_Q0.5.tif",
+   "bytes": 36220,
+   "sha256": "10cca7a9f1d9e1763fc642904263f2a58974a3136fd96b9d8b2d4190877f7253",
+   "estado": "existente"
+  },
+  "sand_0-5cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_0-5cm_Q0.95.tif",
+   "bytes": 39928,
+   "sha256": "a7b056be0479dd718c71415a6255ea6464e7c538e883125605b71f971dbddf14",
+   "estado": "existente"
+  },
+  "sand_0-5cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_0-5cm_mean.tif",
+   "bytes": 35296,
+   "sha256": "c2c8d0e315d40e712a7d7cabb2d4a9eecc261d25daca002b4238990a0cd0888c",
+   "estado": "existente"
+  },
+  "sand_0-5cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_0-5cm_uncertainty.tif",
+   "bytes": 13289,
+   "sha256": "f677b54239fa3f5c030fe9d6cb2eb032e0b301c7785442a0f05360d535e37bc7",
+   "estado": "existente"
+  },
+  "sand_5-15cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_5-15cm_Q0.5.tif",
+   "bytes": 36150,
+   "sha256": "73120d4afcf8d06b1e60609658ee0619ca9f2fbb89da221b0d58368fd1688706",
+   "estado": "existente"
+  },
+  "sand_5-15cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_5-15cm_Q0.05.tif",
+   "bytes": 40391,
+   "sha256": "1ead7c4a2753869ed2e6c03022bf09d29818862d137cc125cd0406cdfe9d21de",
+   "estado": "existente"
+  },
+  "sand_5-15cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_5-15cm_Q0.95.tif",
+   "bytes": 40837,
+   "sha256": "a0b840b776a53d49fd53e769b687335d83f42673e237eb19428d95794dd79bb1",
+   "estado": "existente"
+  },
+  "sand_5-15cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_5-15cm_mean.tif",
+   "bytes": 35360,
+   "sha256": "ace547821567eb5d2a07c6937a32e1b593c7d7c24d3f6475ecac7e8af0de0e40",
+   "estado": "existente"
+  },
+  "sand_5-15cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_5-15cm_uncertainty.tif",
+   "bytes": 13678,
+   "sha256": "ef0a3aeabd667dec27781702d3e5bcb7edd19031dc8c4a862e9d8f2d49edacc7",
+   "estado": "existente"
+  },
+  "sand_15-30cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_15-30cm_Q0.5.tif",
+   "bytes": 37377,
+   "sha256": "e5e95f92385c496cb700fbd6945f35a10a2156745c136fc92537220e45b8f515",
+   "estado": "existente"
+  },
+  "sand_15-30cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_15-30cm_Q0.05.tif",
+   "bytes": 38997,
+   "sha256": "2c82e9532f9e7fd1484795e387cf94cc672de6f4d96156360c50fdb3d451b11d",
+   "estado": "existente"
+  },
+  "sand_15-30cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_15-30cm_Q0.95.tif",
+   "bytes": 40975,
+   "sha256": "c59a4a3228d192b467a0a5412625873564bb801758c0eca62e571c158db9c803",
+   "estado": "existente"
+  },
+  "sand_15-30cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_15-30cm_mean.tif",
+   "bytes": 35924,
+   "sha256": "dbf8abc1e78fbe1fa7b832d6efaf9786a1c50f84f101248ea8105a3d1f2cfad5",
+   "estado": "existente"
+  },
+  "sand_15-30cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_15-30cm_uncertainty.tif",
+   "bytes": 14082,
+   "sha256": "294ba3ab38d43b25e9a637fdaadb3f7e41a64edcf5ca2dcd47f5f6cd33d8fa84",
+   "estado": "existente"
+  },
+  "sand_30-60cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_30-60cm_Q0.05.tif",
+   "bytes": 38977,
+   "sha256": "b31d2bd280dd53085f44c8920dc87ce41568179ed11c0c3af67693292cb469eb",
+   "estado": "existente"
+  },
+  "sand_30-60cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_30-60cm_Q0.5.tif",
+   "bytes": 37809,
+   "sha256": "c0da998f17c40af7bf4fda7f590c203505d542318e3b29b81e48ce76864de3ca",
+   "estado": "existente"
+  },
+  "sand_30-60cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_30-60cm_Q0.95.tif",
+   "bytes": 41779,
+   "sha256": "f3d77e401d4caba31a9aaa311761240ade3e9938e374df117b7fba5723c4c9cd",
+   "estado": "existente"
+  },
+  "sand_30-60cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_30-60cm_mean.tif",
+   "bytes": 36513,
+   "sha256": "2e558f353c63e12ddfd6a2611f3b0ca51335ce613393211ac7b8382820c662f2",
+   "estado": "existente"
+  },
+  "sand_30-60cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_30-60cm_uncertainty.tif",
+   "bytes": 14520,
+   "sha256": "4fe1aa5688426c1e83b41a1855231e614f709e198e76f4f264f4518faa4f2a40",
+   "estado": "existente"
+  },
+  "sand_60-100cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_60-100cm_Q0.5.tif",
+   "bytes": 37732,
+   "sha256": "51caf61473a80d867b6d05809eadb7328a46f75127864ddd66b9ffd9dcb3f0e9",
+   "estado": "existente"
+  },
+  "sand_60-100cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_60-100cm_Q0.05.tif",
+   "bytes": 38908,
+   "sha256": "30a1ccb5aabd1b43b39687616f93b08d1b5da2ba0393fdc4bb5ecc6fc0901666",
+   "estado": "existente"
+  },
+  "sand_60-100cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_60-100cm_Q0.95.tif",
+   "bytes": 42025,
+   "sha256": "04d0006b048e9203091bcd9362b390c0828b6d37c58218dcca17bfd8dad18484",
+   "estado": "existente"
+  },
+  "sand_60-100cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_60-100cm_mean.tif",
+   "bytes": 36575,
+   "sha256": "6ce91fbadce0df6149ac334fc6a522c26e8a89b744c94d1b41964c81f13b9f7d",
+   "estado": "existente"
+  },
+  "sand_60-100cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_60-100cm_uncertainty.tif",
+   "bytes": 14639,
+   "sha256": "e963ba3fb93582c0e993975dde54ad3be06b07dcf71af3f361a350abfbca43dd",
+   "estado": "existente"
+  },
+  "sand_100-200cm_Q0.05": {
+   "servicio": "sand",
+   "archivo": "sand_100-200cm_Q0.05.tif",
+   "bytes": 38615,
+   "sha256": "b921af6e24a2cd0bdc22b318ca8846a20b33f6c2271c5faa80ae92b3545bba2d",
+   "estado": "existente"
+  },
+  "sand_100-200cm_Q0.5": {
+   "servicio": "sand",
+   "archivo": "sand_100-200cm_Q0.5.tif",
+   "bytes": 38323,
+   "sha256": "90cbc736c85aaaf1aab2edc1df2669445f004d062d7f53265432ee498ed0f942",
+   "estado": "existente"
+  },
+  "sand_100-200cm_Q0.95": {
+   "servicio": "sand",
+   "archivo": "sand_100-200cm_Q0.95.tif",
+   "bytes": 41189,
+   "sha256": "c55363971e9657a7d8c4bef169cb5d0a5be8f0a5374eae2d03de05f373bd5457",
+   "estado": "existente"
+  },
+  "sand_100-200cm_mean": {
+   "servicio": "sand",
+   "archivo": "sand_100-200cm_mean.tif",
+   "bytes": 36830,
+   "sha256": "de5a556e07fa72cb1a604190cc7afc64fe3fe2794d8202793bb05ff2de603249",
+   "estado": "existente"
+  },
+  "sand_100-200cm_uncertainty": {
+   "servicio": "sand",
+   "archivo": "sand_100-200cm_uncertainty.tif",
+   "bytes": 14775,
+   "sha256": "f979befc0a7efed6c57f1a334f548dd954de4596f3bb6bb45ff975d8eae6e50c",
+   "estado": "existente"
+  },
+  "silt_0-5cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_0-5cm_Q0.05.tif",
+   "bytes": 37258,
+   "sha256": "cf31aa10473877621e617c8a4c64f564ee1b5ac7935bf0d6f85437df74c1ad0c",
+   "estado": "existente"
+  },
+  "silt_0-5cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_0-5cm_Q0.5.tif",
+   "bytes": 36797,
+   "sha256": "1b564f09a48b8e4d181ecbb0a9781f29fd18d70dc09a82afdd46cf017e9f2ff7",
+   "estado": "existente"
+  },
+  "silt_0-5cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_0-5cm_Q0.95.tif",
+   "bytes": 42358,
+   "sha256": "84bb3a0097054e845fe1d649b7472aa3147a3f67152d892e8f31bdba759a5b94",
+   "estado": "existente"
+  },
+  "silt_0-5cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_0-5cm_mean.tif",
+   "bytes": 35681,
+   "sha256": "ffa0ad80a2fbdcd2edcc644cc5a2c605021c80c21e8c5075df78e423b6a57fac",
+   "estado": "existente"
+  },
+  "silt_0-5cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_0-5cm_uncertainty.tif",
+   "bytes": 18555,
+   "sha256": "1bf32fe1e820f6c08ba5b8ea600488a6aa0a1eedd7c6d2b0d5d53147f88e5372",
+   "estado": "existente"
+  },
+  "silt_5-15cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_5-15cm_Q0.05.tif",
+   "bytes": 38386,
+   "sha256": "afddfd80ecdacc1c30da4ed50a4db1fbd9a97f1660434adec179341815919ed9",
+   "estado": "existente"
+  },
+  "silt_5-15cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_5-15cm_Q0.5.tif",
+   "bytes": 36353,
+   "sha256": "e431d6e98e1ca5c61e1944195fd92601f9831a5593f5aa784d38f6e08e759a16",
+   "estado": "existente"
+  },
+  "silt_5-15cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_5-15cm_Q0.95.tif",
+   "bytes": 41603,
+   "sha256": "a3b030eefddd89a9c667e7d0e67f0b33b8d39a4937fa1a58df659d210d978123",
+   "estado": "existente"
+  },
+  "silt_5-15cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_5-15cm_mean.tif",
+   "bytes": 35627,
+   "sha256": "8b49e7bd89c5d275f3785bb33f4b50f48e8bd206a1e5475c5a0ddab8b18a6700",
+   "estado": "existente"
+  },
+  "silt_5-15cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_5-15cm_uncertainty.tif",
+   "bytes": 18251,
+   "sha256": "3ef86d3e67d9a1ec611cf33a8401288676c28fa3cb4ac236ba128ad2e86a93ff",
+   "estado": "existente"
+  },
+  "silt_15-30cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_15-30cm_Q0.05.tif",
+   "bytes": 37402,
+   "sha256": "aecaaef786e72e0699589a011feb14683c7e7fc410691fe2f57531bab9926ff5",
+   "estado": "existente"
+  },
+  "silt_15-30cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_15-30cm_Q0.5.tif",
+   "bytes": 37047,
+   "sha256": "d30b5afc7d03671f6085b4d7f4116b4d23eb525148febd8de37b9e87a5cc8329",
+   "estado": "existente"
+  },
+  "silt_15-30cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_15-30cm_Q0.95.tif",
+   "bytes": 41255,
+   "sha256": "a76fceacb060f516ca099c7eb1ff57dd0d9e072382c5f3c332482e9e99b21bba",
+   "estado": "existente"
+  },
+  "silt_15-30cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_15-30cm_mean.tif",
+   "bytes": 35838,
+   "sha256": "761ec666b30d89fe8545949c89e2731f08a32119f8d452f83a528b89b201faec",
+   "estado": "existente"
+  },
+  "silt_15-30cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_15-30cm_uncertainty.tif",
+   "bytes": 18526,
+   "sha256": "e84981a5906a791f91aef9e6f6546363589d90215b4344ff2e222d8b426751d9",
+   "estado": "existente"
+  },
+  "silt_30-60cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_30-60cm_Q0.5.tif",
+   "bytes": 37270,
+   "sha256": "f8987ce7bbe13640943366c4ba2b86ae9ad6fa4dafb3237df0d081c6c7d10beb",
+   "estado": "existente"
+  },
+  "silt_30-60cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_30-60cm_Q0.05.tif",
+   "bytes": 36908,
+   "sha256": "d67aa0fa4165d4538d8a71222e6da186e635850e995a65e1987eb59aa3384094",
+   "estado": "existente"
+  },
+  "silt_30-60cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_30-60cm_Q0.95.tif",
+   "bytes": 41536,
+   "sha256": "379a4ef612a83bcde4236095486449dce137c0c8597f3a71930cf6ab9928d1af",
+   "estado": "existente"
+  },
+  "silt_30-60cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_30-60cm_mean.tif",
+   "bytes": 35780,
+   "sha256": "689acc78523c389c508c4845f74b94ada4ce01c9ce3e6ce3f7104c667f4b51e3",
+   "estado": "existente"
+  },
+  "silt_30-60cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_30-60cm_uncertainty.tif",
+   "bytes": 19033,
+   "sha256": "d1c4e00ed2b6df773184648a3710adfe90fb00251574f491c9ac896837f822f9",
+   "estado": "existente"
+  },
+  "silt_60-100cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_60-100cm_Q0.05.tif",
+   "bytes": 36312,
+   "sha256": "005a16ad802f975d8857591ea22a6bde627f55655e57fa4bb7e6d7750d380f2c",
+   "estado": "existente"
+  },
+  "silt_60-100cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_60-100cm_Q0.5.tif",
+   "bytes": 37060,
+   "sha256": "0ba352b7b86fdca57a29c1eac59a9cc37516e0b21a4f06e5a79fc4361adf7c5a",
+   "estado": "existente"
+  },
+  "silt_60-100cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_60-100cm_Q0.95.tif",
+   "bytes": 41843,
+   "sha256": "94edbfd16248d568de20db11b5d3562672a249bef3539d5b7e31e60c8260771b",
+   "estado": "existente"
+  },
+  "silt_60-100cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_60-100cm_mean.tif",
+   "bytes": 35700,
+   "sha256": "d13f545021724efa76fe9c46b9101a48ede5165f52ec8b06457f7cd081457403",
+   "estado": "existente"
+  },
+  "silt_60-100cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_60-100cm_uncertainty.tif",
+   "bytes": 19147,
+   "sha256": "8fc45710cba81239e94d351d6f3d2fdb77987d1a6b038baaf440b00a88fb6e5b",
+   "estado": "existente"
+  },
+  "silt_100-200cm_Q0.5": {
+   "servicio": "silt",
+   "archivo": "silt_100-200cm_Q0.5.tif",
+   "bytes": 37460,
+   "sha256": "1385665bda5845ddec96d11a572db9fb16e499ca0239d3821e1221eed7965cf3",
+   "estado": "existente"
+  },
+  "silt_100-200cm_Q0.05": {
+   "servicio": "silt",
+   "archivo": "silt_100-200cm_Q0.05.tif",
+   "bytes": 33847,
+   "sha256": "f1590b15aeb4bac089870c0d02608e4aa7bf90eadc4cb73f95038afb8d190929",
+   "estado": "existente"
+  },
+  "silt_100-200cm_Q0.95": {
+   "servicio": "silt",
+   "archivo": "silt_100-200cm_Q0.95.tif",
+   "bytes": 42277,
+   "sha256": "03777a268d1ea7bafd33bdf766602f60b553a8a5896abf934cf094eb90e31351",
+   "estado": "existente"
+  },
+  "silt_100-200cm_mean": {
+   "servicio": "silt",
+   "archivo": "silt_100-200cm_mean.tif",
+   "bytes": 35654,
+   "sha256": "4ae6f170282e6df8441ab85d1041378d56d70035d2036b20f5cbef20a2b0fed9",
+   "estado": "existente"
+  },
+  "silt_100-200cm_uncertainty": {
+   "servicio": "silt",
+   "archivo": "silt_100-200cm_uncertainty.tif",
+   "bytes": 20005,
+   "sha256": "72396a1979cc948cab147b76fdc827c14e9f5f39a03d1293df4fb2443005746c",
+   "estado": "existente"
+  },
+  "soc_0-5cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_0-5cm_Q0.5.tif",
+   "bytes": 42788,
+   "sha256": "4e6a803b9dc89386df567486711e5d7e47d50f62ad99edf13c674f64f00b1873",
+   "estado": "existente"
+  },
+  "soc_0-5cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_0-5cm_Q0.05.tif",
+   "bytes": 33503,
+   "sha256": "8e64cbfb5fb2dc329ccbdcd467ab44e4fe9d6fe02f118fbc1bbeb2c73501a57e",
+   "estado": "existente"
+  },
+  "soc_0-5cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_0-5cm_Q0.95.tif",
+   "bytes": 51218,
+   "sha256": "bd2427cd03c6da7c424a9e5047e75d7775347822dc58df3ef388158265fa8a2d",
+   "estado": "existente"
+  },
+  "soc_0-5cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_0-5cm_mean.tif",
+   "bytes": 48637,
+   "sha256": "e53ebf28c7af7346f08ad42ff57dbb0040639624f72f25d17c570770314ad00b",
+   "estado": "existente"
+  },
+  "soc_0-5cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_0-5cm_uncertainty.tif",
+   "bytes": 32969,
+   "sha256": "4d9c9f68cc83e983936f1c9d0d22f9ff96ee62eba01be53423e79926c7898cb3",
+   "estado": "existente"
+  },
+  "soc_5-15cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_5-15cm_Q0.05.tif",
+   "bytes": 30917,
+   "sha256": "bd1622e1a984bfc2d30c0a29c98b3390f94c893a28a4cb5db4ceb6554a100a14",
+   "estado": "existente"
+  },
+  "soc_5-15cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_5-15cm_Q0.5.tif",
+   "bytes": 38830,
+   "sha256": "41a529577ab05ccae1ea2e2a8c346b96e2a032cfd52a143d0b1803cc61382d38",
+   "estado": "existente"
+  },
+  "soc_5-15cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_5-15cm_Q0.95.tif",
+   "bytes": 51134,
+   "sha256": "284c83e2376b4ba3bc01c50b99e8abe9f5e7db42eafc072a0d66b7f461fbfb8a",
+   "estado": "existente"
+  },
+  "soc_5-15cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_5-15cm_mean.tif",
+   "bytes": 45071,
+   "sha256": "ff8bb3c305495141d5789c19ec73a75e4625bfafaa3b1b96a52149f804afe590",
+   "estado": "existente"
+  },
+  "soc_5-15cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_5-15cm_uncertainty.tif",
+   "bytes": 30633,
+   "sha256": "c8f12d55aff0f8543f0cf0ff1165ab7c2d414f8879bfacaca41b0a2f85b61ae2",
+   "estado": "existente"
+  },
+  "soc_15-30cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_15-30cm_Q0.5.tif",
+   "bytes": 30652,
+   "sha256": "11974dbdba26ac14a9fd5f96950766d4433edb35fb399c82a2b61e9e75d88511",
+   "estado": "existente"
+  },
+  "soc_15-30cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_15-30cm_Q0.05.tif",
+   "bytes": 12688,
+   "sha256": "1b11919176a14698cf888b75bd9412ef69109cd730a38834de86c475a96d7009",
+   "estado": "existente"
+  },
+  "soc_15-30cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_15-30cm_Q0.95.tif",
+   "bytes": 47487,
+   "sha256": "80efafb255898ced9fc18456d6e3bf0cf540c607ce6b02a5fb64963d7b401e0f",
+   "estado": "existente"
+  },
+  "soc_15-30cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_15-30cm_mean.tif",
+   "bytes": 37740,
+   "sha256": "2a32e9813368b0e79cadca8c3471aafe832e3c1433626210833afe6059c74ee3",
+   "estado": "existente"
+  },
+  "soc_15-30cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_15-30cm_uncertainty.tif",
+   "bytes": 30990,
+   "sha256": "bfb7d7dbef6906e751df4392090ab2c70cc1bba6cada787fdf10fd663a2d7afb",
+   "estado": "existente"
+  },
+  "soc_30-60cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_30-60cm_Q0.05.tif",
+   "bytes": 22413,
+   "sha256": "504ae69d0acc0003a7fcec53f57c7b318f7541124539fd38d9b913ab60c33623",
+   "estado": "existente"
+  },
+  "soc_30-60cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_30-60cm_Q0.5.tif",
+   "bytes": 26051,
+   "sha256": "9711a80024809a17671d0eae4b9e7cba456c496fbdcb121eeceda77c3548ba9e",
+   "estado": "existente"
+  },
+  "soc_30-60cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_30-60cm_Q0.95.tif",
+   "bytes": 43637,
+   "sha256": "4cd7e49a6140872dcefcbd33c39739df25473b9409809e5e245842de2e202024",
+   "estado": "existente"
+  },
+  "soc_30-60cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_30-60cm_mean.tif",
+   "bytes": 35682,
+   "sha256": "88f8c7d9b415bda3cd2c821150ebdf2c5d347a3d01cf82c181d222a59b606a16",
+   "estado": "existente"
+  },
+  "soc_30-60cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_30-60cm_uncertainty.tif",
+   "bytes": 31272,
+   "sha256": "d037e7c6f3cfae50e6baa6fc677d3002ab40203302eee8cf44fbb49774220895",
+   "estado": "existente"
+  },
+  "soc_60-100cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_60-100cm_Q0.05.tif",
+   "bytes": 3062,
+   "sha256": "9385b248124c1596097ce3f50cdf3befd1c54aacae88163156c03cecc98d0796",
+   "estado": "existente"
+  },
+  "soc_60-100cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_60-100cm_Q0.5.tif",
+   "bytes": 23314,
+   "sha256": "7e49c72e2b1da44101db02bee23d983d231d63a967e7bbae11f881ab9fe65c56",
+   "estado": "existente"
+  },
+  "soc_60-100cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_60-100cm_Q0.95.tif",
+   "bytes": 41380,
+   "sha256": "af73e032dfa6daeef492815b1bc067a25c5442d930befbbbf36430c4e385e147",
+   "estado": "existente"
+  },
+  "soc_60-100cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_60-100cm_mean.tif",
+   "bytes": 36833,
+   "sha256": "5c50a1416b5835ab05762deb003bdd692f6c874b43ca47d7fd41ef3450532009",
+   "estado": "existente"
+  },
+  "soc_60-100cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_60-100cm_uncertainty.tif",
+   "bytes": 34804,
+   "sha256": "e017c8737b35ca54e7b5629565bada36aa09dc699756a86765be64c757907cd6",
+   "estado": "existente"
+  },
+  "soc_100-200cm_Q0.05": {
+   "servicio": "soc",
+   "archivo": "soc_100-200cm_Q0.05.tif",
+   "bytes": 16466,
+   "sha256": "280853ade498aabda0f8dee6b3ff9705d1f590d74b12fa6eadbf73a6fe41adc0",
+   "estado": "existente"
+  },
+  "soc_100-200cm_Q0.5": {
+   "servicio": "soc",
+   "archivo": "soc_100-200cm_Q0.5.tif",
+   "bytes": 24686,
+   "sha256": "d2cd7fb356b760af7640766f388973019d0b68963ab834a6c4afd3dd8f128e5c",
+   "estado": "existente"
+  },
+  "soc_100-200cm_Q0.95": {
+   "servicio": "soc",
+   "archivo": "soc_100-200cm_Q0.95.tif",
+   "bytes": 41279,
+   "sha256": "d96acaa7878e24443964d190c3f8dce53e1eba813bcab2153e14768d53f0d0e5",
+   "estado": "existente"
+  },
+  "soc_100-200cm_mean": {
+   "servicio": "soc",
+   "archivo": "soc_100-200cm_mean.tif",
+   "bytes": 36953,
+   "sha256": "0343cf29b72473efd42210d75ffbebae1720d4d4436e98d02bfe92e0e9ae9ffc",
+   "estado": "existente"
+  },
+  "soc_100-200cm_uncertainty": {
+   "servicio": "soc",
+   "archivo": "soc_100-200cm_uncertainty.tif",
+   "bytes": 35980,
+   "sha256": "fd7a160256d80bb6d9423e0019925308b3e1ca528baf65621d91b5a30ac8e031",
+   "estado": "existente"
+  },
+  "ocs_0-30cm_Q0.05": {
+   "servicio": "ocs",
+   "archivo": "ocs_0-30cm_Q0.05.tif",
+   "bytes": 22385,
+   "sha256": "3a78d6b3b1a802dc88a07daea40ba42ed8a634984781ed638836a0a8be798c5d",
+   "estado": "existente"
+  },
+  "ocs_0-30cm_Q0.5": {
+   "servicio": "ocs",
+   "archivo": "ocs_0-30cm_Q0.5.tif",
+   "bytes": 26983,
+   "sha256": "b2bad6ea2f3a2d7d78bf1104eb13f27e7db29036af2db3f5a30a74d2bdd62a36",
+   "estado": "existente"
+  },
+  "ocs_0-30cm_Q0.95": {
+   "servicio": "ocs",
+   "archivo": "ocs_0-30cm_Q0.95.tif",
+   "bytes": 35356,
+   "sha256": "dc6be91f76804ac5e505e34a94152abaf73fe05a31456112b921818a9a11e10a",
+   "estado": "existente"
+  },
+  "ocs_0-30cm_mean": {
+   "servicio": "ocs",
+   "archivo": "ocs_0-30cm_mean.tif",
+   "bytes": 26259,
+   "sha256": "1f061cb638f70978f5ddfbe13f080f27a89a90d25da321c44c023db3364a6742",
+   "estado": "existente"
+  },
+  "ocs_0-30cm_uncertainty": {
+   "servicio": "ocs",
+   "archivo": "ocs_0-30cm_uncertainty.tif",
+   "bytes": 25593,
+   "sha256": "9765f8fda18c4fe502b0e106258f1e3a6acb6da3b6496309e7d52ff0277e951c",
+   "estado": "existente"
+  },
+  "ocd_0-5cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_0-5cm_Q0.5.tif",
+   "bytes": 43244,
+   "sha256": "b640a8905a2dc1474ec9af09f03b4ee1039d14cde92feea72a7d1b436d370f80",
+   "estado": "existente"
+  },
+  "ocd_0-5cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_0-5cm_Q0.05.tif",
+   "bytes": 30323,
+   "sha256": "2437a9d924d08b565f9c1da8bef3ebffed3ab96d69c42e431eee82dd91efa153",
+   "estado": "existente"
+  },
+  "ocd_0-5cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_0-5cm_Q0.95.tif",
+   "bytes": 46115,
+   "sha256": "5526fc5572e29f5e7d00e4a8ecb2349cfeb64e7284a56cc4bcb6759ad1373ebc",
+   "estado": "existente"
+  },
+  "ocd_0-5cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_0-5cm_mean.tif",
+   "bytes": 40805,
+   "sha256": "98692e0c6338a9af40d9d67744b531a1dc29d4e1d25e65ec6aed74c38d875f1d",
+   "estado": "existente"
+  },
+  "ocd_0-5cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_0-5cm_uncertainty.tif",
+   "bytes": 26659,
+   "sha256": "7d59b5d7b0b2c07d8d6e4a6ec9069531b4e873fbdba4eb37fb9bbcad76a87df0",
+   "estado": "existente"
+  },
+  "ocd_5-15cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_5-15cm_Q0.5.tif",
+   "bytes": 39494,
+   "sha256": "2fc1948d4fa9afa9ab33a8ac1e4dd57a3f2b534873c6194eeb89141e67b0f0e8",
+   "estado": "existente"
+  },
+  "ocd_5-15cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_5-15cm_Q0.05.tif",
+   "bytes": 33173,
+   "sha256": "70fb22d39fbc9bf2710fb6d31b9316c000d0ae7d91a95ed84764053a2f04f5da",
+   "estado": "existente"
+  },
+  "ocd_5-15cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_5-15cm_Q0.95.tif",
+   "bytes": 48703,
+   "sha256": "680867bcf12502abc8daae1aadef2dda1ff45e849a956d8c9eba71291b8ef048",
+   "estado": "existente"
+  },
+  "ocd_5-15cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_5-15cm_mean.tif",
+   "bytes": 38791,
+   "sha256": "190d252e6d5ec33a43f4e95d7059073767b9b852f9deaba92207d19f4653c4cb",
+   "estado": "existente"
+  },
+  "ocd_5-15cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_5-15cm_uncertainty.tif",
+   "bytes": 27889,
+   "sha256": "d37f0b4054be245f4c96f3dc68823642f20a225b99ebf6774914c72e44b95074",
+   "estado": "existente"
+  },
+  "ocd_15-30cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_15-30cm_Q0.05.tif",
+   "bytes": 30302,
+   "sha256": "1bda987764c05ce494ea4a2de6a1849c318d567439b696ba9ddb4b6a764f997b",
+   "estado": "existente"
+  },
+  "ocd_15-30cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_15-30cm_Q0.5.tif",
+   "bytes": 33454,
+   "sha256": "dce0f047259a029c1888525e5308708d80bab337640d9c54c06be2b7edc28d1b",
+   "estado": "existente"
+  },
+  "ocd_15-30cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_15-30cm_Q0.95.tif",
+   "bytes": 42238,
+   "sha256": "703618a40b381a74231f4beaa6610088fcdca6f96db5388f78e20b3341fde056",
+   "estado": "existente"
+  },
+  "ocd_15-30cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_15-30cm_mean.tif",
+   "bytes": 37034,
+   "sha256": "a97ea108fb8eee20e8856bf4b286a1f7eb249e4200a1af7b42bc3c2b8f91468b",
+   "estado": "existente"
+  },
+  "ocd_15-30cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_15-30cm_uncertainty.tif",
+   "bytes": 24594,
+   "sha256": "e348be61e18a6b68531cddc68f772823ec67fb3b855ffb867dd80a0a28b37420",
+   "estado": "existente"
+  },
+  "ocd_30-60cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_30-60cm_Q0.05.tif",
+   "bytes": 26348,
+   "sha256": "e73761b70480012f774c38408f6f17ade754e85dcc936cb9606ce2227db56af5",
+   "estado": "existente"
+  },
+  "ocd_30-60cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_30-60cm_Q0.5.tif",
+   "bytes": 26542,
+   "sha256": "a2ca26b90c5da052dbe49cb6e3ed2ddeb18aadf9b1522ad8e399d2d23627531c",
+   "estado": "existente"
+  },
+  "ocd_30-60cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_30-60cm_Q0.95.tif",
+   "bytes": 45556,
+   "sha256": "91ff73a8601bdcfd3b8eca1c2feb7d990fa6fb641bb46e835f9b0f0c788ab8d3",
+   "estado": "existente"
+  },
+  "ocd_30-60cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_30-60cm_mean.tif",
+   "bytes": 33178,
+   "sha256": "265c67cad799143f46e67d5088bb42df834413d6654df70c38eb530f24986092",
+   "estado": "existente"
+  },
+  "ocd_30-60cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_30-60cm_uncertainty.tif",
+   "bytes": 29677,
+   "sha256": "ac32af40fe567433e1fb1dc925254e308bdb6fbc32a95ee5bb4c28fe17f057b0",
+   "estado": "existente"
+  },
+  "ocd_60-100cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_60-100cm_Q0.05.tif",
+   "bytes": 25363,
+   "sha256": "53364baeb7dba6ec16be83f263685fdf518c029479143618b9c5cea39409ffec",
+   "estado": "existente"
+  },
+  "ocd_60-100cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_60-100cm_Q0.5.tif",
+   "bytes": 25365,
+   "sha256": "099f7fe07c0f361000dc4cbacbfc61a7834401f33a4e552735036c359ebdadba",
+   "estado": "existente"
+  },
+  "ocd_60-100cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_60-100cm_Q0.95.tif",
+   "bytes": 43716,
+   "sha256": "a17269f2c2d377c9d02cad51dd5bc8d4fc6d1dd3a400739e2c0af66dd11f50dd",
+   "estado": "existente"
+  },
+  "ocd_60-100cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_60-100cm_mean.tif",
+   "bytes": 33450,
+   "sha256": "d994d384824ee932049b496c3e9311756787d92bac80a486461ec84655410633",
+   "estado": "existente"
+  },
+  "ocd_60-100cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_60-100cm_uncertainty.tif",
+   "bytes": 32676,
+   "sha256": "3611d87dddf239b36689725e6a217b5815c80cbef44e105e3976d46f1227feb0",
+   "estado": "existente"
+  },
+  "ocd_100-200cm_Q0.5": {
+   "servicio": "ocd",
+   "archivo": "ocd_100-200cm_Q0.5.tif",
+   "bytes": 21048,
+   "sha256": "0da502db2c89cb6656e9d6f9095dccb2d2e11f3898f3701753956cde24869878",
+   "estado": "existente"
+  },
+  "ocd_100-200cm_Q0.05": {
+   "servicio": "ocd",
+   "archivo": "ocd_100-200cm_Q0.05.tif",
+   "bytes": 21051,
+   "sha256": "f1c1dde1e142a0832d5b50b0545826d3a2e4a35f59c4b1919c1150753a776274",
+   "estado": "existente"
+  },
+  "ocd_100-200cm_Q0.95": {
+   "servicio": "ocd",
+   "archivo": "ocd_100-200cm_Q0.95.tif",
+   "bytes": 39982,
+   "sha256": "b210cc4c3184c403533dc59bf825938113a2fd30a8230f9101b6f5722e863984",
+   "estado": "existente"
+  },
+  "ocd_100-200cm_mean": {
+   "servicio": "ocd",
+   "archivo": "ocd_100-200cm_mean.tif",
+   "bytes": 33035,
+   "sha256": "21297ce072d59ac4089f162cef994f1ed77b509ff710fbd1904aca54bf3b1a5c",
+   "estado": "existente"
+  },
+  "ocd_100-200cm_uncertainty": {
+   "servicio": "ocd",
+   "archivo": "ocd_100-200cm_uncertainty.tif",
+   "bytes": 32245,
+   "sha256": "837864322ffadd843e7e1fee1ea6929e5e72102d3562d59175b796af7f1e38a5",
+   "estado": "existente"
+  },
+  "Acrisols": {
+   "servicio": "wrb",
+   "archivo": "Acrisols.tif",
+   "bytes": 18605,
+   "sha256": "bde51a293175d973cb971c5ebb80b57e7d2ae44353a7edce39c536a2dbe2e127",
+   "estado": "existente"
+  },
+  "Albeluvisols": {
+   "servicio": "wrb",
+   "archivo": "Albeluvisols.tif",
+   "bytes": 2178,
+   "sha256": "0ab0690d27837a7ac46a5493fd07b21b1b2a4b3cea0faf54a2d1fd1e0d07e01f",
+   "estado": "existente"
+  },
+  "Alisols": {
+   "servicio": "wrb",
+   "archivo": "Alisols.tif",
+   "bytes": 9559,
+   "sha256": "8f1784daf7c747ce241582c5502d8e0c26a59a526997e04597ffb0fc016f7fcd",
+   "estado": "existente"
+  },
+  "Andosols": {
+   "servicio": "wrb",
+   "archivo": "Andosols.tif",
+   "bytes": 21691,
+   "sha256": "092ef0b5938fc39af33cb895c355e00b027cc77f9b4185d588d2c8b12d2aa4f7",
+   "estado": "existente"
+  },
+  "Arenosols": {
+   "servicio": "wrb",
+   "archivo": "Arenosols.tif",
+   "bytes": 18246,
+   "sha256": "367d30534cfb77856643a30c3c933ce1a863e3d7285f60d03c2aef97567ff1ca",
+   "estado": "existente"
+  },
+  "Calcisols": {
+   "servicio": "wrb",
+   "archivo": "Calcisols.tif",
+   "bytes": 16979,
+   "sha256": "ab8fef453a2fbe39f99b02129519fb33021c364c73283a317fe8533877c37593",
+   "estado": "existente"
+  },
+  "Cambisols": {
+   "servicio": "wrb",
+   "archivo": "Cambisols.tif",
+   "bytes": 26196,
+   "sha256": "c57bb1f7f4fac19e6782b891fece1d28525db6440e146029ff3d124549472df7",
+   "estado": "existente"
+  },
+  "Chernozems": {
+   "servicio": "wrb",
+   "archivo": "Chernozems.tif",
+   "bytes": 13241,
+   "sha256": "c785c9806595ef223d6ebba259e8c1aa509f99b09db750a1f97eb91c88bddaee",
+   "estado": "existente"
+  },
+  "Cryosols": {
+   "servicio": "wrb",
+   "archivo": "Cryosols.tif",
+   "bytes": 660,
+   "sha256": "0dd4bc6d62742c1d8c168ba2589effce61f2c7ea85841e808b54531698cea211",
+   "estado": "existente"
+  },
+  "Durisols": {
+   "servicio": "wrb",
+   "archivo": "Durisols.tif",
+   "bytes": 18703,
+   "sha256": "5fc22265b376ba688e917abbca0536fee828c65ed938df72cd1473b2d938150b",
+   "estado": "existente"
+  },
+  "Ferralsols": {
+   "servicio": "wrb",
+   "archivo": "Ferralsols.tif",
+   "bytes": 5756,
+   "sha256": "0ef23c058c7539fc4752d4f01afb767f2a69b0f92a1a399d7b28c2476227fc65",
+   "estado": "existente"
+  },
+  "Fluvisols": {
+   "servicio": "wrb",
+   "archivo": "Fluvisols.tif",
+   "bytes": 19562,
+   "sha256": "ef5999e0729b109fc5a287b337d614b08f40b4407c5297df3340d8b1e6ef6499",
+   "estado": "existente"
+  },
+  "Gleysols": {
+   "servicio": "wrb",
+   "archivo": "Gleysols.tif",
+   "bytes": 12355,
+   "sha256": "6cddf2c3baae68776627ec936fdd661515c3e695923d74ce03f0b7b5c61831c7",
+   "estado": "existente"
+  },
+  "Gypsisols": {
+   "servicio": "wrb",
+   "archivo": "Gypsisols.tif",
+   "bytes": 2401,
+   "sha256": "3b83c7de390def9f96c6070be7100a039e6c10339cd72909f52febaf32eac91c",
+   "estado": "existente"
+  },
+  "Histosols": {
+   "servicio": "wrb",
+   "archivo": "Histosols.tif",
+   "bytes": 2004,
+   "sha256": "045d13e13ca2c4295c3fed992a22698ef11054099da8dac26556124038b76faa",
+   "estado": "existente"
+  },
+  "Kastanozems": {
+   "servicio": "wrb",
+   "archivo": "Kastanozems.tif",
+   "bytes": 11240,
+   "sha256": "33aadee926aff3712e8d8b2138e6c78d45d528a0f5d64f6d92b8a5289aee8dfc",
+   "estado": "existente"
+  },
+  "Leptosols": {
+   "servicio": "wrb",
+   "archivo": "Leptosols.tif",
+   "bytes": 27228,
+   "sha256": "1d86aead8823103ea9c75819bac9706e000f6e22ee54dd8a44e2c3928658e404",
+   "estado": "existente"
+  },
+  "Lixisols": {
+   "servicio": "wrb",
+   "archivo": "Lixisols.tif",
+   "bytes": 14889,
+   "sha256": "0d25a3b0f3b2ce733d8d3cf3366437375d996ff17f6ffa0e5f0a7acd8e28592b",
+   "estado": "existente"
+  },
+  "Luvisols": {
+   "servicio": "wrb",
+   "archivo": "Luvisols.tif",
+   "bytes": 28127,
+   "sha256": "af4e9efcd32974d6b9ca1a7c5783f09880f61c4adee04a6fdb46e96b9b9e464e",
+   "estado": "existente"
+  },
+  "MostProbable": {
+   "servicio": "wrb",
+   "archivo": "MostProbable.tif",
+   "bytes": 9018,
+   "sha256": "880dde3b026372dd3e5b1bfdcb9250ad2b843c9333c324e8b45c0c3c97c4f5d1",
+   "estado": "existente"
+  },
+  "Nitisols": {
+   "servicio": "wrb",
+   "archivo": "Nitisols.tif",
+   "bytes": 15189,
+   "sha256": "d00bf7830d88652cec5288c0bec5e603b735c83baf9d29d99cd857d978bf76bc",
+   "estado": "existente"
+  },
+  "Phaeozems": {
+   "servicio": "wrb",
+   "archivo": "Phaeozems.tif",
+   "bytes": 29493,
+   "sha256": "7f5210061a4f1312f67fd6212a1e8468b83e1f36cac8401b806549f5383aa809",
+   "estado": "existente"
+  },
+  "Planosols": {
+   "servicio": "wrb",
+   "archivo": "Planosols.tif",
+   "bytes": 13255,
+   "sha256": "9959b49ba5ffc0ea1e740f54c8eb4a934d9d05629421a025e6fcbff9e658a339",
+   "estado": "existente"
+  },
+  "Plinthosols": {
+   "servicio": "wrb",
+   "archivo": "Plinthosols.tif",
+   "bytes": 985,
+   "sha256": "8b62e5258f25a7be9d83ed7e558bcdf6f32449054bdfbe918b2f4692f617ef5f",
+   "estado": "existente"
+  },
+  "Podzols": {
+   "servicio": "wrb",
+   "archivo": "Podzols.tif",
+   "bytes": 4774,
+   "sha256": "b10dc2ddc04ccb51246766efb957bdcb54257cf6fe3d82756c29055e32b1e0c0",
+   "estado": "existente"
+  },
+  "Regosols": {
+   "servicio": "wrb",
+   "archivo": "Regosols.tif",
+   "bytes": 24517,
+   "sha256": "b33fd57c39d80f735697fc38663a6d4e519e79e4c713b4b8c18443d7130f7a36",
+   "estado": "existente"
+  },
+  "Solonchaks": {
+   "servicio": "wrb",
+   "archivo": "Solonchaks.tif",
+   "bytes": 10806,
+   "sha256": "7acb9e72a629018035c37c5c52c089c2cb91a94ed1e23d76779dc6b0a6ca886e",
+   "estado": "existente"
+  },
+  "Solonetz": {
+   "servicio": "wrb",
+   "archivo": "Solonetz.tif",
+   "bytes": 13042,
+   "sha256": "c3cf780da61d21895ee3f00ac79fef99373dac99b4b66fff465783dc1e93f436",
+   "estado": "existente"
+  },
+  "Stagnosols": {
+   "servicio": "wrb",
+   "archivo": "Stagnosols.tif",
+   "bytes": 645,
+   "sha256": "8264d7604966a3f4f23682d23bc383c86da8dac1c1cc5d1a360bb21c58828d7d",
+   "estado": "existente"
+  },
+  "Umbrisols": {
+   "servicio": "wrb",
+   "archivo": "Umbrisols.tif",
+   "bytes": 10555,
+   "sha256": "9c51324c21a7b9894bb71b7dd8d0e9319c4c5785229346207907153beb6a0f52",
+   "estado": "existente"
+  },
+  "Vertisols": {
+   "servicio": "wrb",
+   "archivo": "Vertisols.tif",
+   "bytes": 27117,
+   "sha256": "7a5fa8daa8d964ec4a1400fa87ddaf7d4eca6fc027d7a2dc36e4434bbaeda5d3",
+   "estado": "existente"
+  }
+ }
+}

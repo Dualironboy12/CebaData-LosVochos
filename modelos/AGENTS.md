@@ -2,7 +2,7 @@
 
 Instrucciones para quien (o qué agente) trabaje en esta carpeta. **No reemplazan** las reglas del repositorio: al empezar, leer también [`../AGENTS.md`](../AGENTS.md). Al cerrar la tarea, anotar en [`../PROMPTS.md`](../PROMPTS.md).
 
-Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../dataset_entrenamiento/`](../dataset_entrenamiento/). Criterios de validación y filosofía: [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md).
+Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../dataset_entrenamiento/`](../dataset_entrenamiento/). Criterios de validación y filosofía: [`../README.md#roadmap`](../README.md#roadmap).
 
 ## Alcance
 
@@ -26,7 +26,7 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 4. Al comparar CSVs o arquitecturas: misma CV, mismas semillas, mismas métricas; citar versión del CSV y manifiesto.
 5. Separar artefactos/código de `solo_reto/` y `extendido/`; respetar el flujo de ramas del [`README.md`](README.md) (merge entre ramas de modelos antes de ir a `main`).
 6. No implementar el dashboard aquí; el contrato de inferencia para `dashboard/` se documenta cuando haya modelo de entrega.
-7. Elegir el modelo/CSV de entrega es decisión humana (punto 8 de `PROXIMOS_PASOS.md`); el agente propone métricas y no congela la entrega solo.
+7. Elegir el modelo/CSV de entrega es decisión humana (punto 8 del roadmap en el README raíz); el agente propone métricas y no congela la entrega solo.
 
 ## Fuera de alcance (salvo pedido explícito)
 

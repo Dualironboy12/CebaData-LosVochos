@@ -2,13 +2,13 @@
 
 Instrucciones para quien (o qué agente) trabaje en esta carpeta. **No reemplazan** las reglas del repositorio: al empezar, leer también [`../AGENTS.md`](../AGENTS.md). Al cerrar la tarea, anotar en [`../PROMPTS.md`](../PROMPTS.md).
 
-Contexto de esta carpeta: [`README.md`](README.md). Análisis y criterios: [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md), [`../analisis/RESUMEN_DE_ANALISIS.md`](../analisis/RESUMEN_DE_ANALISIS.md). Diccionario oficial: [`../DATASET_RETO_AGRO_2026/README.md`](../DATASET_RETO_AGRO_2026/README.md).
+Contexto de esta carpeta: [`README.md`](README.md). Análisis y criterios: [`../README.md#roadmap`](../README.md#roadmap), [`../analisis/RESUMEN_DATOS_FIRA.md`](../analisis/RESUMEN_DATOS_FIRA.md). Diccionario oficial: [`../DATASET_RETO_AGRO_2026/README.md`](../DATASET_RETO_AGRO_2026/README.md).
 
 ## Alcance
 
 - Despensa congelada, CSVs curados (solo reto y extendidos) y documentación de fuentes externas.
 - Productos **derivados** listos para entrenar; no es el dataset oficial de FIRA.
-- Criterios de diseño ya acordados viven en `analisis/PROXIMOS_PASOS.md` (ubicación, ciclos, `NUBE_MAX = 30`, etc.); un agente no los cambia sin nuevo acuerdo explícito del equipo.
+- Criterios de diseño ya acordados viven en `README.md#roadmap` (ubicación, ciclos, `NUBE_MAX = 30`, etc.); un agente no los cambia sin nuevo acuerdo explícito del equipo.
 
 ## Lineamientos (heredan del repo)
 
@@ -39,4 +39,4 @@ Aplican las del [`../AGENTS.md`](../AGENTS.md), en especial:
 
 - Código de `modelos/` o `dashboard/`.
 - Modificar el dataset oficial.
-- Cambiar `NUBE_MAX` u otros criterios cerrados en `PROXIMOS_PASOS.md` sin acuerdo del equipo.
+- Cambiar `NUBE_MAX` u otros criterios cerrados en el roadmap del README raíz sin acuerdo del equipo.

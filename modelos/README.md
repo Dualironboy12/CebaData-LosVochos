@@ -4,7 +4,7 @@ Aquí van los **modelos entrenados** (y el código o notebooks que los producen)
 
 La fase de modelos del equipo usa Python. Las tablas de entrada salen de [`../dataset_entrenamiento/`](../dataset_entrenamiento/). El dashboard las consumirá desde [`../dashboard/`](../dashboard/) cuando haya un artefacto de entrega.
 
-Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de validación y filosofía: [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md).
+Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de validación y filosofía: [`../README.md#roadmap`](../README.md#roadmap).
 
 ## Qué va aquí
 
@@ -60,7 +60,7 @@ Cada corrida debería citar en un README o manifiesto corto: ruta del CSV, versi
 ## Convenciones
 
 - No abrir entrenamiento masivo en `main` sin pasar por las ramas de este track.
-- Misma CV y semillas al comparar CSVs (ver `PROXIMOS_PASOS.md`).
+- Misma CV y semillas al comparar CSVs (ver el roadmap en el README raíz).
 - Commits y push solo con autorización del equipo.
 - Sesiones de agente: [`../PROMPTS.md`](../PROMPTS.md).
 - Leer [`AGENTS.md`](AGENTS.md) y [`../AGENTS.md`](../AGENTS.md) al empezar.

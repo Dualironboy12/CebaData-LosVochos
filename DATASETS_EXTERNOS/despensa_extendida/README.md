@@ -27,15 +27,15 @@ CSV que amplía la despensa congelada del reto con columnas de fuentes externas.
 | `edafologia_recorte_parcelas_v1.gpkg` | Recorte de la edafología INEGI (140 polígonos, EPSG:6372, ~0.7 MB). Es la entrada que hace reproducible el cruce sin el shapefile nacional |
 | `fuentes_edafologia.md` | Origen, licencia, CRS y limitaciones de la edafología |
 
-El control del cruce queda en `analisis/salida/tablas/07_edaf_join_resumen.csv` (parcelas por grupo, fracción de área mínima, parcelas sin suelo).
+El control del cruce queda en `analisis/datos_inegi/salida/tablas/07_edaf_join_resumen.csv` (parcelas por grupo, fracción de área mínima, parcelas sin suelo).
 
 ## Cómo regenerar
 
 Desde la raíz del repo, con el entorno de `analisis/correr.sh`:
 
 ```bash
-Rscript analisis/R/07_despensa_extendida_edaf.R   # genera el CSV extendido
-Rscript analisis/R/08_relaciones_edaf.R           # tablas, figuras y mapa suelo + rendimiento
+Rscript analisis/datos_inegi/R/07_despensa_extendida_edaf.R   # genera el CSV extendido
+Rscript analisis/datos_inegi/R/08_relaciones_edaf.R           # tablas, figuras y mapa suelo + rendimiento
 ```
 
 Estos dos scripts no forman parte de `correr.sh`: son opcionales. Con solo el contenido versionado del repo funcionan (07 lee el `.gpkg`). El shapefile nacional de INEGI, de 225 MB, no se versiona y solo se usa si está presente; con `CEBA_EDAF_RECORTE=1` se fuerza a usar el `.gpkg` aunque esté.
@@ -46,3 +46,13 @@ Estos dos scripts no forman parte de `correr.sh`: son opcionales. Con solo el co
 - No se imputa nada: una parcela sin polígono de suelo quedaría con `NA` (hoy no hay ninguna).
 - `rendimiento_t_ha` vacío sigue significando etiqueta oculta.
 - Copiar este CSV a `dataset_entrenamiento/curados_extendidos/` es un paso posterior, en la subrama del dataset extendido.
+
+## SoilGrids
+
+| Archivo | Contenido |
+| --- | --- |
+| `parcelas_despensa_extendida_soilgrids_v1.csv` | Identificación de parcela + 336 columnas `sg_*` (valores convertidos) |
+| `parcelas_despensa_extendida_soilgrids_v1_diccionario.csv` | Diccionario |
+
+Regenerar: `bash analisis/correr.sh soilgrids`. Fuente: [`../soilgrids/fuentes_soilgrids.md`](../soilgrids/fuentes_soilgrids.md). Análisis: [`../../analisis/RESUMEN_DATOS_SOILGRIDS.md`](../../analisis/RESUMEN_DATOS_SOILGRIDS.md).
+

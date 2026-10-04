@@ -4,7 +4,7 @@ Aplicación o interfaz web que ejecutará el modelo y permitirá consultar resul
 
 Todavía **no hay diseño ni stack fijados** aquí. Alfredo (equipo) puede liderar este desarrollo. El resto del repo no debe asumir rutas concretas dentro de esta carpeta hasta que exista un scaffold acordado.
 
-Contexto del proyecto: [`../README.md`](../README.md). Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de datos y modelos: [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md).
+Contexto del proyecto: [`../README.md`](../README.md). Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de datos y modelos: [`../README.md#roadmap`](../README.md#roadmap).
 
 ## Qué va aquí
 

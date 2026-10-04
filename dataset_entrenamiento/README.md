@@ -4,13 +4,13 @@ Aquí vive la **despensa congelada** y los **datasets curados** listos para entr
 
 No sustituye el dataset oficial de FIRA. Los archivos crudos siguen en [`../DATASET_RETO_AGRO_2026/`](../DATASET_RETO_AGRO_2026/) y no se modifican. Esta carpeta guarda **productos derivados** versionados para la fase de modelos.
 
-Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Análisis y decisiones: [`../analisis/`](../analisis/) · [`../analisis/PROXIMOS_PASOS.md`](../analisis/PROXIMOS_PASOS.md) · [`../analisis/RESUMEN_DE_ANALISIS.md`](../analisis/RESUMEN_DE_ANALISIS.md).
+Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Análisis y decisiones: [`../analisis/`](../analisis/) · [`../README.md#roadmap`](../README.md#roadmap) · [`../analisis/RESUMEN_DATOS_FIRA.md`](../analisis/RESUMEN_DATOS_FIRA.md).
 
 ## Qué va aquí
 
 | Pieza | Descripción |
 | --- | --- |
-| Despensa congelada | Tabla base por parcela (evolución de `analisis/salida/parcelas_trabajo.csv` cuando se congele con los criterios acordados, p. ej. `NUBE_MAX = 30`). |
+| Despensa congelada | Tabla base por parcela (evolución de `analisis/datos_fira/salida/parcelas_trabajo.csv` cuando se congele con los criterios acordados, p. ej. `NUBE_MAX = 30`). |
 | Datasets curados (reto) | CSVs reducidas / variantes de la matriz (ubicación × ventana temporal) solo con datos entregados. |
 | Despensa / datasets extendidos | Misma unidad (una fila por parcela) más columnas o tablas derivadas de fuentes externas alineadas a `ID_POLIGONO` / geometría. |
 | Fuentes | Notas de origen, licencia/uso, fecha de descarga, CRS, join y columnas aportadas. |
@@ -38,7 +38,7 @@ Las carpetas internas se crean cuando haya contenido real; no hace falta inventa
 
 ## Criterios ya acordados (recordatorio)
 
-Ver detalle en `analisis/PROXIMOS_PASOS.md`:
+Ver detalle en `README.md#roadmap`:
 
 - Despensa + CSVs derivadas (no tirar la tabla rica).
 - Tres filosofías de ubicación: ninguna / parcial / completa.

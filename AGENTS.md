@@ -14,7 +14,7 @@ La fase actual es **análisis de datos**.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
-| 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. El producto es una lectura reproducible y, cuando toque, una tabla de trabajo por parcela | R | `analisis/` |
+| 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. Tres carriles: FIRA, INEGI, SoilGrids. Producto: lecturas + tablas por parcela | R | `analisis/` (`datos_fira/`, `datos_inegi/`, `datos_soilgrids/`) |
 | — | Despensa congelada y CSVs curados (reto y extendidos) para entrenar | — | `dataset_entrenamiento/` |
 | 2. Modelos | Entrenar y evaluar el modelo de rendimiento. Métricas de referencia del reto: RMSE, MAE, r² | Python | `modelos/` |
 | 3. Frontend | Dashboard que ejecute el modelo y permita consultar resultados | Django (u otro stack del equipo) | `dashboard/` |

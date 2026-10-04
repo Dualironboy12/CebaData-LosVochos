@@ -8,7 +8,7 @@ Despensa de parcelas con una fila por parcela, generada por el pipeline en R de 
 | Diccionario | `parcelas_despensa_nube30_v1_diccionario.csv` (columna, grupo, descripción) |
 | Versión | v1 |
 | Fecha de congelación | 2026-10-03 |
-| Origen | `analisis/R/01_*.R` a `06_*.R` → `analisis/salida/parcelas_trabajo.csv` (copia exacta) |
+| Origen | `analisis/R/01_*.R` a `06_*.R` → `analisis/datos_fira/salida/parcelas_trabajo.csv` (copia exacta) |
 | Cómo regenerar | `bash analisis/correr.sh` desde la raíz del repo |
 | Dimensión | 197 filas × 101 columnas |
 | Llave | `ID_POLIGONO` (`AGC_001` … `AGC_197`) |
