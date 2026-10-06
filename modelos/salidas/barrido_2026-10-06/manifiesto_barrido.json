@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-10-06",
+  "seed": 20261006,
+  "cv": {
+    "group_col": "municipio",
+    "check_group_col": "pixel_clima",
+    "leave_one_group_out": true
+  },
+  "modelos": [
+    "media_global",
+    "media_estado",
+    "ridge",
+    "hist_gradient_boosting"
+  ],
+  "n_datasets": 9,
+  "decisiones": "D1 LOGO municipio; D2 OHE; D3 pixel cat; D4 sklearn; D5 9 CSVs",
+  "mejor_rmse_oof": {
+    "dataset_id": "parcelas_multianio_ubic_completa_reto_v1",
+    "modelo": "hist_gradient_boosting",
+    "n_folds": 9,
+    "rmse_oof": 0.6531667305922764,
+    "mae_oof": 0.4717675619228692,
+    "r2_oof": 0.406824212420702,
+    "rmse_fold_mean": 0.6247632038150724,
+    "rmse_fold_std": 0.437882530525383,
+    "mae_fold_mean": 0.5723757553028275,
+    "r2_fold_mean": -2.620791603636105
+  }
+}

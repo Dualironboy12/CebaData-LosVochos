@@ -1,67 +1,88 @@
 # Modelos
 
-Aquí van los **modelos entrenados** (y el código o notebooks que los producen), organizados por tipo de arquitectura y por si se entrenaron solo con el dataset del reto o con el dataset extendido (externos).
+Fase 2: entrenar y evaluar estimadores de rendimiento (t/ha) en Python. Entradas desde `[../dataset_entrenamiento/](../dataset_entrenamiento/)`. El dashboard consumirá el artefacto de entrega desde `[../dashboard/](../dashboard/)` más adelante.
 
-La fase de modelos del equipo usa Python. Las tablas de entrada salen de [`../dataset_entrenamiento/`](../dataset_entrenamiento/). El dashboard las consumirá desde [`../dashboard/`](../dashboard/) cuando haya un artefacto de entrega.
+Reglas: `[AGENTS.md](AGENTS.md)` · `[../AGENTS.md](../AGENTS.md)` · roadmap `[../README.md#roadmap](../README.md#roadmap)`.
 
-Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de validación y filosofía: [`../README.md#roadmap`](../README.md#roadmap).
+## Documentos de diseño
 
-## Qué va aquí
 
-- Pipelines de entrenamiento y evaluación (RMSE, MAE, r²; CV oficial por municipio, chequeo por píxel de clima).
-- Artefactos versionados (p. ej. `.joblib`, `.pkl`, carpeta de métricas) cuando el equipo decida versionarlos en git o documentar dónde viven.
-- Comparativas entre condensamientos de CSV y entre arquitecturas.
-- Predicciones sobre las 59 parcelas de `PREDICCION` del modelo elegido.
+| Doc                                            | Contenido                                                          |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| `[ESTADO_DATOS.md](ESTADO_DATOS.md)`           | Readiness de despensas/matriz; perfil de etiqueta; barrido inicial |
+| `[PROPUESTA_MODELOS.md](PROPUESTA_MODELOS.md)` | Baselines, classic ML, preproceso, CV, plan de experimentos        |
+| `[config/default.yaml](config/default.yaml)`   | Rutas, semilla, columnas de CV, barrido inicial                    |
 
-## Organización sugerida
 
-Categorizar por arquitectura y por origen de datos:
+
+
+## Estructura
 
 ```text
 modelos/
-  README.md
-  solo_reto/                    ← entrenados con curados_reto / despensa sin externos
-    baseline/
-    classic_ml/                 ← ridge, RF, LightGBM, etc.
-    otros/                      ← MLP u otros si se prueban
-  extendido/                    ← reentrenados o reconstruidos con dataset extendido
-    baseline/
-    classic_ml/
-    otros/
-  comparativas/                 ← tablas de métricas entre corridas
-  entrega/                      ← (más adelante) modelo + script de inferencia elegidos
+  config/default.yaml
+  src/ceba_modelos/       ← paquete (ingesta, catálogo, CV)
+  scripts/smoke_ingesta.py
+  salidas/                ← métricas / resúmenes (gitignored salvo .gitkeep)
+  solo_reto/              ← artefactos solo-reto (cuando haya corridas)
+  extendido/              ← artefactos con externos
+  comparativas/
+  entrega/                ← modelo elegido (más adelante)
+  requirements.txt
+  preparar_entorno.sh
 ```
 
-Los nombres internos se ajustan cuando exista el primer entrenamiento real.
 
-## Qué no va aquí
 
-- Despensa y CSVs crudos de features (`dataset_entrenamiento/`).
-- UI del dashboard (`dashboard/`).
-- Modificar `DATASET_RETO_AGRO_2026/`.
+## Entorno
 
-## Relación con `dataset_entrenamiento/`
+```bash
+bash modelos/preparar_entorno.sh
+# Desde la raíz del repo (evita AppImage de Cursor si hace falta):
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/smoke_ingesta.py
+```
 
-| Entrada (dataset) | Salida típica aquí |
-| --- | --- |
-| `curados_reto/` / despensa sin externos | `solo_reto/` |
-| `curados_extendidos/` | `extendido/` |
+Dependencias mínimas: `numpy`, `pandas`, `scikit-learn`, `pyyaml`, `joblib`. LightGBM queda opcional.
 
-Cada corrida debería citar en un README o manifiesto corto: ruta del CSV, versión, semilla, CV y métricas.
+## Ingesta (contrato)
+
+1. Elegir filas del catálogo (`catalogo_datasets_v1.csv`), no hardcodear 1024 rutas.
+2. Features = columnas del CSV curado excepto `ID_POLIGONO`, `conjunto`, `rendimiento_t_ha`.
+3. **Meta de CV** (`municipio`, `pixel_clima`, `estado`) se une siempre desde la despensa `nube30_v1`, aunque el CSV sea `sin_ubic`.
+4. 138 train / 59 pred; rendimiento vacío en predicción no se imputa.
+5. CV oficial: `LeaveOneGroupOut` por municipio; chequeo por píxel de clima.
+
+API: `ceba_modelos.ingesta.load_from_catalog_row`, `ceba_modelos.cv.iter_group_folds`.
 
 ## Estado
 
-- [ ] Dos ramas creadas y nombres anotados arriba.
-- [ ] Primer baseline con CSV solo-reto.
-- [ ] Comparativa mínima (baseline vs classic ML) documentada.
-- [ ] Experimentos con dataset extendido cuando exista en `dataset_entrenamiento/`.
-- [ ] Modelo de entrega + predicciones de las 59 (decisión humana 8).
+- [x] Fase 2 abierta por el equipo (2026-10-06).
+- [x] Revisión de datos + propuesta de arquitecturas.
+- [x] Pipeline de ingesta + smoke del barrido inicial (9 CSVs).
+- [x] Decisiones D1–D7 cerradas; rama de trabajo `dev-modelos`.
+- [x] Script `scripts/correr_barrido.py` (baselines + Ridge + HistGBM, CV LOGO).
+- [ ] Comparativa documentada tras el primer barrido; ampliar si hace falta.
+- [ ] Modelo de entrega + predicciones de las 59 (decisión humana).
+
+### Correr el barrido
+
+```bash
+bash modelos/preparar_entorno.sh   # si aún no hay .venv
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/correr_barrido.py
+```
+
+Salida: `modelos/salidas/barrido_YYYY-MM-DD/resumen_barrido.csv`.
+
+## Rama
+
+Trabajo de fase 2 en **`dev-modelos`** (decisión D6).
 
 ## Convenciones
 
-- No abrir entrenamiento masivo en `main` sin pasar por las ramas de este track.
-- Misma CV y semillas al comparar CSVs (ver el roadmap en el README raíz).
-- Commits y push solo con autorización del equipo.
-- Sesiones de agente: [`../PROMPTS.md`](../PROMPTS.md).
-- Leer [`AGENTS.md`](AGENTS.md) y [`../AGENTS.md`](../AGENTS.md) al empezar.
-- Según el `AGENTS.md` raíz, el trabajo de modelos arranca cuando el equipo lo pide de forma explícita; esta carpeta queda lista para ese momento.
+- Misma CV y semilla al comparar CSVs (`seed` en `config/default.yaml`).
+- Separar `solo_reto/` vs `extendido/`.
+- Commits solo con autorización.
+- Bitácora: `[../PROMPTS.md](../PROMPTS.md)`.
+

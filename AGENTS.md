@@ -10,7 +10,7 @@ Un estimado de rendimiento de cebada (t/ha) por parcela y un dashboard web para 
 
 ## Fases y fase actual
 
-La fase actual es **análisis de datos**.
+La fase actual es **modelos** (fase 2). La fase 1 (análisis en R) queda como referencia y mantenimiento de despensas; no reabrir KDD salvo pedido explícito.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
@@ -23,7 +23,7 @@ El flujo de ramas de `dashboard/`, `dataset_entrenamiento/` y `modelos/` está e
 
 Fuera de estas fases, y solo cuando el desarrollo esté cerrado, quedan el reporte técnico y el video de máximo 5 minutos. Esos entregables ya están descritos en el README (extensiones por sección, video, código fuente).
 
-Trabajar dentro de la fase actual. Versionar la despensa o CSVs curados en `dataset_entrenamiento/` es el puente natural del análisis hacia el entrenamiento y no abre por sí solo la fase 2. Pasar a entrenar en `modelos/` o a implementar `dashboard/` solo si la persona lo pide de forma explícita en el prompt. Un script de exploración en Python durante la fase 1 también queda fuera de alcance: el análisis es en R.
+Trabajar dentro de la fase actual. La matriz curada en `dataset_entrenamiento/` es la entrada de `modelos/`. Abrir `dashboard/` solo con pedido explícito. No re-curar el dataset oficial dentro de `modelos/`.
 
 El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA (entrega del proyecto, luego presentación ante el jurado). Esas etapas oficiales conviven con las tres fases de esta tabla.
 

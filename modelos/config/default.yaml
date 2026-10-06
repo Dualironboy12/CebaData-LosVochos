@@ -1,0 +1,70 @@
+# Configuración por defecto del track modelos/ (fase 2).
+# Los scripts leen este archivo; no hardcodear rutas absolutas.
+
+seed: 20261006
+
+paths:
+  repo_root: ..   # relativo a modelos/ cuando se corre desde modelos/; el código resuelve desde el repo
+  catalogo: dataset_entrenamiento/manifiestos/catalogo_datasets_v1.csv
+  despensa_meta: dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv
+  curados_reto: dataset_entrenamiento/curados_reto
+  curados_extendidos: dataset_entrenamiento/curados_extendidos
+  salidas: modelos/salidas
+
+target: rendimiento_t_ha
+id_col: ID_POLIGONO
+conjunto_col: conjunto
+conjunto_train: ENTRENAMIENTO
+conjunto_pred: PREDICCION
+
+# Columnas de CV / reporte: se unen desde la despensa aunque no estén en el CSV de features.
+cv_meta_cols:
+  - municipio
+  - pixel_clima
+  - estado
+
+# Columnas que nunca son features aunque aparezcan en el CSV.
+never_features:
+  - ID_POLIGONO
+  - conjunto
+  - rendimiento_t_ha
+
+# Primer barrido (filtrar catálogo). Vacío = no filtrar (peligroso: 1024).
+barrido_inicial:
+  - { temporal: solo2025, ubic_tag: sin_ubic, ext_tag: reto }
+  - { temporal: solo2025, ubic_tag: ubic_completa, ext_tag: reto }
+  - { temporal: solo2025, ubic_tag: ubic_mun, ext_tag: reto }
+  - { temporal: solo2025, ubic_tag: ubic_est-mun, ext_tag: reto }
+  - { temporal: multianio, ubic_tag: sin_ubic, ext_tag: reto }
+  - { temporal: multianio, ubic_tag: ubic_completa, ext_tag: reto }
+  - { temporal: solo2025, ubic_tag: sin_ubic, ext_tag: n }
+  - { temporal: solo2025, ubic_tag: sin_ubic, ext_tag: n-edaf }
+  - { temporal: solo2025, ubic_tag: sin_ubic, ext_tag: n-edaf-cec-silt }
+
+cv:
+  group_col: municipio          # oficial (D1: LOGO)
+  check_group_col: pixel_clima  # chequeo
+  leave_one_group_out: true
+
+# D2: One-Hot; D3: pixel_clima categórico si está en features
+categoricas_conocidas:
+  - estado
+  - municipio
+  - edaf_grupo
+  - pixel_clima
+
+# D4: estimadores del primer barrido.
+# media_estado (no media_municipio): bajo LOGO el municipio de test no está en train.
+modelos:
+  - media_global
+  - media_estado
+  - ridge
+  - hist_gradient_boosting
+
+preprocess:
+  encoder: one_hot          # D2
+  scale_numeric_for:        # solo modelos lineales
+    - ridge
+
+git_branch: dev-modelos     # D6
+versionar_joblib: false     # D7

@@ -1,0 +1,126 @@
+columna,grupo,descripcion
+ID_POLIGONO,Identificación,Identificador AGC_### de la parcela
+cultivo,Identificación,Cultivo normalizado (Cebada)
+area_ha,Parcela,Superficie en hectáreas (shapefile)
+municipio,Parcela,Ubicación administrativa
+estado,Parcela,Ubicación administrativa
+conjunto,Parcela,Partición oficial: ENTRENAMIENTO o PREDICCION
+rendimiento_t_ha,Etiqueta,Rendimiento abr-oct 2025 en t/ha; vacío en PREDICCION
+lon,Parcela,"Punto dentro del polígono, grados EPSG:4326"
+lat,Parcela,"Punto dentro del polígono, grados EPSG:4326"
+lluvia_ciclo_mm,Clima,Lluvia acumulada abr-oct 2025 (mm) en el píxel
+lluvia_mes_max_mm,Clima,Lluvia del mes más lluvioso del ciclo (mm)
+tmin_ciclo_c,Clima,Temperatura media del ciclo abr-oct 2025 (°C)
+tmax_ciclo_c,Clima,Temperatura media del ciclo abr-oct 2025 (°C)
+tmedia_ciclo_c,Clima,Temperatura media del ciclo abr-oct 2025 (°C)
+amplitud_ciclo_c,Clima,Tmax - Tmin medias del ciclo (°C)
+elevacion_m,Topografía,"Elevación o relieve interno de la parcela (m), INEGI CEM 120 m"
+elevacion_min_m,Topografía,"Elevación o relieve interno de la parcela (m), INEGI CEM 120 m"
+elevacion_max_m,Topografía,"Elevación o relieve interno de la parcela (m), INEGI CEM 120 m"
+pendiente_grados,Topografía,"Pendiente de la ladera (grados), INEGI CEM 120 m"
+pendiente_max_grados,Topografía,"Pendiente de la ladera (grados), INEGI CEM 120 m"
+relieve_m,Topografía,"Elevación o relieve interno de la parcela (m), INEGI CEM 120 m"
+pixel_clima,Clima,Celda CHIRPS/CHIRTS de la parcela; el mismo valor implica el mismo clima
+n_obs_s2,Calidad,Observaciones válidas del ciclo que sostienen el resumen del sensor
+n_obs_landsat,Calidad,Observaciones válidas del ciclo que sostienen el resumen del sensor
+n_obs_planet,Calidad,Observaciones válidas del ciclo que sostienen el resumen del sensor
+ndvi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+ndvi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+ndvi_s2_int,Sentinel-2,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+ndvi_s2_doy_max,Sentinel-2,Resumen del ciclo 2025: día del año del máximo
+ndvi_s2_std_media,Sentinel-2,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+evi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+evi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+evi_s2_int,Sentinel-2,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+evi_s2_doy_max,Sentinel-2,Resumen del ciclo 2025: día del año del máximo
+evi_s2_std_media,Sentinel-2,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+savi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+savi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+savi_s2_int,Sentinel-2,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+savi_s2_doy_max,Sentinel-2,Resumen del ciclo 2025: día del año del máximo
+savi_s2_std_media,Sentinel-2,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+lai_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+lai_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+lai_s2_int,Sentinel-2,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+lai_s2_doy_max,Sentinel-2,Resumen del ciclo 2025: día del año del máximo
+lai_s2_std_media,Sentinel-2,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+fapar_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+fapar_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+fapar_s2_int,Sentinel-2,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+fapar_s2_doy_max,Sentinel-2,Resumen del ciclo 2025: día del año del máximo
+fapar_s2_std_media,Sentinel-2,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+ndwi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+ndwi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+ndwi_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+endwi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+endwi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+endwi_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+msi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+msi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+msi_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+emsi_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+emsi_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+emsi_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+ndti_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+ndti_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+ndti_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+sti_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+sti_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+sti_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+crc_s2_media,Sentinel-2,Resumen del ciclo 2025: media
+crc_s2_max,Sentinel-2,Resumen del ciclo 2025: máximo
+crc_s2_min,Sentinel-2,Resumen del ciclo 2025: mínimo
+ndvi_s2_media_ago,Sentinel-2,Resumen del ciclo 2025: NDVI medio de agosto
+ndvi_s2_media_may_jul,Sentinel-2,Resumen del ciclo 2025: NDVI medio de mayo a julio
+ndvi_s2_media_sep_oct,Sentinel-2,Resumen del ciclo 2025: NDVI medio de septiembre a octubre
+vi6t_landsat_media,Landsat,Resumen del ciclo 2025: media
+vi6t_landsat_max,Landsat,Resumen del ciclo 2025: máximo
+vi6t_landsat_min,Landsat,Resumen del ciclo 2025: mínimo
+ndvi_planet_max,Planet,Resumen del ciclo 2025: máximo
+ndvi_planet_media,Planet,Resumen del ciclo 2025: media
+ndvi_planet_int,Planet,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+ndvi_planet_doy_max,Planet,Resumen del ciclo 2025: día del año del máximo
+ndvi_planet_std_media,Planet,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+evi_planet_max,Planet,Resumen del ciclo 2025: máximo
+evi_planet_media,Planet,Resumen del ciclo 2025: media
+evi_planet_int,Planet,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+evi_planet_doy_max,Planet,Resumen del ciclo 2025: día del año del máximo
+evi_planet_std_media,Planet,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+lai_planet_max,Planet,Resumen del ciclo 2025: máximo
+lai_planet_media,Planet,Resumen del ciclo 2025: media
+lai_planet_int,Planet,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+lai_planet_doy_max,Planet,Resumen del ciclo 2025: día del año del máximo
+lai_planet_std_media,Planet,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+msavi_planet_max,Planet,Resumen del ciclo 2025: máximo
+msavi_planet_media,Planet,Resumen del ciclo 2025: media
+msavi_planet_int,Planet,Resumen del ciclo 2025: integral trapezoidal (índice x día)
+msavi_planet_doy_max,Planet,Resumen del ciclo 2025: día del año del máximo
+msavi_planet_std_media,Planet,Resumen del ciclo 2025: media de la desviación estándar dentro de la parcela
+ndvi_planet_media_ago,Planet,Resumen del ciclo 2025: NDVI medio de agosto
+ndvi_planet_media_may_jul,Planet,Resumen del ciclo 2025: NDVI medio de mayo a julio
+ndvi_planet_media_sep_oct,Planet,Resumen del ciclo 2025: NDVI medio de septiembre a octubre
+sensores_confiables,Calidad,Sensores con al menos MIN_OBS_CICLO observaciones válidas
+ndvi_s2_max_2022,sentinel2_historico,NDVI Sentinel-2 máximo del ciclo abr–oct 2022 (nube <= 30).
+ndvi_s2_int_2022,sentinel2_historico,Integral NDVI Sentinel-2 del ciclo abr–oct 2022.
+ndvi_s2_media_sep_oct_2022,sentinel2_historico,NDVI Sentinel-2 medio sep–oct 2022.
+ndvi_s2_max_2023,sentinel2_historico,NDVI Sentinel-2 máximo del ciclo abr–oct 2023 (nube <= 30).
+ndvi_s2_int_2023,sentinel2_historico,Integral NDVI Sentinel-2 del ciclo abr–oct 2023.
+ndvi_s2_media_sep_oct_2023,sentinel2_historico,NDVI Sentinel-2 medio sep–oct 2023.
+ndvi_s2_max_2024,sentinel2_historico,NDVI Sentinel-2 máximo del ciclo abr–oct 2024 (nube <= 30).
+ndvi_s2_int_2024,sentinel2_historico,Integral NDVI Sentinel-2 del ciclo abr–oct 2024.
+ndvi_s2_media_sep_oct_2024,sentinel2_historico,NDVI Sentinel-2 medio sep–oct 2024.
+crc_s2_media_2022,sentinel2_historico,CRC Sentinel-2 medio del ciclo abr–oct 2022.
+crc_s2_media_2023,sentinel2_historico,CRC Sentinel-2 medio del ciclo abr–oct 2023.
+crc_s2_media_2024,sentinel2_historico,CRC Sentinel-2 medio del ciclo abr–oct 2024.
+vi6t_landsat_max_2022,landsat_historico,VI6T Landsat máximo del ciclo abr–oct 2022.
+vi6t_landsat_max_2023,landsat_historico,VI6T Landsat máximo del ciclo abr–oct 2023.
+vi6t_landsat_max_2024,landsat_historico,VI6T Landsat máximo del ciclo abr–oct 2024.
+lluvia_ciclo_mm_2022,clima_historico,Lluvia acumulada abr–oct 2022 (mm).
+lluvia_ciclo_mm_2023,clima_historico,Lluvia acumulada abr–oct 2023 (mm).
+lluvia_ciclo_mm_2024,clima_historico,Lluvia acumulada abr–oct 2024 (mm).
+ndvi_s2_max_hist_media,contexto_historico,Media de ndvi_s2_max en 2022–2024 (años con dato).
+ndvi_s2_int_hist_media,contexto_historico,Media de ndvi_s2_int en 2022–2024 (años con dato).
+ndvi_s2_media_sep_oct_hist_media,contexto_historico,Media de ndvi_s2_media_sep_oct en 2022–2024 (años con dato).
+crc_s2_media_hist_media,contexto_historico,Media de crc_s2_media en 2022–2024 (años con dato).
+vi6t_landsat_max_hist_media,contexto_historico,Media de vi6t_landsat_max en 2022–2024 (años con dato).
+lluvia_ciclo_mm_hist_media,clima_historico,Media de lluvia_ciclo_mm en 2022–2024.

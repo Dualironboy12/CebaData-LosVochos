@@ -6,9 +6,10 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 
 ## Alcance
 
-- Fase 2: entrenar y evaluar estimadores de rendimiento (métricas de referencia: RMSE, MAE, r²).
-- Trabajar aquí solo si el prompt lo pide de forma explícita (ver [`../AGENTS.md`](../AGENTS.md)).
+- Fase 2 **abierta** (2026-10-06): entrenar y evaluar estimadores de rendimiento (RMSE, MAE, r²).
+- Leer features desde `dataset_entrenamiento/` vía `src/ceba_modelos` (catálogo + ingesta); no re-curar el dataset oficial aquí.
 - Organizar por arquitectura y por origen de datos (solo reto vs extendido), según el [`README.md`](README.md).
+- Diseño: [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md), [`ESTADO_DATOS.md`](ESTADO_DATOS.md), [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md).
 
 ## Lineamientos (heredan del repo)
 

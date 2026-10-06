@@ -46,7 +46,7 @@ El equipo construye la solución en tres fases (más la despensa de entrenamient
 | 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** | [`modelos/`](modelos/) |
 | 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** (u otro stack que acuerde el equipo) | [`dashboard/`](dashboard/) |
 
-**Fase actual: análisis de datos.** El KDD del reto (FIRA) y el de edafología INEGI ya tienen lectura; el carril SoilGrids está en curso. Lo que sigue es congelar CSVs en `dataset_entrenamiento/` y, con pedido explícito, abrir modelos y dashboard. Detalle operativo abajo (§ Roadmap). Instrucciones para agentes: [`AGENTS.md`](AGENTS.md).
+**Fase actual: modelos (fase 2).** Datos curados listos en `dataset_entrenamiento/`; diseño e ingesta en [`modelos/`](modelos/). El dashboard se abre solo con pedido explícito. Detalle operativo abajo (§ Roadmap). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
 ## Roadmap
 
@@ -56,9 +56,9 @@ Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin
 
 | Fase | Estado | Dónde |
 | --- | --- | --- |
-| 1. Análisis (R) | FIRA e INEGI hechos; SoilGrids en curso | `analisis/datos_*` |
-| Despensa / CSVs | Despensa nube 30 congelada; CSVs curadas pendientes | `dataset_entrenamiento/` |
-| 2. Modelos (Python) | Solo con pedido explícito | `modelos/` |
+| 1. Análisis (R) | FIRA, INEGI y SoilGrids con lectura | `analisis/datos_*` |
+| Despensa / CSVs | Despensa nube 30 + multi-año; matriz curada v1 (1024 CSVs) | `dataset_entrenamiento/` |
+| 2. Modelos (Python) | Abierta: propuesta + ingesta; falta baseline/entrenamiento | `modelos/` |
 | 3. Dashboard | Después de un modelo estable | `dashboard/` |
 | Reporte y video | Al cerrar el desarrollo | — |
 
@@ -66,9 +66,9 @@ Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin
 
 ```text
 1. Criterios humanos 1–6 (cerrados 2026-10-01)
-2. Despensa NUBE_MAX=30 versionada (hecho) + CSVs en dataset_entrenamiento/
-3. Fase 2 en modelos/: baseline + classic ML + misma CV espacial
-4. En paralelo: externos (INEGI hecho; SoilGrids en curso) documentados y alineados
+2. Despensa NUBE_MAX=30 versionada (hecho) + matriz curada v1 en dataset_entrenamiento/ (hecho)
+3. Fase 2 en modelos/: baseline + classic ML + misma CV espacial (filtrar catálogo)
+4. Externos prioritarios ya en curados_extendidos/ (INEGI edaf + SoilGrids N/CEC/silt)
 5. Elegir modelo y CSV ganadores → predecir las 59
 6. Dashboard y, al final, reporte / video
 ```
@@ -84,13 +84,13 @@ Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin
 | 5 | Validación | Oficial por municipio; chequeo por píxel de clima |
 | 6 | Datos externos | Dos carriles en paralelo: solo reto primero; INEGI/SoilGrids en paralelo |
 
-**Matriz de CSVs (reto):** ubicación × ventana temporal. Cada celda se versiona con manifiesto.
+**Matriz de CSVs v1:** 2 temporales × 32 ubicaciones × 16 paquetes extendidos = **1024** archivos en `dataset_entrenamiento/curados_reto/` y `curados_extendidos/`. Catálogo: `dataset_entrenamiento/manifiestos/catalogo_datasets_v1.csv`. Regenerar: `python3 dataset_entrenamiento/scripts/generar_datasets.py`.
 
-**Despensa:** `dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv` (nube ≤ 30, 197×101).
+**Despensas:** `parcelas_despensa_nube30_v1.csv` (solo 2025, 197×101) y `parcelas_despensa_multianio_nube30_v1.csv` (2025 + contexto 2022–2024, 197×125).
 
-**Carril externo:** cada fuente con origen, licencia, CRS, join a `AGC_###`. INEGI edafología: CSV en `DATASETS_EXTERNOS/despensa_extendida/`. SoilGrids: KDD en `analisis/datos_soilgrids/`.
+**Carril externo:** INEGI `edaf_grupo` y SoilGrids (`sg_nitrogen_0-5cm_mean`, `sg_cec_0-5cm_mean`, `sg_silt_0-5cm_mean`) entran como eje \(E\) de la matriz. Detalle en `dataset_entrenamiento/fuentes/` y `DATASETS_EXTERNOS/despensa_extendida/`.
 
-**Pendientes humanas:** cuándo abrir fase 2/3; modelo y CSV de entrega; commits/push/textos del reporte.
+**Pendientes humanas:** decisiones de CV/encoder en [`modelos/DECISIONES_ABIERTAS.md`](modelos/DECISIONES_ABIERTAS.md); modelo y CSV de entrega; abrir dashboard; commits/push/textos del reporte.
 
 ### Agente vs humano
 
@@ -100,18 +100,18 @@ El agente reproduce, construye CSVs, entrena y documenta. El equipo aprueba sets
 
 Una fila = una parcela; el condensamiento es una hipótesis; misma CV en todos los experimentos; 3–5 CSVs y pocos modelos; sensores separados; baseline primero; explicabilidad; reproducible en CPU.
 
-### Modelos (cuando se abra la fase 2)
+### Modelos (fase 2 en curso)
 
-Priorizar classic ML (ridge, RF, LightGBM) entrenado aquí sobre tablas propias. Baseline media por municipio → LightGBM/RF sobre 3–5 CSVs → elegir por CV espacial. Hugging Face / LLM no sustituyen el predictor de t/ha.
+Priorizar classic ML (Ridge, RF/HistGBM, opcional LightGBM) sobre tablas propias. Baseline media por municipio → classic ML sobre el barrido del catálogo → elegir por CV espacial. Detalle: [`modelos/PROPUESTA_MODELOS.md`](modelos/PROPUESTA_MODELOS.md). Hugging Face / LLM no sustituyen el predictor de t/ha.
 
-### Checklist fase 2 (cuando el equipo lo pida)
+### Checklist fase 2
 
 - [x] Decisiones 1–6
 - [x] Despensa nube 30 en `dataset_entrenamiento/despensa/`
-- [ ] CSVs de la matriz (reto) + manifiesto
-- [ ] Pedido explícito de abrir `modelos/`
-- [ ] Baseline + 1–2 modelos, CV municipio (+ píxel)
-- [ ] Externos alineados (INEGI / SoilGrids) documentados
+- [x] Despensa multi-año + matriz curada v1 (1024 CSVs + catálogo)
+- [x] Fase 2 abierta; propuesta + pipeline de ingesta en `modelos/`
+- [ ] Baseline + 1–2 modelos, CV municipio (+ píxel); filtrar catálogo
+- [x] Externos prioritarios en matriz (`edaf` + SoilGrids N/CEC/silt)
 - [ ] Elegir modelo y CSV de entrega; predicciones de las 59
 - [ ] Pedido de `dashboard/`; autorizar commits/push
 
