@@ -1,0 +1,11 @@
+modelo_es,rmse_oof,mae_oof,r2_oof,descripcion,dataset_id
+LightGBM,0.5417050732009819,0.3794760305541713,0.5919991103034872,Solo ciclo 2025; Ubicación: municipio y longitud; Reto + nitrógeno + edafología,parcelas_solo2025_ubic_mun-lon_n-edaf_v1
+LightGBM,0.5430537558157211,0.3826123420052798,0.5899649824006616,Solo ciclo 2025; Ubicación: longitud y píxel climático; Reto + nitrógeno + edafología,parcelas_solo2025_ubic_lon-pix_n-edaf_v1
+LightGBM,0.5432252307189521,0.3842704309531695,0.5897059958274803,Solo ciclo 2025; Solo longitud; Reto + nitrógeno del suelo (SoilGrids),parcelas_solo2025_ubic_lon_n_v1
+LightGBM,0.5444390784072876,0.3838861866327409,0.5878703268111152,Solo ciclo 2025; Solo longitud; Reto + nitrógeno + edafología,parcelas_solo2025_ubic_lon_n-edaf_v1
+LightGBM,0.544943795407664,0.3831389829119025,0.5871058509423817,"Solo ciclo 2025; Ubicación: municipio, longitud y píxel climático; Reto + nitrógeno + edafología",parcelas_solo2025_ubic_mun-lon-pix_n-edaf_v1
+LightGBM,0.5452606099622782,0.3851480547483677,0.5866256219651245,Solo ciclo 2025; Ubicación: longitud y píxel climático; Reto + nitrógeno del suelo (SoilGrids),parcelas_solo2025_ubic_lon-pix_n_v1
+LightGBM,0.5460444144129426,0.3815014258453342,0.5854363280845418,Solo ciclo 2025; Solo longitud; Reto + nitrógeno + edafología + limo,parcelas_solo2025_ubic_lon_n-edaf-silt_v1
+LightGBM,0.5461562362787065,0.3789145426958194,0.5852665176123799,Solo ciclo 2025; Ubicación: longitud y píxel climático; Reto + nitrógeno + edafología + limo,parcelas_solo2025_ubic_lon-pix_n-edaf-silt_v1
+LightGBM,0.5464023064600969,0.3818086468235375,0.5848927178586698,Solo ciclo 2025; Ubicación: municipio y longitud; Reto + nitrógeno + edafología + limo,parcelas_solo2025_ubic_mun-lon_n-edaf-silt_v1
+LightGBM,0.5475100134642105,0.3832361215765816,0.5832079397157586,Solo ciclo 2025; Ubicación: municipio y longitud; Reto + nitrógeno + limo,parcelas_solo2025_ubic_mun-lon_n-silt_v1

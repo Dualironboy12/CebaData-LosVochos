@@ -455,3 +455,22 @@ Composer (Cursor Agent).
 - Creados/modificados bajo `modelos/` (config, src, scripts, salidas/superciclo_v1, comparativas/superciclo_v1).
 - Predicción 59 en `salidas/superciclo_v1/prediccion_59_ganador.csv`.
 - Sin commits; rama `dev-modelos`.
+
+## 2026-10-06 — PDF resumen equipo (superciclo)
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Genera un resumen del informe que contenga: Mejores familias… En formato PDF.
+
+**Acciones**
+
+- Script `modelos/scripts/generar_resumen_equipo_pdf.py`: figuras (familias, top 10 reto/extendido, métricas, heatmap OOF, real vs predicho, residuos, error por municipio, predicciones 59) y PDF ReportLab en lenguaje natural (sin códigos ubic/lon/pix).
+- Salida: `modelos/comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf`.
+
+**Afectaciones**
+
+- Creados script, PDF, figuras y CSV auxiliares en `resumen_equipo/`. Actualizado README modelos y PROMPTS. Sin commits.
