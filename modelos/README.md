@@ -1,88 +1,80 @@
 # Modelos
 
-Fase 2: entrenar y evaluar estimadores de rendimiento (t/ha) en Python. Entradas desde `[../dataset_entrenamiento/](../dataset_entrenamiento/)`. El dashboard consumirá el artefacto de entrega desde `[../dashboard/](../dashboard/)` más adelante.
+Fase 2: entrenar y evaluar estimadores de rendimiento (t/ha) en Python. Entradas desde [`../dataset_entrenamiento/`](../dataset_entrenamiento/). El dashboard consumirá el artefacto de entrega desde [`../dashboard/`](../dashboard/) más adelante.
 
-Reglas: `[AGENTS.md](AGENTS.md)` · `[../AGENTS.md](../AGENTS.md)` · roadmap `[../README.md#roadmap](../README.md#roadmap)`.
+Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap [`../README.md#roadmap`](../README.md#roadmap).
 
 ## Documentos de diseño
 
+| Doc | Contenido |
+| --- | --- |
+| [`ESTADO_DATOS.md`](ESTADO_DATOS.md) | Readiness de despensas/matriz |
+| [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md) | Familias Classic ML y CV |
+| [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md) | D1–D7 (superciclo amplía D4/D5) |
+| [`config/superciclo.yaml`](config/superciclo.yaml) | Grid 1024, modelos, HPO top-K |
+| [`comparativas/superciclo_v1/informe_superciclo.html`](comparativas/superciclo_v1/informe_superciclo.html) | **Informe gráfico del superciclo** |
 
-| Doc                                            | Contenido                                                          |
-| ---------------------------------------------- | ------------------------------------------------------------------ |
-| `[ESTADO_DATOS.md](ESTADO_DATOS.md)`           | Readiness de despensas/matriz; perfil de etiqueta; barrido inicial |
-| `[PROPUESTA_MODELOS.md](PROPUESTA_MODELOS.md)` | Baselines, classic ML, preproceso, CV, plan de experimentos        |
-| `[config/default.yaml](config/default.yaml)`   | Rutas, semilla, columnas de CV, barrido inicial                    |
+## Superciclo Classic ML (v1)
 
+Capas A (baselines) → B (1024 × ridge/elasticnet/RF/HistGBM/LightGBM) → C (HPO top-30).
 
+```bash
+bash modelos/preparar_entorno.sh
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python -u modelos/scripts/correr_superciclo.py
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/analizar_superciclo.py
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/generar_informe_superciclo.py
+```
 
+Entregables: `salidas/superciclo_v1/` (resumen, predicción 59) y `comparativas/superciclo_v1/` (rankings, figuras, HTML).
 
 ## Estructura
 
 ```text
 modelos/
   config/default.yaml
-  src/ceba_modelos/       ← paquete (ingesta, catálogo, CV)
-  scripts/smoke_ingesta.py
-  salidas/                ← métricas / resúmenes (gitignored salvo .gitkeep)
-  solo_reto/              ← artefactos solo-reto (cuando haya corridas)
-  extendido/              ← artefactos con externos
-  comparativas/
-  entrega/                ← modelo elegido (más adelante)
+  config/superciclo.yaml
+  src/ceba_modelos/
+  scripts/correr_superciclo.py
+  scripts/analizar_superciclo.py
+  scripts/generar_informe_superciclo.py
+  salidas/superciclo_v1/
+  comparativas/superciclo_v1/
   requirements.txt
-  preparar_entorno.sh
 ```
-
-
 
 ## Entorno
 
 ```bash
 bash modelos/preparar_entorno.sh
-# Desde la raíz del repo (evita AppImage de Cursor si hace falta):
 env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
   PYTHONPATH=modelos/src python modelos/scripts/smoke_ingesta.py
 ```
 
-Dependencias mínimas: `numpy`, `pandas`, `scikit-learn`, `pyyaml`, `joblib`. LightGBM queda opcional.
+Deps: numpy, pandas, scikit-learn, pyyaml, joblib, lightgbm, matplotlib.
 
 ## Ingesta (contrato)
 
-1. Elegir filas del catálogo (`catalogo_datasets_v1.csv`), no hardcodear 1024 rutas.
-2. Features = columnas del CSV curado excepto `ID_POLIGONO`, `conjunto`, `rendimiento_t_ha`.
-3. **Meta de CV** (`municipio`, `pixel_clima`, `estado`) se une siempre desde la despensa `nube30_v1`, aunque el CSV sea `sin_ubic`.
-4. 138 train / 59 pred; rendimiento vacío en predicción no se imputa.
-5. CV oficial: `LeaveOneGroupOut` por municipio; chequeo por píxel de clima.
-
-API: `ceba_modelos.ingesta.load_from_catalog_row`, `ceba_modelos.cv.iter_group_folds`.
+1. Catálogo `catalogo_datasets_v1.csv`.
+2. Features = CSV curado menos llaves/etiqueta.
+3. Meta CV desde despensa aunque el CSV sea `sin_ubic`.
+4. CV oficial LOGO por municipio.
 
 ## Estado
 
-- [x] Fase 2 abierta por el equipo (2026-10-06).
-- [x] Revisión de datos + propuesta de arquitecturas.
-- [x] Pipeline de ingesta + smoke del barrido inicial (9 CSVs).
-- [x] Decisiones D1–D7 cerradas; rama de trabajo `dev-modelos`.
-- [x] Script `scripts/correr_barrido.py` (baselines + Ridge + HistGBM, CV LOGO).
-- [ ] Comparativa documentada tras el primer barrido; ampliar si hace falta.
-- [ ] Modelo de entrega + predicciones de las 59 (decisión humana).
-
-### Correr el barrido
-
-```bash
-bash modelos/preparar_entorno.sh   # si aún no hay .venv
-env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
-  PYTHONPATH=modelos/src python modelos/scripts/correr_barrido.py
-```
-
-Salida: `modelos/salidas/barrido_YYYY-MM-DD/resumen_barrido.csv`.
+- [x] Fase 2 abierta; ingesta + barrido piloto 9 CSVs.
+- [x] Superciclo v1 (1024 × 5 modelos + HPO) e informe HTML.
+- [ ] Modelo de entrega firmado por el equipo (candidato en informe).
+- [ ] Dashboard (fase 3).
 
 ## Rama
 
-Trabajo de fase 2 en **`dev-modelos`** (decisión D6).
+Trabajo en **`dev-modelos`** (D6).
 
 ## Convenciones
 
-- Misma CV y semilla al comparar CSVs (`seed` en `config/default.yaml`).
-- Separar `solo_reto/` vs `extendido/`.
+- Misma CV y semilla al comparar.
 - Commits solo con autorización.
-- Bitácora: `[../PROMPTS.md](../PROMPTS.md)`.
-
+- Bitácora: [`../PROMPTS.md`](../PROMPTS.md).

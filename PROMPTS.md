@@ -431,3 +431,27 @@ Composer (Cursor Agent).
 
 - Creados/modificados: código bajo `modelos/src`, scripts, config, docs, `salidas/barrido_2026-10-06/`, copia en `comparativas/`.
 - Rama local `dev-modelos` (sin commit ni push salvo pedido).
+
+## 2026-10-06 — Superciclo Classic ML (1024 × modelos × HPO)
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Superciclo Classic ML (1024 × modelos × HPO top-K) — Implement the plan as specified…
+
+**Acciones**
+
+- Config `superciclo.yaml`; estimadores ElasticNet, RF, HistGBM, LightGBM; `train_cv` con params/HPO.
+- Runner `correr_superciclo.py` (capas A/B/C, joblib, checkpoint); reparación de CSV con columnas irregulares tras HPO.
+- Grid completo: 2 baselines + 5120 celdas B + 360 HPO C. Mejor C: LightGBM + `solo2025_ubic_lon-pix_n-edaf` RMSE_OOF≈0.533 (HPO Δ≈0.009 vs mejor B).
+- Análisis + informe HTML con rankings, barras, diagnósticos y recomendaciones (incl. contrato dashboard).
+- Actualizados DECISIONES D4/D5, README modelos, PROMPTS.
+
+**Afectaciones**
+
+- Creados/modificados bajo `modelos/` (config, src, scripts, salidas/superciclo_v1, comparativas/superciclo_v1).
+- Predicción 59 en `salidas/superciclo_v1/prediccion_59_ganador.csv`.
+- Sin commits; rama `dev-modelos`.

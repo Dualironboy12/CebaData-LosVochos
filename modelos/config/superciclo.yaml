@@ -1,0 +1,78 @@
+# Superciclo Classic ML — 1024 datasets × modelos × HPO top-K
+seed: 20261006
+n_jobs: 4
+
+paths:
+  catalogo: dataset_entrenamiento/manifiestos/catalogo_datasets_v1.csv
+  despensa_meta: dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv
+  salidas: modelos/salidas/superciclo_v1
+  comparativas: modelos/comparativas/superciclo_v1
+
+target: rendimiento_t_ha
+id_col: ID_POLIGONO
+conjunto_col: conjunto
+conjunto_train: ENTRENAMIENTO
+conjunto_pred: PREDICCION
+
+cv_meta_cols:
+  - municipio
+  - pixel_clima
+  - estado
+
+never_features:
+  - ID_POLIGONO
+  - conjunto
+  - rendimiento_t_ha
+
+categoricas_conocidas:
+  - estado
+  - municipio
+  - edaf_grupo
+  - pixel_clima
+
+cv:
+  group_col: municipio
+  check_group_col: pixel_clima
+  leave_one_group_out: true
+
+# Capa A
+baselines:
+  - media_global
+  - media_estado
+
+# Capa B (defaults) — no incluir baselines
+modelos_capa_b:
+  - ridge
+  - elasticnet
+  - random_forest
+  - hist_gradient_boosting
+  - lightgbm
+
+# Capa C
+hpo:
+  top_k: 30
+  max_reto: 15
+  max_extendido: 15
+  grids:
+    ridge:
+      alpha: [0.1, 1.0, 10.0, 100.0]
+    elasticnet:
+      alpha: [0.1, 1.0, 10.0, 100.0]
+      l1_ratio: [0.15, 0.5, 0.85]
+    random_forest:
+      max_depth: [null, 6, 12]
+      min_samples_leaf: [2, 5, 10]
+    hist_gradient_boosting:
+      max_depth: [3, 4, 6]
+      learning_rate: [0.03, 0.05, 0.1]
+      max_iter: [100, 200, 400]
+    lightgbm:
+      num_leaves: [15, 31]
+      learning_rate: [0.03, 0.05, 0.1]
+      min_child_samples: [10, 20]
+
+# Umbrales del veredicto Classic ML
+veredicto:
+  hpo_mejora_minima_rmse: 0.02
+
+oof_top_n: 20
