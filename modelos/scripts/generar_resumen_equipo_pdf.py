@@ -150,17 +150,22 @@ def mejores_familias(b: pd.DataFrame) -> pd.DataFrame:
     return b.loc[idx].sort_values("rmse_oof").reset_index(drop=True)
 
 
+def _guia(fig, texto: str) -> None:
+    fig.text(0.01, 0.012, texto, fontsize=8, color="#444", style="italic")
+
+
 def fig_barras_familias(fam: pd.DataFrame, path: Path) -> None:
     labels = [modelo_corto(m) for m in fam["modelo"]]
-    fig, ax = plt.subplots(figsize=(8, 4.2))
+    fig, ax = plt.subplots(figsize=(8, 4.6))
     colors_b = sns.color_palette("Blues_r", n_colors=len(labels))
     ax.barh(labels, fam["rmse_oof"], color=colors_b)
     ax.invert_yaxis()
-    ax.set_xlabel("Error RMSE en validación (t/ha)")
+    ax.set_xlabel("Error RMSE en validación (t/ha) — menor es mejor")
     ax.set_title("Mejor resultado de cada familia de modelos")
     for i, v in enumerate(fam["rmse_oof"]):
         ax.text(v + 0.01, i, f"{v:.3f}", va="center", fontsize=9)
-    fig.tight_layout()
+    _guia(fig, "Guía: la barra más corta es la mejor familia. RMSE = error típico en t/ha.")
+    fig.tight_layout(rect=[0, 0.06, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
@@ -169,12 +174,15 @@ def fig_top10_carril(df: pd.DataFrame, title: str, path: Path) -> None:
     labels = []
     for i, r in df.iterrows():
         labels.append(f"{i+1}. {modelo_corto(r['modelo'])} · {ubic_es(r['ubic_tag'])[:42]}")
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(9, 5.8))
     ax.barh(labels, df["rmse_oof"], color="#2c7fb8")
     ax.invert_yaxis()
-    ax.set_xlabel("Error RMSE (t/ha)")
+    ax.set_xlabel("Error RMSE (t/ha) — menor es mejor")
     ax.set_title(title)
-    fig.tight_layout()
+    for i, v in enumerate(df["rmse_oof"]):
+        ax.text(v + 0.005, i, f"{v:.3f}", va="center", fontsize=7)
+    _guia(fig, "Guía: #1 (arriba) es el mejor de este carril. Barras más cortas = menos error.")
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
@@ -190,42 +198,46 @@ def fig_heatmap_oof(oof_paths: list[tuple[str, Path]], path: Path) -> None:
     if not frames:
         return
     mat = pd.concat(frames, axis=1).sort_index()
-    # Submuestra visual: ordenar por predicción media
     mat["_m"] = mat.mean(axis=1)
     mat = mat.sort_values("_m").drop(columns="_m")
-    # máximo ~40 filas para legibilidad
     if len(mat) > 40:
         idx = np.linspace(0, len(mat) - 1, 40).astype(int)
         mat = mat.iloc[idx]
-    fig, ax = plt.subplots(figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(10, 8.4))
     sns.heatmap(
         mat,
         ax=ax,
         cmap="YlGnBu",
-        cbar_kws={"label": "Rendimiento predicho (t/ha)"},
+        cbar_kws={"label": "Rendimiento predicho (t/ha)\n(más oscuro ≈ mayor rendimiento)"},
         xticklabels=True,
         yticklabels=False,
     )
     ax.set_title("Mapa de calor: predicciones en validación (mejores configuraciones)")
     ax.set_xlabel("Modelo / configuración")
-    ax.set_ylabel("Parcelas de entrenamiento (muestra ordenada)")
-    fig.tight_layout()
+    ax.set_ylabel("Parcelas (muestra ordenada de menor a mayor predicción media)")
+    _guia(
+        fig,
+        "Guía: no mide error. Compara si distintos modelos predicen valores similares "
+        "(columnas parecidas) o divergen. Escala = t/ha predichas.",
+    )
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
 
 def fig_real_vs_pred(oof_path: Path, path: Path, title: str) -> None:
     d = pd.read_csv(oof_path)
-    fig, ax = plt.subplots(figsize=(5.5, 5.2))
+    fig, ax = plt.subplots(figsize=(5.7, 5.5))
     ax.scatter(d["y_true"], d["y_pred"], alpha=0.75, c="#1b9e77", edgecolors="white", s=40)
     lo = min(d["y_true"].min(), d["y_pred"].min())
     hi = max(d["y_true"].max(), d["y_pred"].max())
-    ax.plot([lo, hi], [lo, hi], "k--", lw=1, label="Ideal (predicción = realidad)")
+    ax.plot([lo, hi], [lo, hi], "k--", lw=1, label="Ideal: predicho = real (mejor cuanto más cerca)")
     ax.set_xlabel("Rendimiento real (t/ha)")
     ax.set_ylabel("Rendimiento predicho (t/ha)")
     ax.set_title(title)
-    ax.legend(fontsize=8)
-    fig.tight_layout()
+    ax.legend(fontsize=7, loc="upper left")
+    _guia(fig, "Guía: puntos sobre la diagonal = acierto. Arriba = sobreestima; abajo = subestima.")
+    fig.tight_layout(rect=[0, 0.06, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
@@ -233,32 +245,39 @@ def fig_real_vs_pred(oof_path: Path, path: Path, title: str) -> None:
 def fig_residuos(oof_path: Path, path: Path) -> None:
     d = pd.read_csv(oof_path)
     res = d["y_pred"] - d["y_true"]
-    fig, ax = plt.subplots(figsize=(6, 3.8))
+    fig, ax = plt.subplots(figsize=(6.2, 4.2))
     ax.hist(res, bins=18, color="#7570b3", edgecolor="white")
+    ax.axvline(0, color="black", lw=1, label="Cero = sin error (ideal)")
     ax.axvline(res.mean(), color="firebrick", ls="--", label=f"Sesgo medio = {res.mean():.2f} t/ha")
-    ax.set_xlabel("Error (predicho − real)")
+    ax.set_xlabel("Error (predicho − real) en t/ha")
     ax.set_ylabel("Número de parcelas")
     ax.set_title("Distribución de errores en validación (modelo ganador)")
-    ax.legend(fontsize=8)
-    fig.tight_layout()
+    ax.legend(fontsize=7)
+    _guia(
+        fig,
+        "Guía: ideal concentrado en 0. Positivo = sobreestima; negativo = subestima. "
+        "Sesgo cercano a 0 es mejor.",
+    )
+    fig.tight_layout(rect=[0, 0.08, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
 
 def fig_error_municipio(path_csv: Path, path: Path) -> None:
     d = pd.read_csv(path_csv).sort_values("rmse", ascending=True)
-    fig, ax = plt.subplots(figsize=(8, 4.5))
+    fig, ax = plt.subplots(figsize=(8, 4.8))
     ax.barh(d["municipio"].astype(str), d["rmse"], color="#d95f02")
-    ax.set_xlabel("Error RMSE (t/ha)")
+    ax.set_xlabel("Error RMSE (t/ha) — menor es mejor")
     ax.set_title("Error por municipio (modelo ganador, validación)")
-    fig.tight_layout()
+    _guia(fig, "Guía: municipios a la derecha fallan más. Con 1 parcela el valor es muy ruidoso.")
+    fig.tight_layout(rect=[0, 0.06, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
 
 def fig_pred59(pred: pd.DataFrame, path: Path) -> None:
     d = pred.sort_values("rendimiento_pred_t_ha")
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(8, 6.3))
     ax.barh(
         d["ID_POLIGONO"].astype(str),
         d["rendimiento_pred_t_ha"],
@@ -268,24 +287,34 @@ def fig_pred59(pred: pd.DataFrame, path: Path) -> None:
     ax.set_xlabel("Rendimiento predicho (t/ha)")
     ax.set_title("Predicciones del ganador sobre las 59 parcelas sin etiqueta")
     ax.tick_params(axis="y", labelsize=6)
-    fig.tight_layout()
+    _guia(
+        fig,
+        "Guía: no hay rendimiento real aquí (etiqueta oculta). Barras = estimación del modelo; "
+        "no es un ranking de calidad.",
+    )
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     fig.savefig(path, dpi=130)
     plt.close(fig)
 
 
 def fig_comparacion_metricas(rows: list[dict], path: Path) -> None:
     df = pd.DataFrame(rows)
-    fig, ax = plt.subplots(figsize=(8, 4))
+    fig, ax = plt.subplots(figsize=(8, 4.5))
     x = np.arange(len(df))
     w = 0.35
-    ax.bar(x - w / 2, df["rmse"], w, label="RMSE", color="#2c7fb8")
-    ax.bar(x + w / 2, df["mae"], w, label="MAE", color="#fdae61")
+    ax.bar(x - w / 2, df["rmse"], w, label="RMSE (menor es mejor)", color="#2c7fb8")
+    ax.bar(x + w / 2, df["mae"], w, label="MAE (menor es mejor)", color="#fdae61")
     ax.set_xticks(x)
     ax.set_xticklabels(df["nombre"], rotation=20, ha="right", fontsize=8)
     ax.set_ylabel("Error (t/ha)")
     ax.set_title("Comparación de métricas entre los mejores candidatos")
-    ax.legend()
-    fig.tight_layout()
+    ax.legend(fontsize=8)
+    _guia(
+        fig,
+        "Guía: RMSE penaliza más los errores grandes; MAE es el error absoluto medio. "
+        "En ambos, menor = mejor.",
+    )
+    fig.tight_layout(rect=[0, 0.07, 1, 1])
     fig.savefig(path, dpi=140)
     plt.close(fig)
 
@@ -379,8 +408,26 @@ def build_pdf(
             "conjuntos de datos funcionaron mejor tras probar de forma sistemática "
             "todas las tablas curadas (1024) con varios algoritmos clásicos. "
             "La validación oficial deja fuera un municipio completo en cada ronda "
-            "(leave-one-municipio-out). La métrica principal es el error RMSE en "
-            "toneladas por hectárea: <b>más bajo es mejor</b>.",
+            "(leave-one-municipio-out).",
+            styles["BodyJ"],
+        )
+    )
+
+    story.append(Paragraph("Cómo leer métricas y gráficos", styles["H2c"]))
+    story.append(
+        Paragraph(
+            "<b>RMSE</b> (error cuadrático medio): tipicidad del error en t/ha. "
+            "<b>Menor es mejor</b> (ideal cerca de 0).<br/>"
+            "<b>MAE</b> (error absoluto medio): promedio de |predicho − real|. "
+            "<b>Menor es mejor</b>.<br/>"
+            "<b>r²</b> (coeficiente de determinación): fracción de varianza explicada. "
+            "<b>Mayor es mejor</b> (1 = perfecto; 0 ≈ predecir la media; negativo = peor que la media).<br/>"
+            "<b>Baseline</b>: predicción ingenua (media global o por estado). Un modelo útil "
+            "debe tener RMSE claramente <b>menor</b> que esos valores.<br/>"
+            "<b>Gráfico real vs predicho</b>: cuanto más cerca de la diagonal, mejor.<br/>"
+            "<b>Residuos</b> (predicho − real): ideal centrados en 0; positivo = sobreestima.<br/>"
+            "<b>Mapa de calor de predicciones</b>: compara valores predichos entre modelos "
+            "(no es un ranking de error; colores más oscuros ≈ mayor rendimiento predicho).",
             styles["BodyJ"],
         )
     )
@@ -422,7 +469,7 @@ def build_pdf(
     story.append(Image(str(figs["familias"]), width=16 * cm, height=8.2 * cm))
 
     # Tabla familias
-    data = [["Familia", "RMSE", "MAE", "r²", "Tipo de datos (resumen)"]]
+    data = [["Familia", "RMSE ↓", "MAE ↓", "r² ↑", "Tipo de datos (resumen)"]]
     for _, r in fam.iterrows():
         data.append(
             [
@@ -447,6 +494,13 @@ def build_pdf(
         )
     )
     story.append(t)
+    story.append(Spacer(1, 0.15 * cm))
+    story.append(
+        Paragraph(
+            "Leyenda de tabla: ↓ = menor es mejor · ↑ = mayor es mejor. Unidades de RMSE/MAE: t/ha.",
+            styles["Nota"],
+        )
+    )
 
     story.append(PageBreak())
     story.append(Paragraph("2. Top 10 — datos solo del reto (originales)", styles["H2c"]))
@@ -459,7 +513,7 @@ def build_pdf(
     )
     story.append(Image(str(figs["top_reto"]), width=16.5 * cm, height=10 * cm))
 
-    data = [["#", "Modelo", "RMSE", "MAE", "r²", "Descripción del dataset"]]
+    data = [["#", "Modelo", "RMSE ↓", "MAE ↓", "r² ↑", "Descripción del dataset"]]
     for i, r in top_reto.iterrows():
         data.append(
             [
@@ -485,6 +539,12 @@ def build_pdf(
     )
     story.append(Spacer(1, 0.2 * cm))
     story.append(t)
+    story.append(
+        Paragraph(
+            "Leyenda: ↓ menor es mejor · ↑ mayor es mejor. El puesto 1 es el de menor RMSE.",
+            styles["Nota"],
+        )
+    )
 
     story.append(PageBreak())
     story.append(Paragraph("3. Top 10 — datos extendidos (reto + externos)", styles["H2c"]))
@@ -497,7 +557,7 @@ def build_pdf(
     )
     story.append(Image(str(figs["top_ext"]), width=16.5 * cm, height=10 * cm))
 
-    data = [["#", "Modelo", "RMSE", "MAE", "r²", "Descripción del dataset"]]
+    data = [["#", "Modelo", "RMSE ↓", "MAE ↓", "r² ↑", "Descripción del dataset"]]
     for i, r in top_ext.iterrows():
         data.append(
             [
@@ -523,6 +583,13 @@ def build_pdf(
     )
     story.append(Spacer(1, 0.2 * cm))
     story.append(t)
+    story.append(
+        Paragraph(
+            "Leyenda: ↓ menor es mejor · ↑ mayor es mejor. Comparar con el top solo-reto: "
+            "si el RMSE es apenas menor, el externo aporta poco.",
+            styles["Nota"],
+        )
+    )
 
     story.append(PageBreak())
     story.append(Paragraph("4. Cómo se comportan los mejores en validación", styles["H2c"]))

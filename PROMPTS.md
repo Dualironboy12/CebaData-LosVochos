@@ -474,3 +474,23 @@ Composer (Cursor Agent).
 **Afectaciones**
 
 - Creados script, PDF, figuras y CSV auxiliares en `resumen_equipo/`. Actualizado README modelos y PROMPTS. Sin commits.
+
+## 2026-10-06 — Guías en gráficos e informes superciclo
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Añade al resumen y al informe leyendas o guias… Regenera los documentos pertinentes
+
+**Acciones**
+
+- Figuras de `analizar_superciclo.py` y `generar_resumen_equipo_pdf.py` con pies de guía (menor/mayor es mejor, diagonal ideal, sesgo, etc.).
+- HTML con caja «Cómo leer este informe», pies bajo cada figura y columnas de tablas con ↓/↑.
+- PDF con sección de lectura de métricas y leyendas en tablas; documentos regenerados.
+
+**Afectaciones**
+
+- Scripts de informe/PDF; `informe_superciclo.html`; `Resumen_equipo_superciclo_Classic_ML.pdf` y figuras. PROMPTS. Sin commits.

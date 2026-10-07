@@ -39,10 +39,24 @@ def df_html(df: pd.DataFrame, n: int = 15) -> str:
         if c in df.columns
     ]
     show = df[cols].head(n).copy()
+    rename = {
+        "rmse_oof": "RMSE ↓ (menor mejor)",
+        "mae_oof": "MAE ↓ (menor mejor)",
+        "r2_oof": "r² ↑ (mayor mejor)",
+        "rmse_fold_std": "Disp. folds (menor = más estable)",
+    }
     for c in ("rmse_oof", "mae_oof", "r2_oof", "rmse_fold_std"):
         if c in show.columns:
             show[c] = show[c].map(lambda x: f"{x:.4f}" if pd.notna(x) else "")
+    show = show.rename(columns=rename)
     return show.to_html(index=False, classes="tbl", border=0, escape=True)
+
+
+def fig_block(path: Path, caption: str) -> str:
+    return (
+        f'<div class="fig">{img_tag(path)}'
+        f'<p class="cap">{caption}</p></div>'
+    )
 
 
 def main() -> None:
@@ -145,54 +159,70 @@ h1,h2,h3 {{ color: #0b3d5c; }}
 ul {{ line-height: 1.45; }}
 code {{ background: #eef3f7; padding: 0.1rem 0.3rem; border-radius: 3px; }}
 .fig {{ margin: 1rem 0; }}
-.meta {{ color: #555; font-size: 0.9rem; }}
+.cap {{ color: #444; font-size: 0.88rem; font-style: italic; margin: 0.35rem 0 1.2rem; }}
+.guide {{ background: #fff8e6; border-left: 4px solid #e6a817; padding: 0.85rem 1rem; margin: 1rem 0; }}
+.guide ul {{ margin: 0.4rem 0 0 1.1rem; }}
 </style>
 </head>
 <body>
 <h1>Superciclo Classic ML</h1>
 <p class="meta">CebaData / Los Vochos — fase 2. CV leave-one-municipio-out. Semilla 20261006.</p>
 
+<div class="guide">
+<strong>Cómo leer este informe</strong>
+<ul>
+<li><b>RMSE / MAE</b> (errores en t/ha): <b>menor es mejor</b> (ideal cerca de 0).</li>
+<li><b>r²</b>: <b>mayor es mejor</b> (1 = perfecto; 0 ≈ predecir la media; negativo = peor que la media).</li>
+<li><b>Baselines</b> (media global / por estado): un buen modelo debe tener RMSE <b>claramente menor</b>.</li>
+<li><b>Real vs predicho</b>: cuanto más cerca de la diagonal, mejor.</li>
+<li><b>Residuos</b> (predicho − real): ideal centrados en 0; positivo = sobreestima; negativo = subestima.</li>
+<li>En tablas, las columnas con ↓ indican “menor mejor”; ↑ indican “mayor mejor”.</li>
+</ul>
+</div>
+
 <div class="card">
 <h2>Resumen ejecutivo</h2>
 <p class="verdict">{meta['veredicto']}</p>
 <p>{meta['veredicto_detalle']}</p>
 <ul>
-<li>Baseline media global RMSE OOF: <strong>{bg:.4f}</strong></li>
-<li>Baseline media estado RMSE OOF: <strong>{be:.4f}</strong></li>
-<li>Mejor capa B: <code>{best_b.get('dataset_id')}</code> / <code>{best_b.get('modelo')}</code> → <strong>{float(best_b['rmse_oof']):.4f}</strong></li>
-<li>Mejor capa C (HPO): <code>{best_c.get('dataset_id')}</code> / <code>{best_c.get('modelo')}</code> → <strong>{float(best_c['rmse_oof']):.4f}</strong> (Δ HPO={meta['hpo_gain_rmse']:.4f})</li>
-<li>Chequeo píxel (RMSE agregado): {meta.get('pixel_rmse_agregado')}</li>
+<li>Baseline media global RMSE (menor mejor): <strong>{bg:.4f}</strong></li>
+<li>Baseline media estado RMSE (menor mejor): <strong>{be:.4f}</strong></li>
+<li>Mejor capa B: <code>{best_b.get('dataset_id')}</code> / <code>{best_b.get('modelo')}</code> → RMSE <strong>{float(best_b['rmse_oof']):.4f}</strong> (menor mejor)</li>
+<li>Mejor capa C (HPO): <code>{best_c.get('dataset_id')}</code> / <code>{best_c.get('modelo')}</code> → RMSE <strong>{float(best_c['rmse_oof']):.4f}</strong> (Δ HPO={meta['hpo_gain_rmse']:.4f}; mejora = RMSE más bajo)</li>
+<li>Chequeo píxel (RMSE agregado, menor mejor): {meta.get('pixel_rmse_agregado')}</li>
 </ul>
 </div>
 
 <h2>Rankings</h2>
 <h3>Top-20 capa B (defaults)</h3>
+<p class="cap">Ordenados por RMSE ascendente: el primero es el mejor (menor error).</p>
 {df_html(top_b, 20)}
-<div class="fig">{img_tag(fig / '01_top10_capa_B.png')}</div>
-<div class="fig">{img_tag(fig / '02_baseline_vs_top.png')}</div>
+{fig_block(fig / '01_top10_capa_B.png', 'Barras más cortas = mejor. RMSE en t/ha; menor es mejor.')}
+{fig_block(fig / '02_baseline_vs_top.png', 'Comparar con baselines: el modelo útil queda claramente por debajo de las medias ingenuas.')}
 
 <h3>Top-20 capa C (HPO)</h3>
+<p class="cap">Hiperparámetros afinados. Sigue valiendo: menor RMSE = mejor.</p>
 {df_html(top_c, 20)}
 
 <h3>Solo reto vs extendido (capa B)</h3>
-<p><strong>Solo reto</strong></p>
+<p><strong>Solo reto</strong> — menor RMSE es mejor</p>
 {df_html(reto, 15)}
-<p><strong>Extendido</strong></p>
+<p><strong>Extendido</strong> — menor RMSE es mejor; si apenas baja respecto al reto, el externo aporta poco</p>
 {df_html(ext, 15)}
 
 <h2>Ejes del catálogo</h2>
-<div class="fig">{img_tag(fig / '03_mejor_por_familia.png')}</div>
-<div class="fig">{img_tag(fig / '04_mejor_por_temporal.png')}</div>
-<div class="fig">{img_tag(fig / '05_mejor_por_ext_tag.png')}</div>
-<div class="fig">{img_tag(fig / '06_mejor_por_ubic_tag_top15.png')}</div>
-<div class="fig">{img_tag(fig / '07_peor_ubic_tag.png')}</div>
+{fig_block(fig / '03_mejor_por_familia.png', 'Menor RMSE = mejor familia en su mejor dataset.')}
+{fig_block(fig / '04_mejor_por_temporal.png', 'Menor RMSE = mejor ventana temporal.')}
+{fig_block(fig / '05_mejor_por_ext_tag.png', 'Menor RMSE = mejores paquetes de datos externos.')}
+{fig_block(fig / '06_mejor_por_ubic_tag_top15.png', 'Menor RMSE = esquemas de ubicación más útiles.')}
+{fig_block(fig / '07_peor_ubic_tag.png', 'Barras largas = peores ubicaciones (evitar).')}
 <p class="meta">Dominancia top-50: {json.dumps(meta['dominancia_top50'], ensure_ascii=False)}</p>
 
 <h2>Diagnósticos</h2>
-<div class="fig">{img_tag(fig / '08_error_por_municipio.png')}</div>
-<div class="fig">{img_tag(fig / '09_hist_residuos.png')}</div>
-<div class="fig">{img_tag(fig / '10_calibracion.png')}</div>
-<p>Residuo medio OOF: {meta.get('diagnostico_oof', {}).get('residuo_mean')}; 
+{fig_block(fig / '08_error_por_municipio.png', 'Menor RMSE por municipio = mejor. Municipios con n=1 son ruidosos.')}
+{fig_block(fig / '09_hist_residuos.png', 'Ideal centrado en 0. Positivo = sobreestima; negativo = subestima. Sesgo cerca de 0 es mejor.')}
+{fig_block(fig / '10_calibracion.png', 'Cuanto más cerca de la diagonal, mejor calibración.')}
+<p>Residuo medio OOF (cerca de 0 es mejor): {meta.get('diagnostico_oof', {}).get('residuo_mean')}; 
 std: {meta.get('diagnostico_oof', {}).get('residuo_std')}.
 Municipios con n=1: {meta.get('diagnostico_oof', {}).get('municipios_n1')}</p>
 <p class="meta">Límites: LOGO con municipios de 1 parcela hace r² por fold inestable; confiar en RMSE/MAE OOF globales. Selección entre 1024×modelos implica riesgo de sobreajuste al ranking.</p>

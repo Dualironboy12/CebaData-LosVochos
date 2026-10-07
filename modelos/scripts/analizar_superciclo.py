@@ -20,8 +20,16 @@ sys.path.insert(0, str(ROOT / "modelos" / "src"))
 from ceba_modelos.config import load_config  # noqa: E402
 
 
-def _barh(path: Path, labels: list[str], values: list[float], title: str, xlabel: str) -> None:
-    fig, ax = plt.subplots(figsize=(8, max(3, 0.35 * len(labels) + 1)))
+def _barh(
+    path: Path,
+    labels: list[str],
+    values: list[float],
+    title: str,
+    xlabel: str,
+    *,
+    guia: str = "← Menor es mejor (error más bajo)",
+) -> None:
+    fig, ax = plt.subplots(figsize=(8, max(3.2, 0.35 * len(labels) + 1.4)))
     y = np.arange(len(labels))
     ax.barh(y, values, color="#2c7fb8")
     ax.set_yticks(y)
@@ -29,7 +37,10 @@ def _barh(path: Path, labels: list[str], values: list[float], title: str, xlabel
     ax.invert_yaxis()
     ax.set_xlabel(xlabel)
     ax.set_title(title)
-    fig.tight_layout()
+    for i, v in enumerate(values):
+        ax.text(v + max(values) * 0.01, i, f"{v:.3f}", va="center", fontsize=7, color="#333")
+    fig.text(0.01, 0.01, guia, fontsize=8, color="#444", style="italic")
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     fig.savefig(path, dpi=120)
     plt.close(fig)
 
@@ -73,8 +84,9 @@ def main() -> None:
         fig_dir / "01_top10_capa_B.png",
         labels,
         tb["rmse_oof"].tolist(),
-        "Top-10 capa B (RMSE OOF)",
-        "RMSE OOF",
+        "Top-10 capa B — error RMSE en validación",
+        "RMSE (t/ha) — menor es mejor",
+        guia="Guía: barras más cortas = mejor modelo. RMSE = error típico en t/ha.",
     )
 
     # Baseline vs top
@@ -86,8 +98,9 @@ def main() -> None:
         fig_dir / "02_baseline_vs_top.png",
         labels2,
         vals2,
-        "Baselines vs top-8 capa B",
-        "RMSE OOF",
+        "Baselines vs top-8 — ¿superamos la media ingenua?",
+        "RMSE (t/ha) — menor es mejor",
+        guia="Guía: un buen modelo debe quedar claramente por debajo de media_global y media_estado.",
     )
 
     # Por familia
@@ -96,8 +109,8 @@ def main() -> None:
         fig_dir / "03_mejor_por_familia.png",
         fam.index.tolist(),
         fam.values.tolist(),
-        "Mejor RMSE OOF por familia (capa B)",
-        "RMSE OOF",
+        "Mejor RMSE por familia de modelo",
+        "RMSE (t/ha) — menor es mejor",
     )
 
     # Por temporal
@@ -106,8 +119,9 @@ def main() -> None:
         fig_dir / "04_mejor_por_temporal.png",
         temp.index.astype(str).tolist(),
         temp.values.tolist(),
-        "Mejor RMSE OOF por ventana temporal",
-        "RMSE OOF",
+        "Mejor RMSE por ventana temporal",
+        "RMSE (t/ha) — menor es mejor",
+        guia="Guía: compara solo2025 vs multianio; gana el de menor error.",
     )
 
     # Por ext_tag (top tags by best rmse)
@@ -116,8 +130,8 @@ def main() -> None:
         fig_dir / "05_mejor_por_ext_tag.png",
         ext_best.index.astype(str).tolist(),
         ext_best.values.tolist(),
-        "Mejor RMSE OOF por ext_tag (12 mejores)",
-        "RMSE OOF",
+        "Mejor RMSE por paquete de datos externos (12 mejores)",
+        "RMSE (t/ha) — menor es mejor",
     )
 
     # Ubic: peores y mejores
@@ -126,15 +140,17 @@ def main() -> None:
         fig_dir / "06_mejor_por_ubic_tag_top15.png",
         ubic_best.head(15).index.astype(str).tolist(),
         ubic_best.head(15).values.tolist(),
-        "Mejores ubic_tag (min RMSE en capa B)",
-        "RMSE OOF",
+        "Mejores combinaciones de ubicación (menor error)",
+        "RMSE (t/ha) — menor es mejor",
+        guia="Guía: estas son las ubicaciones que más ayudan (error más bajo).",
     )
     _barh(
         fig_dir / "07_peor_ubic_tag.png",
         ubic_best.tail(10).index.astype(str).tolist()[::-1],
         ubic_best.tail(10).values.tolist()[::-1],
-        "Peores ubic_tag (min RMSE aún alto)",
-        "RMSE OOF",
+        "Peores combinaciones de ubicación (error aún alto)",
+        "RMSE (t/ha) — menor es mejor; aquí todas son malas",
+        guia="Guía: barras largas = peores; conviene evitar estos esquemas de ubicación.",
     )
 
     # Diagnósticos OOF ganador
@@ -155,30 +171,56 @@ def main() -> None:
             fig_dir / "08_error_por_municipio.png",
             by_mun["municipio"].astype(str).tolist(),
             by_mun["rmse"].tolist(),
-            "RMSE OOF por municipio (ganador)",
-            "RMSE",
+            "Error por municipio (modelo ganador)",
+            "RMSE (t/ha) — menor es mejor",
+            guia="Guía: municipios con barra más larga fallan más. Cuidado si n=1 (ruido).",
         )
 
-        fig, ax = plt.subplots(figsize=(5, 4))
+        fig, ax = plt.subplots(figsize=(5.4, 4.4))
         ax.hist(oof["residuo"], bins=20, color="#2c7fb8", edgecolor="white")
-        ax.axvline(oof["residuo"].mean(), color="firebrick", linestyle="--", label=f"media={oof['residuo'].mean():.3f}")
-        ax.set_title("Residuos OOF (y_pred - y_true)")
-        ax.legend()
-        fig.tight_layout()
+        ax.axvline(0, color="black", lw=1, label="Cero = sin error")
+        ax.axvline(
+            oof["residuo"].mean(),
+            color="firebrick",
+            linestyle="--",
+            label=f"Sesgo medio = {oof['residuo'].mean():.3f}",
+        )
+        ax.set_xlabel("Residuo = predicho − real (t/ha)")
+        ax.set_ylabel("Número de parcelas")
+        ax.set_title("Residuos en validación")
+        ax.legend(fontsize=7)
+        fig.text(
+            0.01,
+            0.01,
+            "Guía: ideal ≈ 0 y centrado. Positivo = sobreestima; negativo = subestima.",
+            fontsize=7,
+            style="italic",
+            color="#444",
+        )
+        fig.tight_layout(rect=[0, 0.06, 1, 1])
         fig.savefig(fig_dir / "09_hist_residuos.png", dpi=120)
         plt.close(fig)
 
-        fig, ax = plt.subplots(figsize=(5, 5))
-        ax.scatter(oof["y_true"], oof["y_pred"], alpha=0.7, c="#2c7fb8")
+        fig, ax = plt.subplots(figsize=(5.4, 5.2))
+        ax.scatter(oof["y_true"], oof["y_pred"], alpha=0.7, c="#2c7fb8", edgecolors="white", s=35)
         lims = [
             min(oof["y_true"].min(), oof["y_pred"].min()),
             max(oof["y_true"].max(), oof["y_pred"].max()),
         ]
-        ax.plot(lims, lims, "k--", lw=1)
-        ax.set_xlabel("y_true")
-        ax.set_ylabel("y_pred")
-        ax.set_title("Calibración OOF")
-        fig.tight_layout()
+        ax.plot(lims, lims, "k--", lw=1, label="Ideal: predicho = real")
+        ax.set_xlabel("Rendimiento real (t/ha)")
+        ax.set_ylabel("Rendimiento predicho (t/ha)")
+        ax.set_title("Calibración: real vs predicho")
+        ax.legend(fontsize=7)
+        fig.text(
+            0.01,
+            0.01,
+            "Guía: cuanto más cerca de la diagonal, mejor. Lejos = mala calibración.",
+            fontsize=7,
+            style="italic",
+            color="#444",
+        )
+        fig.tight_layout(rect=[0, 0.06, 1, 1])
         fig.savefig(fig_dir / "10_calibracion.png", dpi=120)
         plt.close(fig)
 
