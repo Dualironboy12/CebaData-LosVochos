@@ -1,67 +1,81 @@
 # Modelos
 
-Aquí van los **modelos entrenados** (y el código o notebooks que los producen), organizados por tipo de arquitectura y por si se entrenaron solo con el dataset del reto o con el dataset extendido (externos).
+Fase 2: entrenar y evaluar estimadores de rendimiento (t/ha) en Python. Entradas desde [`../dataset_entrenamiento/`](../dataset_entrenamiento/). El dashboard consumirá el artefacto de entrega desde [`../dashboard/`](../dashboard/) más adelante.
 
-La fase de modelos del equipo usa Python. Las tablas de entrada salen de [`../dataset_entrenamiento/`](../dataset_entrenamiento/). El dashboard las consumirá desde [`../dashboard/`](../dashboard/) cuando haya un artefacto de entrega.
+Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap [`../README.md#roadmap`](../README.md#roadmap).
 
-Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Decisiones de validación y filosofía: [`../README.md#roadmap`](../README.md#roadmap).
+## Documentos de diseño
 
-## Qué va aquí
+| Doc | Contenido |
+| --- | --- |
+| [`ESTADO_DATOS.md`](ESTADO_DATOS.md) | Readiness de despensas/matriz |
+| [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md) | Familias Classic ML y CV |
+| [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md) | D1–D7 (superciclo amplía D4/D5) |
+| [`config/superciclo.yaml`](config/superciclo.yaml) | Grid 1024, modelos, HPO top-K |
+| [`comparativas/superciclo_v1/informe_superciclo.html`](comparativas/superciclo_v1/informe_superciclo.html) | Informe técnico del superciclo |
+| [`comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf`](comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf) | **PDF para el equipo** (lenguaje claro, top 10, heatmaps) |
 
-- Pipelines de entrenamiento y evaluación (RMSE, MAE, r²; CV oficial por municipio, chequeo por píxel de clima).
-- Artefactos versionados (p. ej. `.joblib`, `.pkl`, carpeta de métricas) cuando el equipo decida versionarlos en git o documentar dónde viven.
-- Comparativas entre condensamientos de CSV y entre arquitecturas.
-- Predicciones sobre las 59 parcelas de `PREDICCION` del modelo elegido.
+## Superciclo Classic ML (v1)
 
-## Organización sugerida
+Capas A (baselines) → B (1024 × ridge/elasticnet/RF/HistGBM/LightGBM) → C (HPO top-30).
 
-Categorizar por arquitectura y por origen de datos:
+```bash
+bash modelos/preparar_entorno.sh
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python -u modelos/scripts/correr_superciclo.py
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/analizar_superciclo.py
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/generar_informe_superciclo.py
+```
+
+Entregables: `salidas/superciclo_v1/` (resumen, predicción 59) y `comparativas/superciclo_v1/` (rankings, figuras, HTML).
+
+## Estructura
 
 ```text
 modelos/
-  README.md
-  solo_reto/                    ← entrenados con curados_reto / despensa sin externos
-    baseline/
-    classic_ml/                 ← ridge, RF, LightGBM, etc.
-    otros/                      ← MLP u otros si se prueban
-  extendido/                    ← reentrenados o reconstruidos con dataset extendido
-    baseline/
-    classic_ml/
-    otros/
-  comparativas/                 ← tablas de métricas entre corridas
-  entrega/                      ← (más adelante) modelo + script de inferencia elegidos
+  config/default.yaml
+  config/superciclo.yaml
+  src/ceba_modelos/
+  scripts/correr_superciclo.py
+  scripts/analizar_superciclo.py
+  scripts/generar_informe_superciclo.py
+  salidas/superciclo_v1/
+  comparativas/superciclo_v1/
+  requirements.txt
 ```
 
-Los nombres internos se ajustan cuando exista el primer entrenamiento real.
+## Entorno
 
-## Qué no va aquí
+```bash
+bash modelos/preparar_entorno.sh
+env -i HOME="$HOME" PATH="$PWD/modelos/.venv/bin:/usr/bin:/bin" \
+  PYTHONPATH=modelos/src python modelos/scripts/smoke_ingesta.py
+```
 
-- Despensa y CSVs crudos de features (`dataset_entrenamiento/`).
-- UI del dashboard (`dashboard/`).
-- Modificar `DATASET_RETO_AGRO_2026/`.
+Deps: numpy, pandas, scikit-learn, pyyaml, joblib, lightgbm, matplotlib.
 
-## Relación con `dataset_entrenamiento/`
+## Ingesta (contrato)
 
-| Entrada (dataset) | Salida típica aquí |
-| --- | --- |
-| `curados_reto/` / despensa sin externos | `solo_reto/` |
-| `curados_extendidos/` | `extendido/` |
-
-Cada corrida debería citar en un README o manifiesto corto: ruta del CSV, versión, semilla, CV y métricas.
+1. Catálogo `catalogo_datasets_v1.csv`.
+2. Features = CSV curado menos llaves/etiqueta.
+3. Meta CV desde despensa aunque el CSV sea `sin_ubic`.
+4. CV oficial LOGO por municipio.
 
 ## Estado
 
-- [ ] Dos ramas creadas y nombres anotados arriba.
-- [ ] Primer baseline con CSV solo-reto.
-- [ ] Comparativa mínima (baseline vs classic ML) documentada.
-- [ ] Experimentos con dataset extendido cuando exista en `dataset_entrenamiento/`.
-- [ ] Modelo de entrega + predicciones de las 59 (decisión humana 8).
+- [x] Fase 2 abierta; ingesta + barrido piloto 9 CSVs.
+- [x] Superciclo v1 (1024 × 5 modelos + HPO) e informe HTML.
+- [ ] Modelo de entrega firmado por el equipo (candidato en informe).
+- [ ] Dashboard (fase 3).
+
+## Rama
+
+Trabajo en **`dev-modelos`** (D6).
 
 ## Convenciones
 
-- No abrir entrenamiento masivo en `main` sin pasar por las ramas de este track.
-- Misma CV y semillas al comparar CSVs (ver el roadmap en el README raíz).
-- Commits y push solo con autorización del equipo.
-- Sesiones de agente: [`../PROMPTS.md`](../PROMPTS.md).
-- Leer [`AGENTS.md`](AGENTS.md) y [`../AGENTS.md`](../AGENTS.md) al empezar.
-- Según el `AGENTS.md` raíz, el trabajo de modelos arranca cuando el equipo lo pide de forma explícita; esta carpeta queda lista para ese momento.
+- Misma CV y semilla al comparar.
+- Commits solo con autorización.
+- Bitácora: [`../PROMPTS.md`](../PROMPTS.md).

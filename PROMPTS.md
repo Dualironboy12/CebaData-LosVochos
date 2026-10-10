@@ -362,3 +362,135 @@ Claude Sonnet 5.5 (Cursor).
 - Eliminados: `analisis/PROXIMOS_PASOS.md`, `RESUMEN_DE_ANALISIS.md`, `08_lectura_edaf.md`.
 - Modificados: README raíz, AGENTS, READMEs de tracks, `00_setup.R`, docs SoilGrids/despensa_extendida.
 - Sin commits. No se copió a `curados_extendidos/` ni se entrenó modelos.
+
+## 2026-10-06 — Matrices de datasets de entrenamiento (1024 CSVs)
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Matrices de datasets de entrenamiento — Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself. To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+**Acciones**
+
+- Se creó `analisis/datos_fira/R/13_despensa_multianio.R` y se congeló `parcelas_despensa_multianio_nube30_v1.csv` (197×125: bloque A = nube30_v1; bloque B = NDVI/CRC/VI6T/lluvia 2022–2024 + medias históricas; NUBE_MAX=30; sin Planet histórico).
+- Se escribió `dataset_entrenamiento/scripts/generar_datasets.py` (matriz 2×32×16): núcleo agronómico, \(L\)={estado,municipio,lon,lat,pixel_clima}, \(E\)={n,edaf,cec,silt} con Vertisol/Andosol→otros; naming `ubic_tag`/`ext_tag`; catálogo y manifiesto JSON.
+- Se materializaron 1024 CSVs (64 reto + 960 extendidos) y se verificó: 197 filas, llaves AGC, rendimiento vacío solo en PREDICCION, catálogo alineado.
+- Se documentó README de `dataset_entrenamiento/`, `fuentes/README.md`, roadmap del README raíz y esta entrada.
+
+**Afectaciones**
+
+- Creados: script R 13, despensa multi-año (+ diccionario + MANIFIESTO_MULTIANIO.md), `generar_datasets.py`, `curados_reto/` (64), `curados_extendidos/` (960), `manifiestos/catalogo_datasets_v1.csv`, `manifiesto_matriz_v1.json`, `fuentes/README.md`.
+- Modificados: `dataset_entrenamiento/README.md`, `README.md` (roadmap/checklist), `PROMPTS.md`.
+- Fuera de la tarea: no se entrenó en `modelos/`, no se alteró `DATASET_RETO_AGRO_2026/`, no se editó el archivo del plan, sin commits.
+
+## 2026-10-06 — Apertura fase 2: propuesta de modelos + pipeline de ingesta
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Oficialmente podemos comenzar la etapa 2, entrenar agentes, prepara el repo, revisa el estado de los datos, genera un documento en modelos proponiendo modelos y arquitecturas que puedan funcionar para las caracteristicas que tienen nuestros datasets, y comienza a diseñar el pipeline de ingesta de datos para los modelos, si hay decisiones importantes que tomar comentame
+
+**Acciones**
+
+- Se marcó la fase actual como **modelos** en `AGENTS.md` y el roadmap del README raíz.
+- Se revisó el estado de datos (197/138/59, núcleo sin NA, 1024 CSVs) en `modelos/ESTADO_DATOS.md`.
+- Se escribió `PROPUESTA_MODELOS.md` (baselines, Ridge/RF/HistGBM, CV espacial, plan corto) y `DECISIONES_ABIERTAS.md`.
+- Se implementó el paquete `modelos/src/ceba_modelos` (catálogo, ingesta con sidecar de municipio/píxel, CV LOGO) + `config/default.yaml` + `scripts/smoke_ingesta.py` (9 CSVs del barrido OK).
+- Entorno: `preparar_entorno.sh`, `requirements.txt`, `.gitignore` (venv/salidas).
+
+**Afectaciones**
+
+- Creados: docs y código bajo `modelos/` (ingesta, config, smoke, venv local no versionado).
+- Modificados: `AGENTS.md`, `README.md`, `modelos/README.md`, `modelos/AGENTS.md`, `dataset_entrenamiento/README.md`, `PROMPTS.md`.
+- Fuera: no se entrenó aún ningún estimador; sin dashboard; sin commits.
+
+## 2026-10-06 — Cierre decisiones D1–D7 + primer barrido en dev-modelos
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Si bien todavia tenemos bastante tiempo… D1: default, D2: Default, D3: Default, D4: Default, D5: rama: dev-modelos, D6: default
+
+**Acciones**
+
+- Se cerraron D1–D7 en `DECISIONES_ABIERTAS.md` (LOGO, OHE, pixel categórico, sklearn, barrido 9, rama `dev-modelos`, métricas sin joblib masivo). Interpretación: “D5=rama” del mensaje = D6 del doc; barrido y artefactos en default.
+- Se creó la rama `dev-modelos`.
+- Se implementó preprocess/estimadores/train_cv y `scripts/correr_barrido.py`. Baseline espacial = `media_estado` (media_municipio degenera bajo LOGO).
+- Se ejecutó el barrido 9×4: mejor RMSE_OOF ≈ 0.653 con HistGBM + `multianio_ubic_completa_reto`.
+
+**Afectaciones**
+
+- Creados/modificados: código bajo `modelos/src`, scripts, config, docs, `salidas/barrido_2026-10-06/`, copia en `comparativas/`.
+- Rama local `dev-modelos` (sin commit ni push salvo pedido).
+
+## 2026-10-06 — Superciclo Classic ML (1024 × modelos × HPO)
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Superciclo Classic ML (1024 × modelos × HPO top-K) — Implement the plan as specified…
+
+**Acciones**
+
+- Config `superciclo.yaml`; estimadores ElasticNet, RF, HistGBM, LightGBM; `train_cv` con params/HPO.
+- Runner `correr_superciclo.py` (capas A/B/C, joblib, checkpoint); reparación de CSV con columnas irregulares tras HPO.
+- Grid completo: 2 baselines + 5120 celdas B + 360 HPO C. Mejor C: LightGBM + `solo2025_ubic_lon-pix_n-edaf` RMSE_OOF≈0.533 (HPO Δ≈0.009 vs mejor B).
+- Análisis + informe HTML con rankings, barras, diagnósticos y recomendaciones (incl. contrato dashboard).
+- Actualizados DECISIONES D4/D5, README modelos, PROMPTS.
+
+**Afectaciones**
+
+- Creados/modificados bajo `modelos/` (config, src, scripts, salidas/superciclo_v1, comparativas/superciclo_v1).
+- Predicción 59 en `salidas/superciclo_v1/prediccion_59_ganador.csv`.
+- Sin commits; rama `dev-modelos`.
+
+## 2026-10-06 — PDF resumen equipo (superciclo)
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Genera un resumen del informe que contenga: Mejores familias… En formato PDF.
+
+**Acciones**
+
+- Script `modelos/scripts/generar_resumen_equipo_pdf.py`: figuras (familias, top 10 reto/extendido, métricas, heatmap OOF, real vs predicho, residuos, error por municipio, predicciones 59) y PDF ReportLab en lenguaje natural (sin códigos ubic/lon/pix).
+- Salida: `modelos/comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf`.
+
+**Afectaciones**
+
+- Creados script, PDF, figuras y CSV auxiliares en `resumen_equipo/`. Actualizado README modelos y PROMPTS. Sin commits.
+
+## 2026-10-06 — Guías en gráficos e informes superciclo
+
+**Modelo**
+
+Composer (Cursor Agent).
+
+**Prompt**
+
+> Añade al resumen y al informe leyendas o guias… Regenera los documentos pertinentes
+
+**Acciones**
+
+- Figuras de `analizar_superciclo.py` y `generar_resumen_equipo_pdf.py` con pies de guía (menor/mayor es mejor, diagonal ideal, sesgo, etc.).
+- HTML con caja «Cómo leer este informe», pies bajo cada figura y columnas de tablas con ↓/↑.
+- PDF con sección de lectura de métricas y leyendas en tablas; documentos regenerados.
+
+**Afectaciones**
+
+- Scripts de informe/PDF; `informe_superciclo.html`; `Resumen_equipo_superciclo_Classic_ML.pdf` y figuras. PROMPTS. Sin commits.

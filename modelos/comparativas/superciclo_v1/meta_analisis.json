@@ -1,0 +1,109 @@
+{
+  "baseline_global_rmse": 1.153027018611838,
+  "baseline_estado_rmse": 1.0838416346312834,
+  "best_b": {
+    "dataset_id": "parcelas_solo2025_ubic_mun-lon_n-edaf_v1",
+    "temporal": "solo2025",
+    "ubic_tag": "ubic_mun-lon",
+    "ext_tag": "n-edaf",
+    "modelo": "lightgbm",
+    "capa": "B",
+    "hparams_id": "default",
+    "hparams_json": NaN,
+    "n_folds": 9,
+    "n_features": 13,
+    "rmse_oof": 0.5417050732009819,
+    "mae_oof": 0.3794760305541713,
+    "r2_oof": 0.5919991103034872,
+    "rmse_fold_mean": 0.522292470314798,
+    "rmse_fold_std": 0.2709579392289404,
+    "mae_fold_mean": 0.4502398856269099,
+    "r2_fold_mean": -1.5414432103555,
+    "error": NaN
+  },
+  "best_c": {
+    "dataset_id": "parcelas_solo2025_ubic_lon-pix_n-edaf_v1",
+    "temporal": "solo2025",
+    "ubic_tag": "ubic_lon-pix",
+    "ext_tag": "n-edaf",
+    "modelo": "lightgbm",
+    "capa": "C",
+    "hparams_id": "{\"learning_rate\": 0.03, \"min_child_samples\": 10, \"num_leaves\": 31}",
+    "hparams_json": "{'num_leaves': 31, 'learning_rate': 0.03, 'min_child_samples': 10}",
+    "n_folds": 9,
+    "n_features": 13,
+    "rmse_oof": 0.5328587015246019,
+    "mae_oof": 0.3694788981333877,
+    "r2_oof": 0.6052161039789803,
+    "rmse_fold_mean": 0.5097633488453494,
+    "rmse_fold_std": 0.2965322251155813,
+    "mae_fold_mean": 0.4434158750341477,
+    "r2_fold_mean": -1.1405621237632548,
+    "error": NaN
+  },
+  "hpo_gain_rmse": 0.008846371676380027,
+  "best_reto_rmse": 0.5498538785853773,
+  "best_ext_rmse": 0.5417050732009819,
+  "gap_reto_vs_ext": 0.00814880538439533,
+  "dominancia_top50": {
+    "modelo": {
+      "lightgbm": 50
+    },
+    "temporal": {
+      "solo2025": 50
+    },
+    "ext_tag": {
+      "n-edaf-silt": 8,
+      "n-edaf": 4,
+      "n": 4,
+      "n-silt": 4,
+      "edaf": 4,
+      "reto": 4,
+      "n-cec-silt": 4,
+      "n-edaf-cec": 4,
+      "n-edaf-cec-silt": 4,
+      "n-cec": 4
+    },
+    "ubic_tag": {
+      "ubic_lon": 13,
+      "ubic_lon-pix": 12,
+      "ubic_mun-lon": 11,
+      "ubic_mun-lon-pix": 10,
+      "ubic_est-mun-lon-pix": 1,
+      "ubic_est-lon-pix": 1,
+      "ubic_est-mun-lon": 1,
+      "ubic_est-lon": 1
+    }
+  },
+  "ubic_toxicos": [],
+  "diagnostico_oof": {
+    "residuo_mean": 0.09207701216810518,
+    "residuo_std": 0.526755045688275,
+    "peores_municipios": [
+      {
+        "municipio": "Tepeapulco",
+        "n": 1,
+        "rmse": 1.25800191450125
+      },
+      {
+        "municipio": "Chignahuapan",
+        "n": 71,
+        "rmse": 0.5769070925669182
+      },
+      {
+        "municipio": "Singuilucan",
+        "n": 16,
+        "rmse": 0.5547243184830539
+      }
+    ],
+    "municipios_n1": [
+      "Tepeapulco",
+      "Nanacamilpa de Mariano Arista",
+      "Apan"
+    ]
+  },
+  "pixel_rmse_agregado": 0.5328587015246019,
+  "veredicto": "Classic suficiente para entrega",
+  "veredicto_detalle": "HPO mejoró solo 0.0088 RMSE (<0.02); mejor B ya bate baseline estado por 0.542.",
+  "umbral_hpo": 0.02
+}

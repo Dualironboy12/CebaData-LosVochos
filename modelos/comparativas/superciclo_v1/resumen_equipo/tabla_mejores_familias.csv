@@ -1,0 +1,6 @@
+familia,rmse_oof,mae_oof,r2_oof,descripcion_dataset,dataset_id
+LightGBM (árboles con boosting),0.5417050732009819,0.3794760305541713,0.5919991103034872,Solo ciclo 2025; Ubicación: municipio y longitud; Reto + nitrógeno + edafología,parcelas_solo2025_ubic_mun-lon_n-edaf_v1
+Regresión Ridge (lineal regularizada),0.5761868060178486,0.4154004588538153,0.5384041210677852,Solo ciclo 2025; Ubicación: longitud y píxel climático; Reto + nitrógeno + CIC,parcelas_solo2025_ubic_lon-pix_n-cec_v1
+Gradient boosting de scikit-learn,0.6229073052604261,0.4542759014164598,0.4605115481690416,"Multi-año (2022–2025); Ubicación: estado, municipio, longitud y píxel climático; Reto + nitrógeno + edafología",parcelas_multianio_ubic_est-mun-lon-pix_n-edaf_v1
+Bosque aleatorio,0.6642875004819871,0.4607343026565135,0.3864535245022292,Multi-año (2022–2025); Solo longitud; Reto + nitrógeno + limo,parcelas_multianio_ubic_lon_n-silt_v1
+Elastic Net (lineal con mezcla L1/L2),1.1383367929273798,1.0469015946579,-0.8016766528515988,Solo ciclo 2025; Solo longitud; Solo datos del reto,parcelas_solo2025_ubic_lon_reto_v1

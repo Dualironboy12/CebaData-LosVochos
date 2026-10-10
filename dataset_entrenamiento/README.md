@@ -1,64 +1,99 @@
 # Dataset de entrenamiento
 
-Aquí vive la **despensa congelada** y los **datasets curados** listos para entrenar: primero solo con datos del reto, después la extensión con datos externos (p. ej. INEGI), más la documentación de fuentes.
+Aquí vive la **despensa congelada**, la **matriz de CSVs curados** (reto y extendidos) y la documentación de fuentes. Productos derivados para la fase de modelos; el dataset oficial de FIRA no se modifica ([`../DATASET_RETO_AGRO_2026/`](../DATASET_RETO_AGRO_2026/)).
 
-No sustituye el dataset oficial de FIRA. Los archivos crudos siguen en [`../DATASET_RETO_AGRO_2026/`](../DATASET_RETO_AGRO_2026/) y no se modifican. Esta carpeta guarda **productos derivados** versionados para la fase de modelos.
+Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap en [`../README.md#roadmap`](../README.md#roadmap).
 
-Reglas globales: [`../AGENTS.md`](../AGENTS.md). Reglas de esta carpeta: [`AGENTS.md`](AGENTS.md). Análisis y decisiones: [`../analisis/`](../analisis/) · [`../README.md#roadmap`](../README.md#roadmap) · [`../analisis/RESUMEN_DATOS_FIRA.md`](../analisis/RESUMEN_DATOS_FIRA.md).
-
-## Qué va aquí
-
-| Pieza | Descripción |
-| --- | --- |
-| Despensa congelada | Tabla base por parcela (evolución de `analisis/datos_fira/salida/parcelas_trabajo.csv` cuando se congele con los criterios acordados, p. ej. `NUBE_MAX = 30`). |
-| Datasets curados (reto) | CSVs reducidas / variantes de la matriz (ubicación × ventana temporal) solo con datos entregados. |
-| Despensa / datasets extendidos | Misma unidad (una fila por parcela) más columnas o tablas derivadas de fuentes externas alineadas a `ID_POLIGONO` / geometría. |
-| Fuentes | Notas de origen, licencia/uso, fecha de descarga, CRS, join y columnas aportadas. |
-| Manifiestos | Qué columnas tiene cada CSV, umbral de nube, periodo, filosofía de ubicación, versión. |
-
-## Qué no va aquí
-
-- Código de entrenamiento (`modelos/`).
-- Dashboard (`dashboard/`).
-- Rásteres o descargas enormes sin criterio: preferir scripts de obtención + `.gitignore` si los binarios no deben ir al repo; documentar cómo reproducir la descarga.
-
-## Estructura sugerida (se irá llenando)
+## Estructura
 
 ```text
 dataset_entrenamiento/
-  README.md                 ← este archivo
-  despensa/                 ← despensa congelada (reto)
-  curados_reto/             ← CSVs solo con datos del reto
-  curados_extendidos/       ← CSVs / despensa ampliada con externos
-  fuentes/                  ← documentación de fuentes externas
-  manifiestos/              ← versiones y columnas por dataset
+  despensa/                 ← despensas congeladas (solo 2025 y multi-año)
+  curados_reto/             ← T = ∅ (solo datos del reto + núcleo)
+  curados_extendidos/       ← T ≠ ∅ (núcleo + subconjuntos de E)
+  manifiestos/              ← catálogo + manifiesto maestro de la matriz
+  fuentes/                  ← notas de origen (INEGI, SoilGrids)
+  scripts/generar_datasets.py
 ```
 
-Las carpetas internas se crean cuando haya contenido real; no hace falta inventar archivos vacíos.
+## Despensas
 
-## Criterios ya acordados (recordatorio)
+| Archivo | Dimensión | Rol |
+| --- | --- | --- |
+| [`despensa/parcelas_despensa_nube30_v1.csv`](despensa/parcelas_despensa_nube30_v1.csv) | 197 × 101 | Base de `solo2025`. Manifiesto: [`despensa/MANIFIESTO.md`](despensa/MANIFIESTO.md). |
+| [`despensa/parcelas_despensa_multianio_nube30_v1.csv`](despensa/parcelas_despensa_multianio_nube30_v1.csv) | 197 × 125 | Base de `multianio` (bloque A 2025 + bloque B 2022–2024). Manifiesto: [`despensa/MANIFIESTO_MULTIANIO.md`](despensa/MANIFIESTO_MULTIANIO.md). |
 
-Ver detalle en `README.md#roadmap`:
+Regenerar multi-año: `Rscript analisis/datos_fira/R/13_despensa_multianio.R` desde la raíz.
 
-- Despensa + CSVs derivadas (no tirar la tabla rica).
-- Tres filosofías de ubicación: ninguna / parcial / completa.
-- Dos ventanas temporales: solo 2025 vs todos los ciclos.
-- Umbral de nube de producción: **30**. La despensa `despensa/parcelas_despensa_nube30_v1.csv` ya se generó con ese umbral (ver [`despensa/MANIFIESTO.md`](despensa/MANIFIESTO.md)); la base de nube 0 del primer KDD queda reemplazada.
-- Una fila = una parcela; rendimiento vacío en `PREDICCION`.
-- Sensores separados (Sentinel-2, Landsat, Planet no se funden).
+## Matriz curada v1
+
+| Eje | Niveles |
+| --- | --- |
+| Temporal | `solo2025`, `multianio` (2) |
+| Ubicación | \(2^5 = 32\) subconjuntos de \(L\) |
+| Extendidos | \(2^4 = 16\) subconjuntos de \(E\) |
+
+**Total: 1024 CSVs.** Catálogo: [`manifiestos/catalogo_datasets_v1.csv`](manifiestos/catalogo_datasets_v1.csv). El entrenamiento elige filas del catálogo; no hace falta entrenar los 1024 el primer día.
+
+### Núcleo (siempre presente)
+
+`ID_POLIGONO`, `conjunto`, `rendimiento_t_ha`, `area_ha`, `ndvi_s2_int`, `ndvi_s2_media_sep_oct`, `crc_s2_media`, `vi6t_landsat_max`, `lai_planet_max`, `lluvia_ciclo_mm`, `pendiente_grados`, `elevacion_m`.
+
+En `multianio` se añaden las 24 columnas del bloque B (máx/int/fase NDVI S2, CRC, VI6T y lluvia por año 2022–2024 + medias históricas). Planet histórico no se inventa.
+
+### Ubicación \(L\)
+
+`estado`, `municipio`, `lon`, `lat`, `pixel_clima`.
+
+| `ubic_tag` | Significado |
+| --- | --- |
+| `sin_ubic` | Ninguna columna de \(L\) |
+| `ubic_completa` | Las cinco |
+| `ubic_<códigos>` | Parcial: códigos cortos ordenados unidos por `-` (`est`, `mun`, `lon`, `lat`, `pix`), p. ej. `ubic_est-mun` |
+
+### Extendidos \(E\)
+
+| Código | Columna |
+| --- | --- |
+| `n` | `sg_nitrogen_0-5cm_mean` |
+| `edaf` | `edaf_grupo` (Vertisol/Andosol → `otros`) |
+| `cec` | `sg_cec_0-5cm_mean` |
+| `silt` | `sg_silt_0-5cm_mean` |
+
+| `ext_tag` | Significado |
+| --- | --- |
+| `reto` | Sin columnas de \(E\) → va a `curados_reto/` |
+| `n`, `edaf`, `n-edaf`, … | Subconjunto de \(E\) → `curados_extendidos/` |
+
+### Nombre de archivo
+
+```text
+parcelas_{temporal}_{ubic_tag}_{ext_tag}_v1.csv
+```
+
+Ejemplos: `parcelas_solo2025_sin_ubic_reto_v1.csv`, `parcelas_multianio_ubic_est-mun_n-edaf_v1.csv`.
+
+### Cómo regenerar
+
+Desde la raíz del repo:
+
+```bash
+python3 dataset_entrenamiento/scripts/generar_datasets.py
+```
+
+Entradas: despensas + CSVs en [`../DATASETS_EXTERNOS/despensa_extendida/`](../DATASETS_EXTERNOS/despensa_extendida/). Sobrescribe los `*_v1.csv` de `curados_*` y reescribe el catálogo. Manifiesto maestro: [`manifiestos/manifiesto_matriz_v1.json`](manifiestos/manifiesto_matriz_v1.json).
 
 ## Estado
 
-- [ ] Tres ramas creadas y nombres anotados arriba.
-- [x] Despensa regenerada/congelada (nube 30) en `despensa/` (`nube30_v1`, 2026-10-03).
-- [ ] Primeras CSVs curadas solo-reto en `curados_reto/`.
-- [ ] Inventario y alineación de fuentes externas en `fuentes/`.
-- [ ] Primera extensión documentada en `curados_extendidos/`. (Ya existe un borrador con edafología INEGI en [`../DATASETS_EXTERNOS/despensa_extendida/`](../DATASETS_EXTERNOS/despensa_extendida/README.md); falta copiarlo aquí con su manifiesto cuando la subrama del dataset extendido esté creada.)
+- [x] Despensa `nube30_v1` (solo 2025).
+- [x] Despensa `multianio_nube30_v1`.
+- [x] Matriz curada v1 (1024 CSVs + catálogo).
+- [x] Notas en `fuentes/` (enlaces a INEGI / SoilGrids).
+- [x] Fase 2 abierta: ingesta en `modelos/` lee el catálogo (entrenamiento de estimadores pendiente).
 
 ## Convenciones
 
-- Versionar nombres claros (`parcelas_solo2025_sin_ubic_v1.csv`, etc.) y un manifiesto por archivo.
-- No sobrescribir en silencio un CSV ya citado por un experimento en `modelos/`; subir versión (`v2`).
-- Commits y push solo con autorización del equipo.
-- Leer [`AGENTS.md`](AGENTS.md) y [`../AGENTS.md`](../AGENTS.md) al empezar.
-- Sesiones de agente: [`../PROMPTS.md`](../PROMPTS.md).
+- Versionar (`v1`, `v2`); no sobrescribir en silencio un CSV ya citado por un experimento.
+- `rendimiento_t_ha` vacío en `PREDICCION`; no rellenar con cero.
+- Commits solo con autorización del equipo.
+- Bitácora de agentes: [`../PROMPTS.md`](../PROMPTS.md).

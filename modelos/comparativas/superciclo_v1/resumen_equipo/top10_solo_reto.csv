@@ -1,0 +1,11 @@
+modelo_es,rmse_oof,mae_oof,r2_oof,descripcion,dataset_id
+LightGBM,0.5498538785853773,0.3854610954603381,0.5796317661660839,Solo ciclo 2025; Solo longitud; Solo datos del reto,parcelas_solo2025_ubic_lon_reto_v1
+LightGBM,0.5508393648732657,0.3872966440993344,0.5781235895918744,Solo ciclo 2025; Ubicación: longitud y píxel climático; Solo datos del reto,parcelas_solo2025_ubic_lon-pix_reto_v1
+LightGBM,0.5557617647255335,0.3926547404975875,0.5705499732255319,Solo ciclo 2025; Ubicación: municipio y longitud; Solo datos del reto,parcelas_solo2025_ubic_mun-lon_reto_v1
+LightGBM,0.5561661876605575,0.3925209498913684,0.5699247318224694,"Solo ciclo 2025; Ubicación: municipio, longitud y píxel climático; Solo datos del reto",parcelas_solo2025_ubic_mun-lon-pix_reto_v1
+LightGBM,0.5815187987143142,0.4177299409647438,0.529821439770861,"Solo ciclo 2025; Ubicación: estado, longitud y píxel climático; Solo datos del reto",parcelas_solo2025_ubic_est-lon-pix_reto_v1
+LightGBM,0.5820915245417707,0.4175592472680156,0.5288948454410445,"Solo ciclo 2025; Ubicación: estado, municipio, longitud y píxel climático; Solo datos del reto",parcelas_solo2025_ubic_est-mun-lon-pix_reto_v1
+LightGBM,0.582810803216386,0.4187511722046237,0.5277298559658454,Solo ciclo 2025; Ubicación: estado y longitud; Solo datos del reto,parcelas_solo2025_ubic_est-lon_reto_v1
+LightGBM,0.5830023414428563,0.4191031487841789,0.5274193859142193,"Solo ciclo 2025; Ubicación: estado, municipio y longitud; Solo datos del reto",parcelas_solo2025_ubic_est-mun-lon_reto_v1
+LightGBM,0.5923111908909003,0.4470895579821217,0.5122074303736135,Multi-año (2022–2025); Ubicación: longitud y píxel climático; Solo datos del reto,parcelas_multianio_ubic_lon-pix_reto_v1
+LightGBM,0.5923350406009462,0.4464006676583484,0.5121681471530843,"Multi-año (2022–2025); Ubicación: municipio, longitud y píxel climático; Solo datos del reto",parcelas_multianio_ubic_mun-lon-pix_reto_v1

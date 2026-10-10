@@ -1,0 +1,96 @@
+{
+  "version": "v1",
+  "n_datasets": 1024,
+  "ejes": {
+    "temporal": [
+      "solo2025",
+      "multianio"
+    ],
+    "ubicacion": {
+      "n": 32,
+      "columnas_L": [
+        "estado",
+        "municipio",
+        "lon",
+        "lat",
+        "pixel_clima"
+      ],
+      "tags": "sin_ubic | ubic_completa | ubic_<est-mun-lon-lat-pix>"
+    },
+    "extendidos": {
+      "n": 16,
+      "E": [
+        [
+          "n",
+          "sg_nitrogen_0-5cm_mean"
+        ],
+        [
+          "edaf",
+          "edaf_grupo"
+        ],
+        [
+          "cec",
+          "sg_cec_0-5cm_mean"
+        ],
+        [
+          "silt",
+          "sg_silt_0-5cm_mean"
+        ]
+      ],
+      "edaf_recode": "Vertisol/Andosol → otros",
+      "tags": "reto | códigos cortos unidos por -"
+    }
+  },
+  "nucleo": [
+    "ID_POLIGONO",
+    "conjunto",
+    "rendimiento_t_ha",
+    "area_ha",
+    "ndvi_s2_int",
+    "ndvi_s2_media_sep_oct",
+    "crc_s2_media",
+    "vi6t_landsat_max",
+    "lai_planet_max",
+    "lluvia_ciclo_mm",
+    "pendiente_grados",
+    "elevacion_m"
+  ],
+  "bloque_b_multianio": [
+    "ndvi_s2_max_2022",
+    "ndvi_s2_int_2022",
+    "ndvi_s2_media_sep_oct_2022",
+    "ndvi_s2_max_2023",
+    "ndvi_s2_int_2023",
+    "ndvi_s2_media_sep_oct_2023",
+    "ndvi_s2_max_2024",
+    "ndvi_s2_int_2024",
+    "ndvi_s2_media_sep_oct_2024",
+    "crc_s2_media_2022",
+    "crc_s2_media_2023",
+    "crc_s2_media_2024",
+    "vi6t_landsat_max_2022",
+    "vi6t_landsat_max_2023",
+    "vi6t_landsat_max_2024",
+    "lluvia_ciclo_mm_2022",
+    "lluvia_ciclo_mm_2023",
+    "lluvia_ciclo_mm_2024",
+    "ndvi_s2_max_hist_media",
+    "ndvi_s2_int_hist_media",
+    "ndvi_s2_media_sep_oct_hist_media",
+    "crc_s2_media_hist_media",
+    "vi6t_landsat_max_hist_media",
+    "lluvia_ciclo_mm_hist_media"
+  ],
+  "entradas": {
+    "solo2025": "dataset_entrenamiento/despensa/parcelas_despensa_nube30_v1.csv",
+    "multianio": "dataset_entrenamiento/despensa/parcelas_despensa_multianio_nube30_v1.csv",
+    "edaf": "DATASETS_EXTERNOS/despensa_extendida/parcelas_despensa_extendida_edaf_v1.csv",
+    "soilgrids": "DATASETS_EXTERNOS/despensa_extendida/parcelas_despensa_extendida_soilgrids_v1.csv"
+  },
+  "salidas": {
+    "curados_reto": "dataset_entrenamiento/curados_reto",
+    "curados_extendidos": "dataset_entrenamiento/curados_extendidos",
+    "catalogo": "dataset_entrenamiento/manifiestos/catalogo_datasets_v1.csv"
+  },
+  "como_regenerar": "python3 dataset_entrenamiento/scripts/generar_datasets.py"
+}
