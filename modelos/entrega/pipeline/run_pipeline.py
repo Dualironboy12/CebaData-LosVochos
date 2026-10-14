@@ -1,11 +1,11 @@
 """Corre el pipeline completo (o una parte) en orden.
 
-Uso, desde la raiz del repo:
+Uso, desde la raiz del repo (con PYTHONPATH=modelos/entrega):
     python -m pipeline.run_pipeline                    # pasos 01 a 10
     python -m pipeline.run_pipeline --desde 7          # solo modelado y exportacion
-    python -m pipeline.run_pipeline --desde 10         # solo regenerar artefactos/
+    python -m pipeline.run_pipeline --desde 10         # solo regenerar api/artefactos/
 
-Los pasos 01 a 04 necesitan la carpeta DATASET_RETO_AGRO_2026 (ver pipeline/conf.py).
+Los pasos 01 a 04 necesitan DATASET_RETO_AGRO_2026 en la raiz (ver pipeline/conf.py).
 El paso 05b (SoilGrids, opcional, requiere internet) se corre aparte:
     python -m pipeline.pasos.paso05b_soilgrids
 """

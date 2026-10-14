@@ -215,7 +215,8 @@ def main():
     tabla_robustez(d, pred_lomo).round(4).to_csv(
         config.RUTA_SALIDAS / "robustez_candidatos.csv", index=False)
 
-    n_vars = {"ensamble": len(cols), "ubicacion": 1, "mezcla": len(cols) + 1}
+    # La mezcla reusa las mismas columnas del ensamble (lon ya está en cols); no se cuenta dos veces.
+    n_vars = {"ensamble": len(cols), "ubicacion": 1, "mezcla": len(cols)}
     comp = tabla_comparacion(est, lomo, n_vars)
     comp.round(4).to_csv(config.RUTA_SALIDAS / "comparacion_candidatos.csv", index=False)
 

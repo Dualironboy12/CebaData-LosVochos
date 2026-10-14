@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline_rutas import RAIZ
+from pipeline_rutas import ENTREGA_PIPELINE, RAIZ
 
 
 def _pins(ruta: Path) -> dict[str, str]:
@@ -30,7 +30,7 @@ def test_metadata_es_coherente(art):
 def test_versiones_fijadas_coinciden_con_el_entrenamiento(art):
     entrenadas = art.metadata["librerias"]
     api = _pins(RAIZ / "requirements.txt")
-    pipe = _pins(RAIZ / "pipeline" / "requirements-pipeline.txt")
+    pipe = _pins(ENTREGA_PIPELINE / "requirements-pipeline.txt")
     for paquete in ("numpy", "pandas", "scikit-learn", "lightgbm", "joblib"):
         assert api[paquete] == pipe[paquete] == entrenadas[paquete], paquete
 

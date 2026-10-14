@@ -1,27 +1,29 @@
 """Configuracion central del pipeline del Reto AgroCebada 2026.
 
-El pipeline NO forma parte de la API: sirve para reproducir el reporte y para
-regenerar la carpeta artefactos/ que carga el backend. No depende de Django.
+El pipeline vive en modelos/entrega/pipeline/. Sirve para reproducir el reporte y
+para regenerar api/artefactos/, que carga el backend. No depende de Django.
 
 Variables de entorno opcionales:
-  CEBADATA_DATASET    ruta a DATASET_RETO_AGRO_2026 (por defecto, en la raiz del repo)
+  CEBADATA_DATASET    ruta a DATASET_RETO_AGRO_2026 (por defecto, raiz del repo)
   CEBADATA_SALIDAS    carpeta de salidas intermedias (por defecto, pipeline/salidas/)
-  CEBADATA_ARTEFACTOS carpeta de artefactos para la API (por defecto, artefactos/)
+  CEBADATA_ARTEFACTOS carpeta de artefactos para la API (por defecto, api/artefactos/)
 """
 import os
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parents[1]
+# modelos/entrega/pipeline/conf.py -> parents[3] = raiz del repo
+REPO = Path(__file__).resolve().parents[3]
+PIPELINE_DIR = Path(__file__).resolve().parent
 
-# Carpeta DATASET_RETO_AGRO_2026 descomprimida (con los zips internos ya extraidos).
-# No se versiona; hay que copiarla junto a manage.py o apuntar CEBADATA_DATASET.
-RUTA_DATASET = Path(os.environ.get("CEBADATA_DATASET", RAIZ / "DATASET_RETO_AGRO_2026"))
+# Alias historico (algunos scripts antiguos importaban RAIZ como carpeta del pipeline).
+RAIZ = PIPELINE_DIR
 
-# Carpeta donde el pipeline escribe sus salidas intermedias.
-RUTA_SALIDAS = Path(os.environ.get("CEBADATA_SALIDAS", RAIZ / "pipeline" / "salidas"))
+RUTA_DATASET = Path(os.environ.get("CEBADATA_DATASET", REPO / "DATASET_RETO_AGRO_2026"))
+
+RUTA_SALIDAS = Path(os.environ.get("CEBADATA_SALIDAS", PIPELINE_DIR / "salidas"))
 RUTA_MODELOS = RUTA_SALIDAS / "modelos"
-RUTA_REFERENCIA_SIN_SUELO = RAIZ / "pipeline" / "referencia_sin_suelo"
-RUTA_ARTEFACTOS = Path(os.environ.get("CEBADATA_ARTEFACTOS", RAIZ / "artefactos"))
+RUTA_REFERENCIA_SIN_SUELO = PIPELINE_DIR / "referencia_sin_suelo"
+RUTA_ARTEFACTOS = Path(os.environ.get("CEBADATA_ARTEFACTOS", REPO / "api" / "artefactos"))
 
 
 def _dir_con(base, *candidatos, contiene=None):

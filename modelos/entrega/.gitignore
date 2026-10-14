@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Intermedios pesados del pipeline; se regeneran con run_pipeline
+pipeline/salidas/satelital_*.csv

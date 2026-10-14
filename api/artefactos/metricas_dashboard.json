@@ -2,7 +2,7 @@
  "modelo": {
   "nombre": "Mezcla",
   "descripcion": "Promedio de las predicciones del ensamble y del modelo de ubicación.",
-  "n_variables": 122
+  "n_variables": 121
  },
  "validacion": {
   "esquema": "Validación cruzada anidada estratificada por municipio",
@@ -72,7 +72,7 @@
    "nombre": "Mezcla",
    "descripcion": "Promedio de las predicciones del ensamble y del modelo de ubicación.",
    "elegido": true,
-   "n_variables": 122,
+   "n_variables": 121,
    "estratificada": {
     "rmse": 0.508,
     "mae": 0.354,

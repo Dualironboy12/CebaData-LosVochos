@@ -137,7 +137,7 @@
       <div class="chart-box">
         <ceba-waterfall [base]="base()" [otras]="d.shap_otras" [items]="cascada()" otrasSub="Resto de variables y mezcla con la ubicación" />
       </div>
-      <p class="card-sub" style="margin-top:10px">La explicación sale de la parte del ensamble (la que usa todas las variables). Lo que aporta la otra mitad de la mezcla, el modelo de ubicación, queda en "Otras variables".</p>
+      <p class="card-sub" style="margin-top:10px">La cascada explica el LightGBM del ensamble (peso 1/6 de la mezcla), no la mezcla completa. Lo que aporta el resto del ensamble y el modelo de ubicación (peso 1/2) queda en «Otras variables».</p>
     </div>
   </section>
 

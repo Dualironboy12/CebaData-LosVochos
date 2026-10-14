@@ -1,7 +1,7 @@
 # Backend ligero: solo lo que la API necesita en tiempo de ejecucion.
 # numpy, pandas, scikit-learn, lightgbm y joblib estan fijados a las versiones con las que
 # se entrenaron y exportaron los .joblib de artefactos/ (ver artefactos/metadata.json y
-# pipeline/requirements-pipeline.txt). Si cambias una, regenera los artefactos.
+# modelos/entrega/pipeline/requirements-pipeline.txt). Si cambias una, regenera los artefactos.
 Django==6.1.2
 djangorestframework==3.18.3
 django-cors-headers==4.9.0

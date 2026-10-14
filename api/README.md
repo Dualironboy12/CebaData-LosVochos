@@ -1,20 +1,19 @@
 # CebaData API
 
-API de solo lectura del Reto AgroCebada FIRA 2026 y pipeline para reproducir el reporte. Sirve al dashboard ([DashboardCebaData](https://github.com/ALNM7/DashboardCebaData), hecho en Angular).
+API de solo lectura del Reto AgroCebada FIRA 2026. Sirve al dashboard Angular en [`../dashboard/`](../dashboard/). El pipeline de entrenamiento vive en [`../modelos/entrega/`](../modelos/entrega/).
 
 Predice el rendimiento de cebada (t/ha) en 197 parcelas del altiplano de Hidalgo, Puebla y Tlaxcala, ciclo abril a octubre de 2025. En 138 se midió el rendimiento y las otras 59 son las que el modelo predice.
 
 ## Cómo está organizado
 
 ```
-artefactos/     lo único que lee la API: modelo, tablas y metadata (versionado, 2 MB)
+artefactos/     lo único que lee la API: modelo, tablas y metadata (versionado, ~2 MB)
 api/            app de Django: carga los artefactos al arrancar y sirve los endpoints
 cebadata/       proyecto Django (sin base de datos)
 tests/          pruebas de la API (pytest)
-pipeline/       entrenamiento y exportación; la API no lo importa ni lo necesita
 ```
 
-El backend en tiempo de ejecución no corre el pipeline. Entrena una vez fuera de la API, exporta `artefactos/` y la API los carga una sola vez al arrancar.
+El backend en tiempo de ejecución no corre el pipeline. Entrena una vez en `modelos/entrega/`, exporta `artefactos/` y la API los carga una sola vez al arrancar. Para levantar API + dashboard juntos: `bash ../scripts/levantar_local.sh`.
 
 ## Modelo único: la mezcla
 
@@ -50,7 +49,7 @@ Referencias: predecir la media da 0.846 en la validación estratificada. En LOMO
 
 ## Levantar la API
 
-Necesitas Python 3.13 (el de `.python-version`). Las versiones de numpy, pandas, scikit-learn, lightgbm y joblib están fijadas porque son las del entrenamiento: los `.joblib` se cargan con ellas.
+Necesitas Python 3.12 o superior (`.python-version` fija 3.12). Las versiones de numpy, pandas, scikit-learn, lightgbm y joblib están fijadas porque son las del entrenamiento: los `.joblib` se cargan con ellas.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate     # en Windows: .venv\Scripts\activate
@@ -75,7 +74,7 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-Incluyen la **prueba de paridad**: con los artefactos cargados la API reproduce las predicciones de las 59 parcelas (contra la tabla con 1e-9 y contra `pipeline/salidas/predicciones_59_parcelas.csv` redondeando a 3 decimales), y verifica que los pins de `requirements.txt`, los del pipeline y los de `metadata.json` coincidan, y que la API no importe el pipeline.
+Incluyen la **prueba de paridad**: con los artefactos cargados la API reproduce las predicciones de las 59 parcelas (contra la tabla con 1e-9 y contra `modelos/entrega/pipeline/salidas/predicciones_59_parcelas.csv` redondeando a 3 decimales), y verifica que los pins de `requirements.txt`, los del pipeline y los de `metadata.json` coincidan, y que la API no importe el pipeline.
 
 ## Endpoints
 
@@ -114,20 +113,19 @@ El intervalo es el de las demás parcelas (`cuantil_intervalo`) combinado con la
 
 ## Regenerar los artefactos
 
-Solo hace falta si cambia el modelo o los datos. Se hace fuera de la API, con el entorno del pipeline:
+Solo hace falta si cambia el modelo o los datos. Se hace en `modelos/entrega/` (ver su README):
 
 ```bash
-python3 -m venv .venv-pipeline && source .venv-pipeline/bin/activate
-pip install -r pipeline/requirements-pipeline.txt
+# desde la raíz del repo
+python3 -m venv modelos/entrega/.venv && source modelos/entrega/.venv/bin/activate
+pip install -r modelos/entrega/pipeline/requirements-pipeline.txt
 
-# dataset del reto: descomprimido en DATASET_RETO_AGRO_2026/ (raíz del repo) o apuntado con
-# CEBADATA_DATASET; los zips internos de clima y topografía van extraídos en carpetas del mismo nombre
-python -m pipeline.run_pipeline                  # pasos 01 a 10 (unos 8 minutos)
-python -m pipeline.run_pipeline --desde 10       # solo reexportar artefactos/ con lo que ya hay en pipeline/salidas
-python -m pytest pipeline/tests -p no:django     # pruebas del pipeline
+PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline            # pasos 01 a 10
+PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline --desde 10 # solo reexportar api/artefactos/
+PYTHONPATH=modelos/entrega python -m pytest modelos/entrega/pipeline/tests -p no:django
 ```
 
-Después revisa `git diff artefactos/`, corre las pruebas de la API y haz commit. Si cambias una de las cinco librerías de ML, cámbiala igual en `requirements.txt` y en `pipeline/requirements-pipeline.txt` (una prueba lo verifica) y regenera.
+Después revisa `git diff api/artefactos/`, corre las pruebas de la API y haz commit. Si cambias una de las cinco librerías de ML, cámbiala igual en `requirements.txt` y en `modelos/entrega/pipeline/requirements-pipeline.txt`.
 
 ## Qué contiene `artefactos/`
 
@@ -143,7 +141,7 @@ tablas/                  parcelas, predicciones, features_modelo, shap_parcela, 
 
 ## El pipeline
 
-`pipeline/` queda en el repo solo para reproducibilidad del reporte. Los pasos corren en orden con `python -m pipeline.run_pipeline`:
+El pipeline vive en [`../modelos/entrega/pipeline/`](../modelos/entrega/pipeline/). Los pasos corren en orden con `PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline`:
 
 | Paso | Qué hace |
 |---|---|
@@ -159,23 +157,23 @@ tablas/                  parcelas, predicciones, features_modelo, shap_parcela, 
 | 09 | SHAP por parcela para la ficha |
 | 10 | Exporta `artefactos/` |
 
-Con el dataset del reto la corrida reproduce exactamente los números de arriba (los CSV de los pasos 01 a 05 quedaron idénticos a los que ya estaban versionados en `pipeline/salidas/`).
+Con el dataset del reto la corrida reproduce exactamente los números de arriba (los CSV de los pasos 01 a 05 quedaron idénticos a los que ya estaban versionados en `modelos/entrega/pipeline/salidas/`).
 
 ### Datos externos: SoilGrids (probado y descartado)
 
 El suelo de SoilGrids 2.0 (Poggio et al. 2021, https://doi.org/10.5194/soil-7-217-2021) se probó con una regla fijada antes de correrlo: se adopta solo si baja el RMSE del ensamble al menos 0.010 t/ha y la ablación pareada lo confirma. No la pasó (+0.0013 en la validación anidada, -0.0023 en la ablación pareada, dentro del ruido). Los datos de INEGI (edafología y nitrógeno) que usó el superciclo tampoco la pasan (de 0.550 a 0.542 son 0.008 t/ha). Para repetir la prueba:
 
 ```bash
-python -m pipeline.pasos.paso05b_soilgrids
-python -m pipeline.run_pipeline --desde 5
-python -m pipeline.comparar_suelo
+PYTHONPATH=modelos/entrega python -m pipeline.pasos.paso05b_soilgrids
+PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline --desde 5
+PYTHONPATH=modelos/entrega python -m pipeline.comparar_suelo
 ```
 
 ### Decisiones metodológicas (para el reporte técnico)
 
 - El identificador del shapefile viene truncado como `ID_POLIGON`; se renombra a `ID_POLIGONO`.
 - El CSV de rendimiento trae una columna vacía sin nombre; se descarta.
-- Umbral de nubosidad de 20 %: por debajo, menos del 1 % de los índices viene nulo y toda parcela conserva al menos 26 observaciones S2 dentro del ciclo. Es un parámetro en `pipeline/conf.py`.
+- Umbral de nubosidad de 20 %: por debajo, menos del 1 % de los índices viene nulo y toda parcela conserva al menos 26 observaciones S2 dentro del ciclo. Es un parámetro en `modelos/entrega/pipeline/conf.py`.
 - El clima se muestrea en el centroide de la parcela porque el píxel de CHIRPS/CHIRTS (unos 5 km) es mucho más grande que cualquier parcela; la topografía (píxel de 120 m) se promedia zonalmente con `all_touched=True`.
 - Ninguna fila satelital se elimina: el filtrado queda como bandera.
 - Planet y Sentinel-2 se mantienen como fuentes separadas.

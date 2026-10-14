@@ -559,3 +559,36 @@ Claude Sonnet 5.5 (Cursor, modo Agent).
 - Modificados: `modelos/README.md` (una fila en la tabla de documentos) y este `PROMPTS.md`.
 - Sin tocar: `api/`, `dashboard/`, `dataset_entrenamiento/`, datos del reto. Sin commits.
 - No cambia la decisión humana sobre el modelo de entrega.
+
+## 2026-10-13 — Integración de api/ y dashboard/ al repo
+
+**Modelo**
+
+Composer (Cursor, modo Agent).
+
+**Prompt**
+
+> Integración de api/ y dashboard/ al repo CebaData. Implement the plan as specified (integración_api_y_dashboard). Do NOT edit the plan file itself. Complete all to-dos.
+
+**Acciones**
+
+- Commitear pendientes en `dev-modelos` y crear la rama `integracion-api-dashboard`.
+- Mover los repos anidados a `../_import/`, retirar el dashboard viejo en JavaScript e integrar `api/` y `dashboard/` con `git subtree` (ramas de Alfredo: API `claude/dreamy-einstein-1uy0b2`, dashboard `main`).
+- Retirar `dashboard/.claude/` y `skills-lock.json` (skills de terceros); rehacer el `.gitignore` raíz sin la regla `.*`.
+- `git mv api/pipeline` → `modelos/entrega/pipeline`; ajustar `conf.py` (REPO, dataset oficial, artefactos en `api/artefactos`), `pytest.ini` de entrega y de API, y rutas de tests.
+- Escribir `modelos/entrega/README.md` (arquitectura de la mezcla, 121 variables, métricas, justificación, límites).
+- Correcciones: Python 3.12, `n_variables` 121 (reexportar paso 10), `render.yaml`, `environment.prod.ts`, textos SHAP (solo LightGBM del ensamble), enlaces internos en READMEs.
+- Crear `scripts/levantar_local.sh` y capturas/humo e2e en `scripts/e2e-capturas/`.
+- Pruebas: pipeline completo (paridad de artefactos salvo `generado` y `n_variables`), pytest API (38) y pipeline (11), `npm test` / `build` / `build:demo`, prueba pareada del ganador con ruta nueva.
+- Documentación: README raíz (estructura, levantar, memoria de desarrollo), `AGENTS.md` raíz y locales (`api/`, `dashboard/`, `modelos/`), D8, READMEs de API/dashboard, `CUMPLIMIENTO_BASES.md`.
+- Nota sobre sesiones Claude Code de Alfredo (prompts aún no anexados): ver `CUMPLIMIENTO_BASES.md` y commits con `Claude-Session` / `Co-Authored-By`.
+
+**Afectaciones**
+
+- Integrados: `api/` (Django REST + artefactos) y `dashboard/` (Angular).
+- Creados: `modelos/entrega/` (pipeline + README + pytest), `api/AGENTS.md`, `dashboard/AGENTS.md`, `scripts/levantar_local.sh`, `scripts/e2e-capturas/`, `CUMPLIMIENTO_BASES.md`, `dashboard/src/environments/environment.prod.ts`.
+- Modificados: `.gitignore`, `AGENTS.md`, `README.md`, `PROMPTS.md`, `modelos/README.md`, `modelos/DECISIONES_ABIERTAS.md`, `modelos/AGENTS.md`, `modelos/scripts/prueba_ganador_en_pipeline.py`, configs y textos de API/dashboard, `api/artefactos/metricas_dashboard.json` (`n_variables`: 121).
+- Eliminados del árbol: dashboard JS viejo; `dashboard/.claude/` y skills de terceros; pipeline bajo `api/pipeline/`.
+- Fuera de alcance: push, merge a `main`, despliegue en la nube, reporte técnico y video.
+- Pendiente de equipo: anexar prompts de Claude Code de Alfredo; licencia; visibilidad del dataset; despliegue con CORS/hosts reales.
+

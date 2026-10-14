@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 
-from pipeline_rutas import RAIZ
+from pipeline_rutas import ENTREGA_PIPELINE, RAIZ
 
 
 def test_modelo_reproduce_la_tabla_de_las_59(art):
@@ -15,7 +15,7 @@ def test_modelo_reproduce_la_tabla_de_las_59(art):
 
 
 def test_modelo_reproduce_el_csv_del_pipeline(art):
-    csv = pd.read_csv(RAIZ / "pipeline" / "salidas" / "predicciones_59_parcelas.csv").set_index("ID_POLIGONO")
+    csv = pd.read_csv(ENTREGA_PIPELINE / "salidas" / "predicciones_59_parcelas.csv").set_index("ID_POLIGONO")
     pred = art.modelo.predecir(art.features.loc[csv.index])
     assert (np.round(pred, 3) == csv["RENDIMIENTO_T_HA_PRED"].to_numpy()).all()
     # intervalo: prediccion mas/menos el cuantil de CV de la mezcla
@@ -25,7 +25,7 @@ def test_modelo_reproduce_el_csv_del_pipeline(art):
 
 
 def test_la_api_sirve_esas_mismas_predicciones(art, cliente):
-    csv = pd.read_csv(RAIZ / "pipeline" / "salidas" / "predicciones_59_parcelas.csv").set_index("ID_POLIGONO")
+    csv = pd.read_csv(ENTREGA_PIPELINE / "salidas" / "predicciones_59_parcelas.csv").set_index("ID_POLIGONO")
     tabla = pd.read_csv(RAIZ / "artefactos" / "tablas" / "predicciones.csv").set_index("id")
     servido = {p["id"]: p for p in cliente.get("/api/parcelas").json()}
     for pid, fila in csv.iterrows():

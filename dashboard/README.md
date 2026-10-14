@@ -2,7 +2,7 @@
 
 Dashboard web en español, hecho en Angular, para consultar el modelo que predice el rendimiento de cebada (t/ha) en 197 parcelas del altiplano de Hidalgo, Puebla y Tlaxcala, ciclo abril a octubre de 2025.
 
-Los datos los sirve [cebadata_api](https://github.com/ALNM7/cebadata_api) (API de Django que carga los artefactos congelados del modelo). Este repo es solo el front.
+Los datos los sirve la API en [`../api/`](../api/) (Django REST, artefactos congelados del modelo de entrega).
 
 El modelo es uno solo: la **mezcla** del ensamble (LightGBM, Random Forest y Elastic Net) con un LightGBM de solo longitud. La comparación con los otros dos enfoques vive únicamente en el panel de metodología de "Desempeño del modelo".
 
@@ -16,14 +16,14 @@ npm install
 
 ### Con la API real
 
-1. Levanta la API (ver el README de `cebadata_api`): `pip install -r requirements.txt` y `python manage.py runserver` en el puerto 8000. No necesita el pipeline.
-2. En este repo:
+1. Levanta la API (ver [`../api/README.md`](../api/README.md) o `../scripts/levantar_local.sh`): en `api/`, `pip install -r requirements.txt` y `python manage.py runserver` en el puerto 8000. No necesita el pipeline.
+2. En este directorio:
 
    ```bash
    npm start            # http://localhost:4200
    ```
 
-`ng serve` manda las peticiones a `/api` al puerto 8000 con `proxy.conf.json`. Si la API está en otro lado, cambia el `target` de ese archivo, o pon la dirección completa en `apiUrl` de `src/environments/environment.ts` (y agrega el origen del front en `CORS_ALLOWED_ORIGINS` de la API).
+`ng serve` manda las peticiones a `/api` al puerto 8000 con `proxy.conf.json`. En producción, fija `apiUrl` en `src/environments/environment.prod.ts` y agrega el origen del front en `CORS_ALLOWED_ORIGINS` de la API.
 
 ### Modo demostración (sin servidor)
 
@@ -106,4 +106,4 @@ Ni el riesgo ni el conjunto se comunican solo con color: siempre hay icono, form
 
 ## Pipeline y modelos
 
-Ya no viven aquí. Están en [cebadata_api](https://github.com/ALNM7/cebadata_api): `pipeline/` (solo para reproducir el reporte y regenerar artefactos) y la API, que solo carga los artefactos congelados.
+El entrenamiento y la exportación de artefactos viven en [`../modelos/entrega/`](../modelos/entrega/). La API solo carga `../api/artefactos/`.

@@ -229,7 +229,7 @@
       <h3>Intervalos de predicción</h3>
       <p>Cada predicción viene con un rango. Se construye con el error de la validación cruzada de la mezcla (el cuantil 90 del error absoluto), y es el mismo ancho para todas las parcelas.</p>
       <h3>Explicación de cada predicción</h3>
-      <p>La gráfica de cascada de la ficha usa valores tipo SHAP. Parte del rendimiento promedio y reparte la diferencia entre las variables que más influyeron. Explica la parte del ensamble, que es la que usa todas las variables.</p>
+      <p>La gráfica de cascada de la ficha usa valores tipo SHAP del LightGBM del ensamble (peso 1/6 de la mezcla). Parte del rendimiento promedio y reparte la diferencia entre las variables que más influyeron en ese miembro. No describe la mezcla completa ni el modelo de solo longitud.</p>
       <h3>Qué tomar en cuenta</h3>
       <ul>
         <li>El modelo aprendió de una sola temporada. Conviene validarlo con más años antes de depender de él.</li>
