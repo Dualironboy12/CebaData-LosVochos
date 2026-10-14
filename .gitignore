@@ -24,3 +24,6 @@ Thumbs.db
 DATASETS_EXTERNOS/*
 !DATASETS_EXTERNOS/despensa_extendida/
 !DATASETS_EXTERNOS/soilgrids/
+
+# Logs del script de arranque local
+scripts/.logs/
