@@ -1,0 +1,199 @@
+@if (opciones.error(); as e) {
+  <ceba-error-state [mensaje]="e.message" (reintento)="opciones.reload()" />
+} @else if (opciones.value(); as op) {
+  @let err = errores();
+  @let f = form();
+  <section class="card" aria-labelledby="h-nueva">
+    <div class="card-head">
+      <div>
+        <h2 id="h-nueva">Estimar una parcela nueva</h2>
+        <p>Da la ubicación, el municipio y el área. El clima es opcional: lo que no escribas se toma de las parcelas conocidas más cercanas.</p>
+      </div>
+    </div>
+    <div class="scn" style="margin-top:14px;border-top:1px solid var(--line)">
+      <form class="scn-controls" (submit)="$event.preventDefault(); estimar()" novalidate>
+        <div class="field">
+          <label for="np-mun">Municipio</label>
+          <input id="np-mun" class="input" list="np-muns" autocomplete="off" placeholder="Ej. Singuilucan" [value]="f.municipio" (input)="poner('municipio', $any($event.target).value)" [attr.aria-invalid]="!!err['municipio']" />
+          <datalist id="np-muns">
+            @for (m of op.municipios; track m.municipio) {
+              <option [value]="m.municipio">{{ m.estado }} · {{ m.n }} parcelas</option>
+            }
+          </datalist>
+          @if (err['municipio']) {
+            <span class="field-err" role="alert">{{ err['municipio'] }}</span>
+          }
+        </div>
+        <div class="np-par">
+          <div class="field">
+            <label for="np-lat">Latitud</label>
+            <input id="np-lat" class="input num" inputmode="decimal" placeholder="19.88" [value]="f.lat" (input)="poner('lat', $any($event.target).value)" [attr.aria-invalid]="!!err['lat']" />
+            @if (err['lat']) {
+              <span class="field-err" role="alert">{{ err['lat'] }}</span>
+            }
+          </div>
+          <div class="field">
+            <label for="np-lon">Longitud</label>
+            <input id="np-lon" class="input num" inputmode="decimal" placeholder="-98.35" [value]="f.lon" (input)="poner('lon', $any($event.target).value)" [attr.aria-invalid]="!!err['lon']" />
+            @if (err['lon']) {
+              <span class="field-err" role="alert">{{ err['lon'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="field">
+          <label for="np-area">Área (ha)</label>
+          <input id="np-area" class="input num" inputmode="decimal" placeholder="4.5" [value]="f.area_ha" (input)="poner('area_ha', $any($event.target).value)" [attr.aria-invalid]="!!err['area_ha']" />
+          @if (err['area_ha']) {
+            <span class="field-err" role="alert">{{ err['area_ha'] }}</span>
+          }
+        </div>
+
+        <details class="np-clima">
+          <summary class="btn btn-sm" style="display:inline-flex">Clima mensual (opcional)</summary>
+          <p class="card-sub" style="margin:8px 0">Déjalo en blanco para que se tome de las parcelas vecinas. Las celdas en gris no entran al modelo.</p>
+          <div class="table-scroll" style="max-height:none">
+            <table class="tbl">
+              <caption class="sr-only">Clima mensual de la parcela, opcional</caption>
+              <thead>
+                <tr>
+                  <th><button type="button" disabled style="cursor:default">Mes</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Lluvia (mm)</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Tmax (°C)</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Tmin (°C)</button></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (fila of filasClima(); track fila.mes) {
+                  <tr style="cursor:default">
+                    <td>{{ fila.nombre }}</td>
+                    @for (c of fila.celdas; track c.clave) {
+                      <td class="r">
+                        <input
+                          class="input num np-celda" inputmode="decimal" [disabled]="!c.usa" [value]="f.clima[c.clave] || ''"
+                          [attr.aria-label]="fila.nombre + ', ' + (c.campo === 'prec_mm' ? 'lluvia' : c.campo === 'tmax_c' ? 'temperatura máxima' : 'temperatura mínima')"
+                          [attr.aria-invalid]="!!err[c.clave]" [attr.title]="err[c.clave] || (c.usa ? null : 'No entra al modelo')"
+                          (input)="ponerClima(c.clave, $any($event.target).value)"
+                        />
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (hayErrorClima()) {
+            <span class="field-err" role="alert">Revisa los valores de clima marcados.</span>
+          }
+        </details>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button type="submit" class="btn btn-primary" [disabled]="calculando()"><svg cebaIcon="refresh"></svg>{{ calculando() ? 'Calculando…' : 'Estimar' }}</button>
+          <button type="button" class="btn btn-quiet" (click)="limpiar()">Limpiar</button>
+        </div>
+        <div class="callout">
+          <svg cebaIcon="info"></svg>
+          <div>Es una estimación de zona: con la mezcla, la parte del ensamble reacciona al clima que des y el resto depende de la longitud. Además, la lluvia de mayo puede estar actuando como indicador de zona y no como causa del rendimiento.</div>
+        </div>
+      </form>
+
+      <div class="scn-result" aria-live="polite">
+        @if (errorApi(); as msg) {
+          <div class="callout callout-warn" role="alert"><svg cebaIcon="warn"></svg><div>{{ msg }}</div></div>
+        } @else if (resultado(); as r) {
+          <div>
+            <span class="eyebrow">Estimación</span>
+            <div class="pred-big" style="margin-top:2px">
+              <span class="val num">{{ fmt(r.prediccion.pred, 2) }}<small>t/ha</small></span>
+              <span class="card-sub">{{ r.entradas.municipio }}@if (r.entradas.estado) {, {{ r.entradas.estado }}} · {{ fmt(r.entradas.area_ha, 1) }} ha</span>
+            </div>
+          </div>
+          @if (paraBarra(); as pb) {
+            <ceba-interval-bar [parcela]="pb" />
+          }
+          <p class="card-sub">{{ r.intervalo.nota }} Semiancho {{ fmt(r.intervalo.semiancho, 2) }} t/ha (base {{ fmt(r.intervalo.semiancho_base, 2) }}, por distancia ×{{ fmt(r.intervalo.factor_distancia, 2) }}).</p>
+
+          @for (a of r.avisos; track a.codigo) {
+            <div [class]="claseAviso(a.nivel)" [attr.role]="a.nivel === 'alerta' ? 'alert' : null"><svg [cebaIcon]="iconoAviso(a.nivel)"></svg><div>{{ a.mensaje }}</div></div>
+          }
+
+          @if (nivel(); as n) {
+            <div class="callout">
+              <svg cebaIcon="info"></svg>
+              <div>Con el precio y costo de abajo (equilibrio {{ fmt(estado.equilibrio(), 2) }} t/ha): <ceba-risk-badge [nivel]="n" />@if (hayAlerta()) { Con las alertas de arriba, no la uses para decidir. }</div>
+            </div>
+          }
+
+          <div>
+            <h3 style="font-size:14px">De dónde salen los datos</h3>
+            <p class="card-sub" style="margin-top:4px">
+              De las {{ r.imputacion.n_variables }} variables del modelo, tú diste {{ r.imputacion.datos_usuario.length }} datos
+              ({{ r.imputacion.datos_usuario.join(', ').toLowerCase() }}), {{ r.imputacion.n_calculadas }} se calcularon con tu lluvia y <b>{{ r.imputacion.n_imputadas }} se imputaron</b>.
+              El municipio ocupa {{ columnasMunicipio() }} columnas del modelo (una por municipio y estado).
+            </p>
+            <p class="card-sub" style="margin-top:4px">Método: {{ metodos[r.imputacion.metodo] }}.</p>
+          </div>
+
+          @if (r.imputacion.vecinos.length) {
+            <div class="table-scroll" style="max-height:none">
+              <table class="tbl">
+                <caption class="sr-only">Parcelas vecinas usadas para imputar</caption>
+                <thead>
+                  <tr>
+                    <th><button type="button" disabled style="cursor:default">Parcela</button></th>
+                    <th><button type="button" disabled style="cursor:default">Municipio</button></th>
+                    <th class="r"><button type="button" disabled style="cursor:default">Distancia</button></th>
+                    <th class="r"><button type="button" disabled style="cursor:default">Peso</button></th>
+                    <th class="r"><button type="button" disabled style="cursor:default">Predicción</button></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (v of r.imputacion.vecinos; track v.id) {
+                    <tr style="cursor:default">
+                      <td class="id"><a [routerLink]="['/parcela', v.id]">{{ v.id }}</a></td>
+                      <td>{{ v.municipio }}</td>
+                      <td class="r num">{{ fmt(v.distancia_km, 2) }} km</td>
+                      <td class="r num">{{ fmt(v.peso * 100, 0) }} %</td>
+                      <td class="r num">{{ fmt(v.rendimiento, 2) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+
+          <details>
+            <summary class="btn btn-sm" style="display:inline-flex">Ver las {{ r.imputacion.n_imputadas }} variables imputadas</summary>
+            <div class="table-scroll" style="max-height:320px;margin-top:8px">
+              <table class="tbl">
+                <caption class="sr-only">Variables que se imputaron, con su valor y de dónde salió</caption>
+                <thead>
+                  <tr>
+                    <th><button type="button" disabled style="cursor:default">Variable</button></th>
+                    <th class="r"><button type="button" disabled style="cursor:default">Valor usado</button></th>
+                    <th><button type="button" disabled style="cursor:default">Origen</button></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (g of grupos(); track g.nombre) {
+                    <tr style="cursor:default"><td colspan="3" class="id" style="background:var(--surface-2)">{{ g.nombre }} ({{ g.vars.length }})</td></tr>
+                    @for (v of g.vars; track v.variable) {
+                      <tr style="cursor:default">
+                        <td>{{ v.etiqueta }}</td>
+                        <td class="r num">{{ valorTexto(v) }}</td>
+                        <td>{{ origenes[v.origen] }}</td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          </details>
+        } @else {
+          <ceba-empty-state icono="parcel" titulo="Aún no hay estimación" texto="Llena el formulario y pulsa Estimar. Verás la predicción, de dónde salió cada dato y los avisos." />
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="card skel-card" style="min-height:340px"><ceba-skel [h]="16" w="35%" /><ceba-skel [h]="260" mt="16px" /></div>
+}

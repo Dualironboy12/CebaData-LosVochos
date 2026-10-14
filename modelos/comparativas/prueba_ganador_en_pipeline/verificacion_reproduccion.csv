@@ -1,0 +1,7 @@
+modelo,esquema,rmse_aqui,rmse_pipeline,diferencia
+ensamble,estratificada,0.5076,0.5076,0.0
+ensamble,lomo,0.7216,0.7216,-0.0
+ubicacion,estratificada,0.525,0.525,-0.0
+ubicacion,lomo,0.5391,0.5391,-0.0
+mezcla,estratificada,0.5079,0.5079,-0.0
+mezcla,lomo,0.5945,0.5945,-0.0

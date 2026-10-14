@@ -1,4 +1,0 @@
-.venv/
-__pycache__/
-# intermedios pesados, se regeneran con correr_pipeline.py
-salidas/satelital_*.csv

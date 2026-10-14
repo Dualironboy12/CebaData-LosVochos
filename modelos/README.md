@@ -14,6 +14,7 @@ Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap [`
 | [`config/superciclo.yaml`](config/superciclo.yaml) | Grid 1024, modelos, HPO top-K |
 | [`comparativas/superciclo_v1/informe_superciclo.html`](comparativas/superciclo_v1/informe_superciclo.html) | Informe técnico del superciclo |
 | [`comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf`](comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf) | **PDF para el equipo** (lenguaje claro, top 10, heatmaps) |
+| [`comparativas/prueba_ganador_en_pipeline/INFORME.md`](comparativas/prueba_ganador_en_pipeline/INFORME.md) | Prueba pareada: ganador del superciclo (con y sin externos) dentro de la validación del pipeline de la API. Veredicto: no vale la pena |
 
 ## Superciclo Classic ML (v1)
 

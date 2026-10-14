@@ -494,3 +494,68 @@ Composer (Cursor Agent).
 **Afectaciones**
 
 - Scripts de informe/PDF; `informe_superciclo.html`; `Resumen_equipo_superciclo_Classic_ML.pdf` y figuras. PROMPTS. Sin commits.
+
+## 2026-10-13 — Revisión de la API y del dashboard nuevos (sin cambios)
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Ask).
+
+**Prompt**
+
+> Se incorporaron nuevas cosas, en @api/ tenemos una api desarrollada por un compañero, el indica que se hizo haciendo una mezcla entre dos modelos desarrollados independientemente, uno como resultado de nuestro superciclo de entrenamiento, y otro desarrollado por el, por otro lado en @dashboard/ tenemos un desarrollo en angular del dashboard desarrollado por un compañero de trabajo, en primer lugar, explicame como se componen los modelos que se usan en la nueva api, si es que los modelos estan correctamente fusionados, y en el caso del dashboard, que falta para su conexion a la api y su puesta en servicio?
+
+**Acciones**
+
+- Se leyeron el README, `predictor.py`, `metadata.json` y los pasos 07, 09 y 10 del pipeline de `api/cebadata_api/`, y el cliente HTTP, los tipos y la configuración de `dashboard/`.
+- Se recalculó la mezcla desde los `.joblib` (coincide con `predicciones.csv` a 5e-12), se corrieron los 38 tests de la API y se comparó el contrato de los 7 endpoints con `models.ts`.
+- Hallazgos: la mezcla es 1/2 un LightGBM de solo `lon` y 1/6 cada miembro del ensamble; no es el ganador del superciclo; SHAP explica solo el LightGBM; al dashboard le falta fijar la URL de la API en producción y hosting; `api/` y `dashboard/` traen su propio `.git`.
+
+**Afectaciones**
+
+- Ninguna: solo lectura. Sin commits.
+
+## 2026-10-13 — Consulta: ¿cambiar al modelo ganador con datos externos? (sin cambios)
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Ask).
+
+**Prompt**
+
+> Valdria la pena hacer el cambio al modelo ganador? Considerando que habra que incorporar los datos externos?
+
+**Acciones**
+
+- Se descompuso la mejora del ganador en los rankings del superciclo (0.550 → 0.542 con externos → 0.533 con HPO) y se contrastó con la prueba del compañero sobre INEGI y SoilGrids.
+- Recomendación: no cambiar solo por los externos y probar el ganador dentro de la validación anidada del pipeline.
+
+**Afectaciones**
+
+- Ninguna: solo lectura. Sin commits.
+
+## 2026-10-13 — Prueba del ganador del superciclo dentro del pipeline de la API
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Agent).
+
+**Prompt**
+
+> Realiza una prueba para confirmar si vale la pena incluir el modelo ganador del superciclo en el pipeline
+
+**Acciones**
+
+- Se fijó el criterio de decisión antes de correr (baja ≥ 0.010 t/ha en la estratificada, LOMO no peor, intervalo bootstrap excluye 0).
+- `modelos/scripts/prueba_ganador_en_pipeline.py` importa el pipeline de la API sin modificarlo y evalúa, con los mismos folds, ensamble, ubicación, mezcla y cuatro variantes del ganador (con y sin N + edafología; hiperparámetros fijos u Optuna anidado), solas y mezcladas con el ensamble.
+- El montaje reproduce las cifras publicadas del pipeline con diferencia < 0.0001.
+- Resultado: ninguna variante cumple el criterio. Los externos tampoco. Detalle en `modelos/comparativas/prueba_ganador_en_pipeline/INFORME.md`.
+- Se corrigió una afirmación previa: el `ubic_lon` del superciclo usa 10 variables, no solo la longitud.
+- Se creó el entorno `modelos/.venv-prueba` (ignorado por `.gitignore`) con las versiones fijadas del pipeline más Optuna.
+
+**Afectaciones**
+
+- Creados: `modelos/scripts/prueba_ganador_en_pipeline.py` y `modelos/comparativas/prueba_ganador_en_pipeline/` (informe y CSV de métricas, comparación pareada, LOMO por municipio, predicciones de las 59 y predicciones por fold).
+- Modificados: `modelos/README.md` (una fila en la tabla de documentos) y este `PROMPTS.md`.
+- Sin tocar: `api/`, `dashboard/`, `dataset_entrenamiento/`, datos del reto. Sin commits.
+- No cambia la decisión humana sobre el modelo de entrega.
