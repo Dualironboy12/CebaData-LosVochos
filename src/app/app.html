@@ -1,0 +1,75 @@
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<div class="app">
+  <aside class="sidebar" aria-label="Navegación principal">
+    <a class="brand" routerLink="/mapa" aria-label="CebaData, ir al mapa de parcelas">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30">
+          <rect width="32" height="32" rx="8" fill="currentColor" />
+          <g fill="none" stroke="var(--brand-mark-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 26V12" />
+            <path d="M16 18c-3 0-5-2-5-5 3 0 5 2 5 5z" />
+            <path d="M16 18c3 0 5-2 5-5-3 0-5 2-5 5z" />
+            <path d="M16 12c-2.500 0-4-1.700-4-4.500 2.500 0 4 1.700 4 4.500z" />
+            <path d="M16 12c2.500 0 4-1.700 4-4.500-2.500 0-4 1.700-4 4.500z" />
+          </g>
+        </svg>
+      </span>
+      <span class="brand-text"><strong>CebaData</strong><small>Rendimiento de cebada</small></span>
+    </a>
+    <nav class="nav">
+      @for (s of secciones; track s.id) {
+        <a class="nav-link" [routerLink]="enlace(s)" routerLinkActive ariaCurrentWhenActive="page">
+          <svg [cebaIcon]="s.icono"></svg><span>{{ s.etiqueta }}</span>
+        </a>
+      }
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-note">
+        <strong>Ciclo abril a octubre 2025</strong>
+        <span>Altiplano de Hidalgo, Puebla y Tlaxcala</span>
+      </div>
+      <button type="button" class="btn btn-quiet theme-toggle" (click)="tema.alternar()" [attr.aria-pressed]="tema.oscuro()" aria-label="Cambiar entre modo claro y oscuro">
+        <svg [cebaIcon]="tema.oscuro() ? 'sun' : 'moon'"></svg><span class="tt-label">{{ tema.oscuro() ? 'Modo claro' : 'Modo oscuro' }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="topbar">
+      <div class="topbar-titles">
+        <p class="eyebrow">{{ actual().eyebrow }}</p>
+        <h1 tabindex="-1">{{ actual().titulo }}</h1>
+      </div>
+      <div class="topbar-actions">
+        @if (demo) {
+          <span class="pill pill-demo" title="Los valores que ves son simulados y siguen la estructura de la API real">
+            <span class="pill-icon"><svg cebaIcon="flask"></svg></span>Datos de demostración
+          </span>
+        }
+        <button type="button" class="btn btn-quiet theme-toggle theme-toggle-top" (click)="tema.alternar()" [attr.aria-pressed]="tema.oscuro()" aria-label="Cambiar entre modo claro y oscuro">
+          <svg [cebaIcon]="tema.oscuro() ? 'sun' : 'moon'"></svg><span class="tt-label">{{ tema.oscuro() ? 'Modo claro' : 'Modo oscuro' }}</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="main" aria-live="polite">
+      <router-outlet />
+    </main>
+
+    <footer class="foot">
+      Herramienta de apoyo; no sustituye la evaluación crediticia.
+      @if (demo) {
+        Los datos mostrados son simulados con fines de demostración.
+      }
+    </footer>
+  </div>
+</div>
+
+<nav class="bottomnav" aria-label="Navegación principal">
+  @for (s of secciones; track s.id) {
+    <a [routerLink]="enlace(s)" routerLinkActive ariaCurrentWhenActive="page"><svg [cebaIcon]="s.icono"></svg><span>{{ s.corto }}</span></a>
+  }
+</nav>
+
+<ceba-tooltip />
