@@ -1,0 +1,82 @@
+@if (metricas.error(); as e) {
+  <ceba-error-state [mensaje]="e.message" (reintento)="metricas.reload()" />
+} @else if (h(); as h) {
+  <article class="card finding">
+    @let l1 = lectura1();
+    <div class="f-top">
+      <span class="f-q">Hallazgo 1 · ¿Qué índice satelital importa más?</span>
+      <h2 class="f-a">{{ l1?.titulo }}</h2>
+      <p class="f-p">
+        Dentro del NDVI pesa más <strong>{{ l1?.mayor }}</strong>; después, <strong>{{ l1?.segunda }}</strong>.
+        @if (l1?.maximoCasiNada) {
+          El valor máximo que alcanza el NDVI casi no aporta.
+        }
+      </p>
+      @if (l1?.siguen) {
+        <p class="f-p" style="margin-top:10px">{{ l1?.siguen }}</p>
+      }
+      <p class="f-note" style="margin-top:12px">La importancia mide cuánto empeora el modelo si esa variable se quita.</p>
+    </div>
+    <div class="f-chart">
+      <h3>Importancia por índice satelital</h3>
+      <ceba-hbar [items]="indices()" [max]="maxIndices()" [decimales]="2" [labelWidth]="150" valueName="Importancia" />
+      <h3 style="margin-top:20px">Dentro del NDVI: qué medida pesa más</h3>
+      <ceba-hbar [items]="dentroNdvi()" [max]="maxNdvi()" [decimales]="3" [labelWidth]="170" valueName="Importancia" />
+    </div>
+  </article>
+
+  <article class="card finding">
+    @let l2 = lectura2();
+    <div class="f-top">
+      <span class="f-q">Hallazgo 2 · ¿Qué variable climática pesa más?</span>
+      <h2 class="f-a">{{ l2?.titulo }}</h2>
+      <p class="f-p">{{ l2?.p1 }}</p>
+      @if (l2?.p2) {
+        <p class="f-p" style="margin-top:10px">{{ l2?.p2 }}</p>
+      }
+      @if (l2?.aviso) {
+        <p class="f-p" style="margin-top:10px">{{ l2?.aviso }}</p>
+      }
+      <p class="f-note" style="margin-top:12px">{{ notaClima() }}</p>
+    </div>
+    <div class="f-chart">
+      <h3>Importancia de las variables de clima</h3>
+      <ceba-hbar [items]="clima()" [max]="maxClima()" [decimales]="3" [labelWidth]="170" valueName="Importancia" />
+    </div>
+  </article>
+
+  <article class="card finding">
+    @let l3 = lectura3();
+    <div class="f-top">
+      <span class="f-q">Hallazgo 3 · ¿Qué combinación de variables funciona mejor?</span>
+      <h2 class="f-a">{{ l3?.titulo }}</h2>
+      <p class="f-p" [innerHTML]="l3?.p1"></p>
+      @if (l3?.p2) {
+        <p class="f-p" style="margin-top:10px">{{ l3?.p2 }}</p>
+      }
+      @if (l3?.nota) {
+        <p class="f-note" style="margin-top:12px">{{ l3?.nota }}</p>
+      }
+    </div>
+    <div class="f-chart">
+      <h3>Error (RMSE) por bloque de variables, menor es mejor</h3>
+      <ceba-hbar [items]="bloques()" [max]="1.0" [decimales]="3" [labelWidth]="170" [axis]="true" [ref]="referencia()" valueName="RMSE" unit="t/ha" />
+      <div class="legend" style="margin-top:12px">
+        <span class="legend-item"><span class="sw" style="background:var(--bar)"></span>Bloques con error parecido</span>
+        @if (peor()) {
+          <span class="legend-item"><span class="sw" style="background:var(--bar-mute)"></span>Bloque con más error</span>
+        }
+        <span class="legend-item"><span style="display:inline-block;width:0;height:14px;border-left:2px dashed var(--ink-2)"></span>Predecir el promedio ({{ fmt(referencia().value, 3) }})</span>
+      </div>
+    </div>
+  </article>
+} @else {
+  @for (i of [1, 2, 3]; track i) {
+    <div class="card skel-card" style="min-height:260px">
+      <ceba-skel [h]="14" w="30%" />
+      <ceba-skel [h]="30" w="60%" mt="14px" />
+      <ceba-skel [h]="14" w="80%" mt="14px" />
+      <ceba-skel [h]="14" w="70%" mt="8px" />
+    </div>
+  }
+}

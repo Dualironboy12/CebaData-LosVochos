@@ -1,0 +1,177 @@
+@let lista = parcelas.value() ?? [];
+
+<div class="picker">
+  <a class="btn" routerLink="/mapa"><svg cebaIcon="left"></svg>Volver al mapa</a>
+  <div class="field">
+    <label for="pk">Buscar otra parcela (ID o municipio)</label>
+    <input
+      id="pk" class="input" list="pk-list" autocomplete="off" placeholder="Ej. AGC_003"
+      [value]="valorPicker()"
+      (change)="buscar($any($event.target).value)"
+      (keydown.enter)="$event.preventDefault(); buscar($any($event.target).value)"
+    />
+  </div>
+  <datalist id="pk-list">
+    @for (p of lista; track p.id) {
+      <option [value]="p.id">{{ p.municipio }} · {{ p.conjunto === 'PREDICCION' ? 'Predicción' : 'Entrenamiento' }}</option>
+    }
+  </datalist>
+  @if (mensaje()) {
+    <span class="field-err" role="alert">{{ mensaje() }}</span>
+  }
+</div>
+
+@if (!idActual() || noEncontrada()) {
+  <div class="card">
+    <ceba-empty-state
+      icono="parcel"
+      [titulo]="noEncontrada() ? 'No encontramos esa parcela' : 'Elige una parcela para ver su ficha'"
+      [texto]="noEncontrada() ? 'Revisa el ID o búscala en el mapa de parcelas.' : 'Haz clic en una parcela del mapa o escribe su ID arriba. También puedes abrirla desde la tabla del mapa.'"
+    />
+    <div style="text-align:center;padding-bottom:26px">
+      <a class="btn btn-primary" routerLink="/mapa"><svg cebaIcon="map"></svg>Ir al mapa de parcelas</a>
+    </div>
+  </div>
+} @else if (errorGeneral(); as e) {
+  <ceba-error-state [mensaje]="e.message" (reintento)="recargar()" />
+} @else if (d(); as d) {
+  @let p = d.parcela;
+  <section class="card ficha-head" aria-label="Datos de la parcela">
+    <div class="ficha-id">
+      <span class="eyebrow">Parcela</span>
+      <div class="row">
+        <h2>{{ p.id }}</h2>
+        <span class="tag" [class.tag-pred]="pred()" [class.tag-train]="!pred()">
+          <svg [cebaIcon]="pred() ? 'dashed' : 'solid'"></svg>{{ pred() ? 'Predicción' : 'Entrenamiento' }}
+        </span>
+      </div>
+      <span class="card-sub">{{ p.municipio }}, {{ p.estado }}</span>
+    </div>
+    <div class="ficha-stats">
+      <div class="stat"><span>Área</span><strong class="num">{{ fmt(p.area_ha, 1) }}<small>ha</small></strong></div>
+      <div class="stat"><span>Elevación</span><strong class="num">{{ fmt(p.elevacion_m, 0) }}<small>m</small></strong></div>
+      <div class="stat"><span>Pendiente</span><strong class="num">{{ fmt(p.pendiente_grados, 1) }}<small>grados</small></strong></div>
+    </div>
+  </section>
+
+  <section class="card pred-card" aria-label="Rendimiento de la parcela">
+    <div class="pred-big">
+      <span class="lbl">{{ pred() ? 'Rendimiento predicho' : 'Rendimiento predicho (validación cruzada)' }}</span>
+      <span class="val num">{{ fmt(p.rendimiento_pred, 2) }}<small>t/ha</small></span>
+      @if (pred()) {
+        <span class="obs-chip"><svg cebaIcon="info"></svg>Sin medición en campo: es una parcela de predicción</span>
+      } @else {
+        <span class="obs-chip">Observado <strong class="num">{{ fmt(p.rendimiento_obs, 2) }}</strong> t/ha<span class="muted">· diferencia {{ fmtSigned((p.rendimiento_obs ?? 0) - p.rendimiento_pred, 2) }}</span></span>
+      }
+    </div>
+    <div>
+      <ceba-interval-bar [parcela]="p" />
+    </div>
+  </section>
+
+  <section class="card chart-card">
+    <div class="card-head">
+      <div>
+        <h2>Curva del índice satelital en 2025</h2>
+        <p>{{ ixActual().nombre }}: {{ ixActual().txt }}</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+        <div class="seg" role="group" aria-label="Índice">
+          @for (i of indices; track i.id) {
+            <button type="button" [attr.aria-pressed]="indice() === i.id" (click)="indice.set(i.id)">{{ i.nombre }}</button>
+          }
+        </div>
+        <div class="seg" role="group" aria-label="Fuente de imágenes">
+          @for (f of fuentes; track f.id) {
+            <button type="button" [attr.aria-pressed]="fuente() === f.id" (click)="fuente.set(f.id)">{{ f.nombre }}</button>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="chart-box" style="min-height:260px">
+        <ceba-index-chart [puntos]="puntosSerie()" [decimales]="ixActual().dec" [aria]="'Curva de ' + ixActual().nombre + ' en 2025 para ' + p.id + ' con ' + fuenteActual().nombre" />
+      </div>
+      <div class="legend" style="margin-top:8px">
+        <span class="legend-item"><span class="sw sw-dot" style="background:var(--bar);opacity:.8"></span><span>Observaciones ({{ fuenteActual().nombre }})</span></span>
+        <span class="legend-item"><span class="sw sw-line" style="background:var(--bar-strong)"></span>Curva suavizada</span>
+        <span class="legend-item"><span class="sw sw-band"></span>Ciclo abril a octubre</span>
+        <span class="legend-item"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.2" /></svg>Pico del ciclo</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid grid-2">
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Lluvia mensual</h2><p>Milímetros de lluvia por mes, abril a octubre.</p></div></div>
+      <div class="card-body">
+        <div class="chart-box"><ceba-vbar [items]="lluvia()" unit="mm" name="Lluvia" aria="Lluvia mensual de abril a octubre" /></div>
+        <div class="legend" style="margin-top:6px"><span class="legend-item"><span class="sw" style="background:var(--s-blue)"></span>Precipitación (mm)</span></div>
+      </div>
+    </div>
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Temperaturas mensuales</h2><p>Promedio de la máxima y la mínima de cada mes.</p></div></div>
+      <div class="card-body">
+        <div class="chart-box"><ceba-line-cat [cats]="meses" [series]="series()" unit="°C" aria="Temperatura máxima y mínima mensual de abril a octubre" /></div>
+        <div class="legend" style="margin-top:6px">
+          <span class="legend-item"><span class="sw sw-line" style="background:var(--s-orange)"></span>Temperatura máxima (°C)</span>
+          <span class="legend-item"><span class="sw sw-line" style="background:var(--s-blue)"></span>Temperatura mínima (°C)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card chart-card">
+    <div class="card-head">
+      <div>
+        <h2>¿Por qué esta predicción?</h2>
+        <p>Parte del rendimiento promedio de las parcelas ({{ fmt(base(), 2) }} t/ha). Cada barra muestra cuánto sube o baja la predicción por el valor que tiene esta parcela en esa variable.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="legend" style="margin-bottom:12px">
+        <span class="legend-item"><span class="sw" style="background:var(--up)"></span>▲ Sube la predicción</span>
+        <span class="legend-item"><span class="sw" style="background:var(--down)"></span>▼ Baja la predicción</span>
+        <span class="legend-item muted">Se muestran las {{ cascada().length }} variables con más efecto. El eje no empieza en cero.</span>
+      </div>
+      <div class="chart-box">
+        <ceba-waterfall [base]="base()" [otras]="d.shap_otras" [items]="cascada()" otrasSub="Resto de variables y mezcla con la ubicación" />
+      </div>
+      <p class="card-sub" style="margin-top:10px">La explicación sale de la parte del ensamble (la que usa todas las variables). Lo que aporta la otra mitad de la mezcla, el modelo de ubicación, queda en "Otras variables".</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div><h2>Parcelas vecinas más cercanas</h2><p>Las 5 parcelas más próximas y su rendimiento.</p></div></div>
+    <div class="card-body" style="padding-top:8px">
+      <div class="table-scroll" style="max-height:none">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th><button type="button" disabled style="cursor:default">Parcela</button></th>
+              <th><button type="button" disabled style="cursor:default">Municipio</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">Distancia</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">Rendimiento (t/ha)</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (n of d.vecinos; track n.id) {
+              <tr tabindex="0" (click)="irA(n.id)" (keydown.enter)="irA(n.id)">
+                <td class="id"><a [routerLink]="['/parcela', n.id]" (click)="$event.stopPropagation()">{{ n.id }}</a></td>
+                <td>{{ n.municipio }}</td>
+                <td class="r num">{{ fmt(n.distancia_km, 1) }} km</td>
+                <td class="r"><ceba-rend [valor]="n.rendimiento" [predicho]="n.tipo === 'predicho'" /></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+} @else {
+  <ceba-skel-card [alto]="60" />
+  <div class="card skel-card"><ceba-skel [h]="60" /></div>
+  <ceba-skel-card [alto]="280" />
+  <div class="grid grid-2"><ceba-skel-card [alto]="220" /><ceba-skel-card [alto]="220" /></div>
+  <ceba-skel-card [alto]="380" />
+}
