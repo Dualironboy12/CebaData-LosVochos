@@ -35,45 +35,74 @@ Se puede complementar con cualquier otra información de acceso público. Hay do
 
 La guía de archivos, unidades y cruces está en [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md).
 
+## Estructura del proyecto
+
+```text
+analisis/                 KDD en R (FIRA, INEGI, SoilGrids)
+dataset_entrenamiento/    Despensa + 1024 CSVs curados
+modelos/                  Exploración (superciclo) + entrega/
+  entrega/                Pipeline de la mezcla → exporta api/artefactos/
+api/                      Django REST (artefactos congelados)
+dashboard/                Angular (mapa, ficha, métricas, hallazgos, simulador)
+scripts/levantar_local.sh Arranque local API + dashboard
+DATASET_RETO_AGRO_2026/   Dataset oficial (no alterar)
+PROMPTS.md                Bitácora de uso de IA
+```
+
+## Levantar el proyecto
+
+Requisitos: Python ≥ 3.12, Node ≥ 20.19 (o ≥ 22.12), npm.
+
+```bash
+bash scripts/levantar_local.sh
+# API:       http://localhost:8000/api/salud
+# Dashboard: http://localhost:4200
+```
+
+A mano:
+
+```bash
+# API
+cd api && python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py runserver   # :8000
+
+# Dashboard (otra terminal)
+cd dashboard && npm install && npm start   # :4200, proxy /api → 8000
+```
+
+Modelo de entrega: **mezcla** ([`modelos/entrega/`](modelos/entrega/)). Regenerar artefactos solo desde ahí.
+
 ## Plan de trabajo del equipo
 
-El equipo construye la solución en tres fases (más la despensa de entrenamiento). El calendario oficial de FIRA (más abajo) sigue su propio nombre: Etapa 1 es el desarrollo y la entrega; Etapa 2 es la presentación ante el jurado.
+El calendario oficial de FIRA llama «Etapa 1» al desarrollo/entrega y «Etapa 2» a la presentación ante el jurado. Internamente el equipo usa estas fases:
 
-| Fase | Trabajo | Herramienta | Carpeta |
+| Fase | Trabajo | Stack | Carpeta |
 | --- | --- | --- | --- |
-| 1. Análisis de datos | Explorar el dataset, documentar calidad, relaciones y variables candidatas | **R** | [`analisis/`](analisis/) |
-| — | Despensa congelada y CSVs curados (reto y extendidos) para entrenar | — | [`dataset_entrenamiento/`](dataset_entrenamiento/) |
-| 2. Modelos | Desarrollar y entrenar los modelos que estiman el rendimiento | **Python** | [`modelos/`](modelos/) |
-| 3. Frontend | Publicar el modelo como dashboard en una página web | **Django** (u otro stack que acuerde el equipo) | [`dashboard/`](dashboard/) |
+| 1. Análisis | Calidad, relaciones, variables candidatas | R | [`analisis/`](analisis/) |
+| — | Despensa y CSVs curados | — | [`dataset_entrenamiento/`](dataset_entrenamiento/) |
+| 2. Modelos | Entrenar, comparar y firmar el predictor | Python | [`modelos/`](modelos/), [`modelos/entrega/`](modelos/entrega/) |
+| 3. API | Servir artefactos congelados | Django REST | [`api/`](api/) |
+| 4. Frontend | Consulta interactiva | Angular | [`dashboard/`](dashboard/) |
 
-**Fase actual: modelos (fase 2).** Datos curados listos en `dataset_entrenamiento/`; diseño e ingesta en [`modelos/`](modelos/). El dashboard se abre solo con pedido explícito. Detalle operativo abajo (§ Roadmap). Instrucciones: [`AGENTS.md`](AGENTS.md).
+**Fase actual: integración y entrega.** Modelo firmado (mezcla), API y dashboard conectados. Pendientes: reporte técnico, video y despliegue en la nube. Instrucciones: [`AGENTS.md`](AGENTS.md).
 
 ## Roadmap
 
-Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin acuerdo nuevo del equipo. Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.md), [`analisis/RESUMEN_DATOS_INEGI.md`](analisis/RESUMEN_DATOS_INEGI.md), [`analisis/RESUMEN_DATOS_SOILGRIDS.md`](analisis/RESUMEN_DATOS_SOILGRIDS.md).
+Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.md), [`analisis/RESUMEN_DATOS_INEGI.md`](analisis/RESUMEN_DATOS_INEGI.md), [`analisis/RESUMEN_DATOS_SOILGRIDS.md`](analisis/RESUMEN_DATOS_SOILGRIDS.md).
 
 ### Dónde estamos
 
 | Fase | Estado | Dónde |
 | --- | --- | --- |
-| 1. Análisis (R) | FIRA, INEGI y SoilGrids con lectura | `analisis/datos_*` |
-| Despensa / CSVs | Despensa nube 30 + multi-año; matriz curada v1 (1024 CSVs) | `dataset_entrenamiento/` |
-| 2. Modelos (Python) | Abierta: propuesta + ingesta; falta baseline/entrenamiento | `modelos/` |
-| 3. Dashboard | Después de un modelo estable | `dashboard/` |
-| Reporte y video | Al cerrar el desarrollo | — |
+| 1. Análisis (R) | Cerrada (referencia) | `analisis/datos_*` |
+| Despensa / CSVs | Lista (1024 CSVs) | `dataset_entrenamiento/` |
+| 2. Modelos | Entrega firmada: mezcla | `modelos/entrega/` |
+| 3. API | Integrada, tests OK | `api/` |
+| 4. Dashboard | Integrado, build OK | `dashboard/` |
+| Reporte y video | Pendientes | — |
 
-### Orden recomendado
-
-```text
-1. Criterios humanos 1–6 (cerrados 2026-10-01)
-2. Despensa NUBE_MAX=30 versionada (hecho) + matriz curada v1 en dataset_entrenamiento/ (hecho)
-3. Fase 2 en modelos/: baseline + classic ML + misma CV espacial (filtrar catálogo)
-4. Externos prioritarios ya en curados_extendidos/ (INEGI edaf + SoilGrids N/CEC/silt)
-5. Elegir modelo y CSV ganadores → predecir las 59
-6. Dashboard y, al final, reporte / video
-```
-
-### Decisiones cerradas (2026-10-01)
+### Decisiones cerradas (2026-10-01 y posteriores)
 
 | # | Pregunta | Decisión |
 | --- | --- | --- |
@@ -82,42 +111,58 @@ Guía operativa después del KDD. Un agente no cambia los criterios cerrados sin
 | 3 | Años previos | Solo 2025 y todos los ciclos (comparar) |
 | 4 | Umbral de nube | `NUBE_MAX = 30` |
 | 5 | Validación | Oficial por municipio; chequeo por píxel de clima |
-| 6 | Datos externos | Dos carriles en paralelo: solo reto primero; INEGI/SoilGrids en paralelo |
+| 6 | Datos externos | Dos carriles; evaluados y **no** usados en la entrega |
+| D8 | Modelo de entrega | **Mezcla** (2026-10-13); ver [`modelos/entrega/`](modelos/entrega/) |
 
-**Matriz de CSVs v1:** 2 temporales × 32 ubicaciones × 16 paquetes extendidos = **1024** archivos en `dataset_entrenamiento/curados_reto/` y `curados_extendidos/`. Catálogo: `dataset_entrenamiento/manifiestos/catalogo_datasets_v1.csv`. Regenerar: `python3 dataset_entrenamiento/scripts/generar_datasets.py`.
+**Pendientes humanas:** textos del reporte y video; prompts de sesiones Claude Code de Alfredo para el anexo de IA; despliegue en Render/Railway; confirmar si el repo de GitHub debe permanecer privado respecto al dataset oficial.
 
-**Despensas:** `parcelas_despensa_nube30_v1.csv` (solo 2025, 197×101) y `parcelas_despensa_multianio_nube30_v1.csv` (2025 + contexto 2022–2024, 197×125).
+### Checklist
 
-**Carril externo:** INEGI `edaf_grupo` y SoilGrids (`sg_nitrogen_0-5cm_mean`, `sg_cec_0-5cm_mean`, `sg_silt_0-5cm_mean`) entran como eje \(E\) de la matriz. Detalle en `dataset_entrenamiento/fuentes/` y `DATASETS_EXTERNOS/despensa_extendida/`.
+- [x] Decisiones 1–6 y D1–D8
+- [x] Despensa + matriz curada v1
+- [x] Superciclo Classic ML + prueba pareada del ganador
+- [x] Modelo de entrega: mezcla; artefactos en `api/artefactos/`
+- [x] API Django + dashboard Angular integrados al repo
+- [ ] Reporte técnico y video (máx. 5 min)
+- [ ] Enlace en línea para el jurado (opcional pero recomendado)
 
-**Pendientes humanas:** decisiones de CV/encoder en [`modelos/DECISIONES_ABIERTAS.md`](modelos/DECISIONES_ABIERTAS.md); modelo y CSV de entrega; abrir dashboard; commits/push/textos del reporte.
+El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
-### Agente vs humano
+## Memoria de desarrollo
 
-El agente reproduce, construye CSVs, entrena y documenta. El equipo aprueba sets de columnas, abre fases, elige el modelo de entrega y autoriza commits. Regla: *el agente ejecuta y compara; el equipo fija criterios y firma lo que se entrega.*
+Resumen de etapas, actividades y por qué se tomaron las decisiones. Detalle de prompts en [`PROMPTS.md`](PROMPTS.md).
 
-### Filosofía de diseño (resumen)
+### 1. Planeación (2026-09-24)
 
-Una fila = una parcela; el condensamiento es una hipótesis; misma CV en todos los experimentos; 3–5 CSVs y pocos modelos; sensores separados; baseline primero; explicabilidad; reproducible en CPU.
+Se fijó el plan de trabajo en tres fases (análisis → modelos → interfaz), las reglas para agentes (`AGENTS.md`, bitácora `PROMPTS.md`) y el alcance del reto. **Por qué:** alinear al equipo antes de tocar datos y dejar trazabilidad del uso de IA que pedirán los anexos.
 
-### Modelos (fase 2 en curso)
+### 2. KDD en R, tres carriles (2026-09-29 a 2026-10-04)
 
-Priorizar classic ML (Ridge, RF/HistGBM, opcional LightGBM) sobre tablas propias. Baseline media por municipio → classic ML sobre el barrido del catálogo → elegir por CV espacial. Detalle: [`modelos/PROPUESTA_MODELOS.md`](modelos/PROPUESTA_MODELOS.md). Hugging Face / LLM no sustituyen el predictor de t/ha.
+Análisis exploratorio del dataset FIRA; luego edafología INEGI y capas SoilGrids como carriles paralelos. Se documentaron resúmenes por fuente. **Por qué:** entender calidad, sesgos espaciales y candidatos a features antes de congelar una matriz de entrenamiento; las bases permiten datos públicos adicionales.
 
-### Checklist fase 2
+### 3. Despensa y matriz de 1024 CSV (2026-10-03 a 2026-10-06)
 
-- [x] Decisiones 1–6
-- [x] Despensa nube 30 en `dataset_entrenamiento/despensa/`
-- [x] Despensa multi-año + matriz curada v1 (1024 CSVs + catálogo)
-- [x] Fase 2 abierta; propuesta + pipeline de ingesta en `modelos/`
-- [ ] Baseline + 1–2 modelos, CV municipio (+ píxel); filtrar catálogo
-- [x] Externos prioritarios en matriz (`edaf` + SoilGrids N/CEC/silt)
-- [ ] Elegir modelo y CSV de entrega; predicciones de las 59
-- [ ] Pedido de `dashboard/`; autorizar commits/push
+Se congeló la despensa con `NUBE_MAX=30`, la multi-año, y una matriz 2×32×16 (temporal × ubicación × externos). **Por qué:** una fila = una parcela; comparar hipótesis de ubicación y de datos externos con la misma CV por municipio, sin re-curar el oficial en cada experimento.
 
-Cuando las tres fases estén cerradas, el equipo prepara también el [reporte técnico](#reporte-técnico) y el [video de presentación](#aplicación-o-interfaz) (máximo 5 minutos) que pide la convocatoria.
+### 4. Superciclo Classic ML (2026-10-06)
 
-El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md) modelo, prompt, acciones y afectaciones. Instrucciones: [`AGENTS.md`](AGENTS.md).
+Barrido de baselines + ridge/elasticnet/RF/HistGBM/LightGBM sobre el catálogo, HPO en el top-K. El ganador automático usaba longitud + píxel climático + N + edafología. **Por qué:** medir con rigor qué aporta arquitectura vs. features vs. externos, con semilla y CV fijas (D1–D7).
+
+### 5. Pipeline de Alfredo y primer dashboard (2026-10-06 a 2026-10-10)
+
+Alfredo (integrante) construyó un pipeline propio sobre el dataset oficial (features fenológicas densas, Optuna anidado) y un dashboard en JavaScript; luego migró el front a Angular. **Por qué:** separar entrenamiento reproducible de un backend ligero que solo carga artefactos, y dar una UI para mapa, ficha, métricas y simulador.
+
+### 6. API con la mezcla (2026-10-13)
+
+Se consolidó el modelo único: promedio del ensamble (LGBM+RF+ENet) y un LightGBM de solo longitud. Artefactos versionados (~2 MB), Django sin base de datos, endpoints de lectura + simulador + parcela nueva. **Por qué:** la mezcla empata al ensamble donde se califica y mejora la robustez LOMO; la longitud captura el gradiente oeste–este de la región.
+
+### 7. Prueba pareada del ganador del superciclo (2026-10-13)
+
+Se evaluó el ganador del superciclo (con y sin externos; hiperparámetros fijos u Optuna anidado) dentro de la validación del pipeline de la API. **Veredicto: no vale la pena sustituir la mezcla.** Los externos no pasan el umbral de 0.010 t/ha. Informe: [`modelos/comparativas/prueba_ganador_en_pipeline/INFORME.md`](modelos/comparativas/prueba_ganador_en_pipeline/INFORME.md).
+
+### 8. Integración al monorepo (2026-10-13)
+
+`api/` y `dashboard/` entraron por `git subtree` (historial de Alfredo conservado); el pipeline pasó a `modelos/entrega/`; se corrigió `n_variables` (121), Python 3.12+, proxy/CORS, textos SHAP y `.gitignore`. **Por qué:** un solo repo ejecutable para el jurado, con modelo firmado, API y front documentados.
 
 ## Cómo se desarrolla el reto
 
@@ -265,12 +310,15 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 - [`Reto Agrocebada Bases.pdf`](Reto%20Agrocebada%20Bases.pdf) — bases de participación.
 - [`Ecuaciones_indices_AgroCebada_FIRA_2026.pdf`](Ecuaciones_indices_AgroCebada_FIRA_2026.pdf) — ecuaciones de los índices satelitales.
 - [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset oficial (no se altera).
-- [`analisis/`](analisis/) — KDD en R (carriles FIRA / INEGI / SoilGrids); ver [`analisis/README.md`](analisis/README.md) y los `RESUMEN_DATOS_*.md`.
-- [`dataset_entrenamiento/`](dataset_entrenamiento/) — despensa y CSVs curados para entrenar.
-- [`modelos/`](modelos/) — entrenamiento y artefactos (fase 2).
-- [`dashboard/`](dashboard/) — interfaz web (fase 3).
-- [`AGENTS.md`](AGENTS.md) — instrucciones globales para agentes; cada carpeta de trabajo tiene además su `AGENTS.md` local.
+- [`analisis/`](analisis/) — KDD en R (carriles FIRA / INEGI / SoilGrids).
+- [`dataset_entrenamiento/`](dataset_entrenamiento/) — despensa y CSVs curados.
+- [`modelos/`](modelos/) — exploración; [`modelos/entrega/`](modelos/entrega/) — modelo firmado (mezcla).
+- [`api/`](api/) — backend Django REST.
+- [`dashboard/`](dashboard/) — frontend Angular.
+- [`scripts/levantar_local.sh`](scripts/levantar_local.sh) — arranque local API + dashboard.
+- [`AGENTS.md`](AGENTS.md) — instrucciones para agentes (cada carpeta tiene su `AGENTS.md` local).
 - [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
+- [`CUMPLIMIENTO_BASES.md`](CUMPLIMIENTO_BASES.md) — revisión frente a las bases del reto.
 
 ## Licencia
 

@@ -6,10 +6,10 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 
 ## Alcance
 
-- Fase 2 **abierta** (2026-10-06): entrenar y evaluar estimadores de rendimiento (RMSE, MAE, r²).
-- Leer features desde `dataset_entrenamiento/` vía `src/ceba_modelos` (catálogo + ingesta); no re-curar el dataset oficial aquí.
-- Organizar por arquitectura y por origen de datos (solo reto vs extendido), según el [`README.md`](README.md).
-- Diseño: [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md), [`ESTADO_DATOS.md`](ESTADO_DATOS.md), [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md).
+- Fase 2 **cerrada en entrega** (2026-10-13): modelo firmado = **mezcla** en [`entrega/`](entrega/).
+- Exploración / superciclo: `src/ceba_modelos`, `scripts/`, `comparativas/`.
+- Leer features desde `dataset_entrenamiento/` vía `src/ceba_modelos`; no re-curar el dataset oficial aquí.
+- Diseño: [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md), [`ESTADO_DATOS.md`](ESTADO_DATOS.md), [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md) (D1–D8).
 
 ## Lineamientos (heredan del repo)
 
@@ -26,8 +26,9 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 3. Validación **oficial por municipio**; reportar también chequeo por píxel de clima cuando se comparen corridas. No presentar corte aleatorio de parcelas como criterio oficial.
 4. Al comparar CSVs o arquitecturas: misma CV, mismas semillas, mismas métricas; citar versión del CSV y manifiesto.
 5. Separar artefactos/código de `solo_reto/` y `extendido/`; respetar el flujo de ramas del [`README.md`](README.md) (merge entre ramas de modelos antes de ir a `main`).
-6. No implementar el dashboard aquí; el contrato de inferencia para `dashboard/` se documenta cuando haya modelo de entrega.
-7. Elegir el modelo/CSV de entrega es decisión humana (punto 8 del roadmap en el README raíz); el agente propone métricas y no congela la entrega solo.
+6. El pipeline de entrega (`entrega/pipeline/`) exporta a `../api/artefactos/`. No mover el pipeline de vuelta a `api/`.
+7. D8 ya firmó la mezcla; no cambiar el modelo de entrega sin acuerdo explícito del equipo. La prueba pareada está en `comparativas/prueba_ganador_en_pipeline/`.
+8. Dashboard y API viven fuera de esta carpeta (`../dashboard/`, `../api/`).
 
 ## Fuera de alcance (salvo pedido explícito)
 

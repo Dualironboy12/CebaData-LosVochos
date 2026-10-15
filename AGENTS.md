@@ -8,24 +8,25 @@ Leer este archivo al empezar una tarea. Antes de cerrarla, agregar una entrada a
 
 Un estimado de rendimiento de cebada (t/ha) por parcela y un dashboard web para consultarlo. La etiqueta observada es el ciclo **abril–octubre de 2025**. Hay 197 parcelas (`AGC_001` … `AGC_197`): 138 de `ENTRENAMIENTO` con rendimiento y 59 de `PREDICCION` sin él. Esa partición es la oficial; las 59 se estiman al entregar.
 
+**Modelo de entrega firmado:** la **mezcla** (ensamble LightGBM + RF + Elastic Net + LightGBM de solo longitud). Detalle en [`modelos/entrega/`](modelos/entrega/).
+
 ## Fases y fase actual
 
-La fase actual es **modelos** (fase 2). La fase 1 (análisis en R) queda como referencia y mantenimiento de despensas; no reabrir KDD salvo pedido explícito.
+La fase actual es **integración y entrega**: API + dashboard conectados; reporte técnico y video pendientes.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
-| 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. Tres carriles: FIRA, INEGI, SoilGrids. Producto: lecturas + tablas por parcela | R | `analisis/` (`datos_fira/`, `datos_inegi/`, `datos_soilgrids/`) |
-| — | Despensa congelada y CSVs curados (reto y extendidos) para entrenar | — | `dataset_entrenamiento/` |
-| 2. Modelos | Entrenar y evaluar el modelo de rendimiento. Métricas de referencia del reto: RMSE, MAE, r² | Python | `modelos/` |
-| 3. Frontend | Dashboard que ejecute el modelo y permita consultar resultados | Django (u otro stack del equipo) | `dashboard/` |
+| 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. Tres carriles: FIRA, INEGI, SoilGrids | R | `analisis/` |
+| — | Despensa congelada y CSVs curados (reto y extendidos) | — | `dataset_entrenamiento/` |
+| 2. Modelos | Entrenar, evaluar y firmar el modelo de entrega | Python | `modelos/` (exploración) y `modelos/entrega/` (pipeline de la mezcla) |
+| 3. API | Servir artefactos congelados (solo lectura) | Django REST | `api/` |
+| 4. Frontend | Dashboard interactivo | Angular | `dashboard/` |
 
-El flujo de ramas de `dashboard/`, `dataset_entrenamiento/` y `modelos/` está en el `README.md` de cada una (espacios para anotar el nombre de rama cuando el equipo las cree). Estas tres carpetas y `analisis/` tienen su propio `AGENTS.md` local que **remite a este archivo** y añade reglas del track; al trabajar ahí hay que leer ambos.
+Cada carpeta de trabajo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `api/`, `dashboard/`) tiene su `AGENTS.md` local que **remite a este archivo**.
 
-Fuera de estas fases, y solo cuando el desarrollo esté cerrado, quedan el reporte técnico y el video de máximo 5 minutos. Esos entregables ya están descritos en el README (extensiones por sección, video, código fuente).
+Fuera de estas fases quedan el reporte técnico y el video de máximo 5 minutos (ver README).
 
-Trabajar dentro de la fase actual. La matriz curada en `dataset_entrenamiento/` es la entrada de `modelos/`. Abrir `dashboard/` solo con pedido explícito. No re-curar el dataset oficial dentro de `modelos/`.
-
-El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA (entrega del proyecto, luego presentación ante el jurado). Esas etapas oficiales conviven con las tres fases de esta tabla.
+El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA. Esas etapas oficiales conviven con las fases de esta tabla.
 
 ## Bitácora obligatoria
 
@@ -79,7 +80,7 @@ Cuando el trabajo llegue al reporte o al video:
 
 - Respetar las extensiones de palabra del README. En anexos, máximo 2 cuartillas, con la aportación de cada integrante y la declaración de uso de agentes apoyada en `PROMPTS.md`.
 - El video demostrativo dura como máximo 5 minutos.
-- La aplicación tiene que poder ejecutarse con el código y la documentación del repo.
+- La aplicación tiene que poder ejecutarse con el código y la documentación del repo (`bash scripts/levantar_local.sh`).
 
 ## Convenciones de trabajo
 
@@ -87,3 +88,4 @@ Cuando el trabajo llegue al reporte o al video:
 - Commits y push solo si el prompt lo pide.
 - Dejar el dataset crudo, `LICENSE` y los PDF de las bases como están, salvo pedido explícito.
 - Preferir cambios acotados a la fase y a los archivos que la tarea necesita.
+- No re-curar el dataset oficial dentro de `modelos/` ni reentrenar la mezcla sin acuerdo: los artefactos en `api/artefactos/` son la fuente de verdad en runtime.

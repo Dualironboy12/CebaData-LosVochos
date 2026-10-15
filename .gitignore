@@ -1,9 +1,29 @@
-.*
-# Los .gitignore sí se versionan (reglas compartidas por el equipo).
-!.gitignore
+# Entornos y cachés
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+node_modules/
+dist/
+.angular/
+get-pip.py
 
-# Datos externos crudos (pesados): no se versionan. De cada fuente se conserva solo lo derivado
-# y pequeño dentro de DATASETS_EXTERNOS/despensa_extendida/ (CSV extendido, recortes, documentación).
+# Editores y SO
+.~lock*
+.DS_Store
+Thumbs.db
+.env
+.Rhistory
+.Rproj.user/
+
+# Datos externos crudos (pesados): no se versionan. De cada fuente se conserva solo lo
+# derivado y pequeño dentro de DATASETS_EXTERNOS/despensa_extendida/ (CSV extendido,
+# recortes, documentación).
 DATASETS_EXTERNOS/*
 !DATASETS_EXTERNOS/despensa_extendida/
 !DATASETS_EXTERNOS/soilgrids/
+
+# Logs del script de arranque local
+scripts/.logs/

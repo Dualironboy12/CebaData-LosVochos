@@ -13,6 +13,7 @@ Cerradas el **2026-10-06** (defaults iniciales) y **ampliadas el mismo día** co
 | D5 | Tamaño del barrido | **Superciclo full:** 1024 CSVs del catálogo × modelos capa B; HPO top-30 (cupo 15 reto / 15 extendido). |
 | D6 | Ramas git | Trabajar en **`dev-modelos`**. |
 | D7 | Versionar artefactos | Métricas y predicciones en `comparativas/superciclo_v1/` y `salidas/superciclo_v1/`; no versionar miles de joblibs. |
+| D8 | Modelo de entrega | **Mezcla** (ensamble LGBM+RF+ENet + LightGBM de solo `lon`). Pipeline y artefactos en [`entrega/`](entrega/). Justificación: paso 07 del pipeline + prueba pareada del ganador del superciclo ([`comparativas/prueba_ganador_en_pipeline/INFORME.md`](comparativas/prueba_ganador_en_pipeline/INFORME.md)). Cerrada **2026-10-13**. |
 
 ## Resultado del superciclo v1 (referencia)
 

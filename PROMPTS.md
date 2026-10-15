@@ -494,3 +494,101 @@ Composer (Cursor Agent).
 **Afectaciones**
 
 - Scripts de informe/PDF; `informe_superciclo.html`; `Resumen_equipo_superciclo_Classic_ML.pdf` y figuras. PROMPTS. Sin commits.
+
+## 2026-10-13 — Revisión de la API y del dashboard nuevos (sin cambios)
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Ask).
+
+**Prompt**
+
+> Se incorporaron nuevas cosas, en @api/ tenemos una api desarrollada por un compañero, el indica que se hizo haciendo una mezcla entre dos modelos desarrollados independientemente, uno como resultado de nuestro superciclo de entrenamiento, y otro desarrollado por el, por otro lado en @dashboard/ tenemos un desarrollo en angular del dashboard desarrollado por un compañero de trabajo, en primer lugar, explicame como se componen los modelos que se usan en la nueva api, si es que los modelos estan correctamente fusionados, y en el caso del dashboard, que falta para su conexion a la api y su puesta en servicio?
+
+**Acciones**
+
+- Se leyeron el README, `predictor.py`, `metadata.json` y los pasos 07, 09 y 10 del pipeline de `api/cebadata_api/`, y el cliente HTTP, los tipos y la configuración de `dashboard/`.
+- Se recalculó la mezcla desde los `.joblib` (coincide con `predicciones.csv` a 5e-12), se corrieron los 38 tests de la API y se comparó el contrato de los 7 endpoints con `models.ts`.
+- Hallazgos: la mezcla es 1/2 un LightGBM de solo `lon` y 1/6 cada miembro del ensamble; no es el ganador del superciclo; SHAP explica solo el LightGBM; al dashboard le falta fijar la URL de la API en producción y hosting; `api/` y `dashboard/` traen su propio `.git`.
+
+**Afectaciones**
+
+- Ninguna: solo lectura. Sin commits.
+
+## 2026-10-13 — Consulta: ¿cambiar al modelo ganador con datos externos? (sin cambios)
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Ask).
+
+**Prompt**
+
+> Valdria la pena hacer el cambio al modelo ganador? Considerando que habra que incorporar los datos externos?
+
+**Acciones**
+
+- Se descompuso la mejora del ganador en los rankings del superciclo (0.550 → 0.542 con externos → 0.533 con HPO) y se contrastó con la prueba del compañero sobre INEGI y SoilGrids.
+- Recomendación: no cambiar solo por los externos y probar el ganador dentro de la validación anidada del pipeline.
+
+**Afectaciones**
+
+- Ninguna: solo lectura. Sin commits.
+
+## 2026-10-13 — Prueba del ganador del superciclo dentro del pipeline de la API
+
+**Modelo**
+
+Claude Sonnet 5.5 (Cursor, modo Agent).
+
+**Prompt**
+
+> Realiza una prueba para confirmar si vale la pena incluir el modelo ganador del superciclo en el pipeline
+
+**Acciones**
+
+- Se fijó el criterio de decisión antes de correr (baja ≥ 0.010 t/ha en la estratificada, LOMO no peor, intervalo bootstrap excluye 0).
+- `modelos/scripts/prueba_ganador_en_pipeline.py` importa el pipeline de la API sin modificarlo y evalúa, con los mismos folds, ensamble, ubicación, mezcla y cuatro variantes del ganador (con y sin N + edafología; hiperparámetros fijos u Optuna anidado), solas y mezcladas con el ensamble.
+- El montaje reproduce las cifras publicadas del pipeline con diferencia < 0.0001.
+- Resultado: ninguna variante cumple el criterio. Los externos tampoco. Detalle en `modelos/comparativas/prueba_ganador_en_pipeline/INFORME.md`.
+- Se corrigió una afirmación previa: el `ubic_lon` del superciclo usa 10 variables, no solo la longitud.
+- Se creó el entorno `modelos/.venv-prueba` (ignorado por `.gitignore`) con las versiones fijadas del pipeline más Optuna.
+
+**Afectaciones**
+
+- Creados: `modelos/scripts/prueba_ganador_en_pipeline.py` y `modelos/comparativas/prueba_ganador_en_pipeline/` (informe y CSV de métricas, comparación pareada, LOMO por municipio, predicciones de las 59 y predicciones por fold).
+- Modificados: `modelos/README.md` (una fila en la tabla de documentos) y este `PROMPTS.md`.
+- Sin tocar: `api/`, `dashboard/`, `dataset_entrenamiento/`, datos del reto. Sin commits.
+- No cambia la decisión humana sobre el modelo de entrega.
+
+## 2026-10-13 — Integración de api/ y dashboard/ al repo
+
+**Modelo**
+
+Composer (Cursor, modo Agent).
+
+**Prompt**
+
+> Integración de api/ y dashboard/ al repo CebaData. Implement the plan as specified (integración_api_y_dashboard). Do NOT edit the plan file itself. Complete all to-dos.
+
+**Acciones**
+
+- Commitear pendientes en `dev-modelos` y crear la rama `integracion-api-dashboard`.
+- Mover los repos anidados a `../_import/`, retirar el dashboard viejo en JavaScript e integrar `api/` y `dashboard/` con `git subtree` (ramas de Alfredo: API `claude/dreamy-einstein-1uy0b2`, dashboard `main`).
+- Retirar `dashboard/.claude/` y `skills-lock.json` (skills de terceros); rehacer el `.gitignore` raíz sin la regla `.*`.
+- `git mv api/pipeline` → `modelos/entrega/pipeline`; ajustar `conf.py` (REPO, dataset oficial, artefactos en `api/artefactos`), `pytest.ini` de entrega y de API, y rutas de tests.
+- Escribir `modelos/entrega/README.md` (arquitectura de la mezcla, 121 variables, métricas, justificación, límites).
+- Correcciones: Python 3.12, `n_variables` 121 (reexportar paso 10), `render.yaml`, `environment.prod.ts`, textos SHAP (solo LightGBM del ensamble), enlaces internos en READMEs.
+- Crear `scripts/levantar_local.sh` y capturas/humo e2e en `scripts/e2e-capturas/`.
+- Pruebas: pipeline completo (paridad de artefactos salvo `generado` y `n_variables`), pytest API (38) y pipeline (11), `npm test` / `build` / `build:demo`, prueba pareada del ganador con ruta nueva.
+- Documentación: README raíz (estructura, levantar, memoria de desarrollo), `AGENTS.md` raíz y locales (`api/`, `dashboard/`, `modelos/`), D8, READMEs de API/dashboard, `CUMPLIMIENTO_BASES.md`.
+- Nota sobre sesiones Claude Code de Alfredo (prompts aún no anexados): ver `CUMPLIMIENTO_BASES.md` y commits con `Claude-Session` / `Co-Authored-By`.
+
+**Afectaciones**
+
+- Integrados: `api/` (Django REST + artefactos) y `dashboard/` (Angular).
+- Creados: `modelos/entrega/` (pipeline + README + pytest), `api/AGENTS.md`, `dashboard/AGENTS.md`, `scripts/levantar_local.sh`, `scripts/e2e-capturas/`, `CUMPLIMIENTO_BASES.md`, `dashboard/src/environments/environment.prod.ts`.
+- Modificados: `.gitignore`, `AGENTS.md`, `README.md`, `PROMPTS.md`, `modelos/README.md`, `modelos/DECISIONES_ABIERTAS.md`, `modelos/AGENTS.md`, `modelos/scripts/prueba_ganador_en_pipeline.py`, configs y textos de API/dashboard, `api/artefactos/metricas_dashboard.json` (`n_variables`: 121).
+- Eliminados del árbol: dashboard JS viejo; `dashboard/.claude/` y skills de terceros; pipeline bajo `api/pipeline/`.
+- Fuera de alcance: push, merge a `main`, despliegue en la nube, reporte técnico y video.
+- Pendiente de equipo: anexar prompts de Claude Code de Alfredo; licencia; visibilidad del dataset; despliegue con CORS/hosts reales.
+
