@@ -1,0 +1,254 @@
+@if (parcelas.error(); as e) {
+  <ceba-error-state [mensaje]="e.message" (reintento)="recargar()" />
+} @else if (!lista().length) {
+  <div class="card skel-card" style="min-height:340px"><ceba-skel [h]="16" w="35%" /><ceba-skel [h]="200" mt="16px" /></div>
+  <div class="card skel-card" style="min-height:420px"><ceba-skel [h]="16" w="35%" /><ceba-skel [h]="300" mt="16px" /></div>
+} @else {
+  <div class="seg" role="group" aria-label="Qué parcela simular" style="align-self:flex-start">
+    <button type="button" [attr.aria-pressed]="modo() === 'existente'" (click)="modo.set('existente')">Parcela existente</button>
+    <button type="button" [attr.aria-pressed]="modo() === 'nueva'" (click)="modo.set('nueva')">Nueva parcela</button>
+  </div>
+
+  @if (modo() === 'nueva') {
+    <ceba-nueva-parcela />
+  } @else {
+  <section class="card" aria-labelledby="h-sim">
+    <div class="card-head">
+      <div>
+        <h2 id="h-sim">Simulador de escenarios</h2>
+        <p>Mira cómo cambiaría la predicción de una parcela si la lluvia de mayo o la temperatura mínima de abril fueran distintas.</p>
+      </div>
+    </div>
+    <div class="scn" style="margin-top:14px;border-top:1px solid var(--line)">
+      <div class="scn-controls">
+        <div class="field">
+          <label for="sim-p">Parcela (ID o municipio)</label>
+          <input
+            id="sim-p" class="input" list="sim-list" autocomplete="off" placeholder="Ej. AGC_003" [value]="actual()"
+            (change)="elegir($any($event.target).value)"
+            (keydown.enter)="$event.preventDefault(); elegir($any($event.target).value)"
+          />
+          <datalist id="sim-list">
+            @for (p of lista(); track p.id) {
+              <option [value]="p.id">{{ p.municipio }} · {{ p.conjunto === 'PREDICCION' ? 'Predicción' : 'Entrenamiento' }}</option>
+            }
+          </datalist>
+          @if (errorBusqueda()) {
+            <span class="field-err" role="alert">{{ errorBusqueda() }}</span>
+          }
+        </div>
+        <div class="slider-field">
+          <div class="slider-head">
+            <label for="sl-l" class="field-label">Lluvia de mayo (variación %)</label>
+            <output for="sl-l">{{ fmtSigned(dl(), 0) }} %</output>
+          </div>
+          <input type="range" id="sl-l" min="-40" max="40" step="1" [value]="dl()" (input)="dl.set(+$any($event.target).value)" />
+          <div class="slider-scale"><span>−40 %</span><span>0</span><span>+40 %</span></div>
+        </div>
+        <div class="slider-field">
+          <div class="slider-head">
+            <label for="sl-t" class="field-label">Temperatura mínima de abril (variación en °C)</label>
+            <output for="sl-t">{{ fmtSigned(dt(), 1) }} °C</output>
+          </div>
+          <input type="range" id="sl-t" min="-2" max="2" step="0.1" [value]="dt()" (input)="dt.set(+$any($event.target).value)" />
+          <div class="slider-scale"><span>−2 °C</span><span>0</span><span>+2 °C</span></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button type="button" class="btn btn-primary" [disabled]="calculando()" (click)="simular()"><svg cebaIcon="refresh"></svg>{{ calculando() ? 'Calculando…' : 'Recalcular' }}</button>
+          <button type="button" class="btn btn-quiet" (click)="restablecer()">Restablecer</button>
+          @if (sucio()) {
+            <span class="stale"><svg cebaIcon="warn"></svg>Cambios sin aplicar</span>
+          }
+        </div>
+        <p class="card-sub" style="margin-top:-6px">Los cambios se aplican al pulsar Recalcular.</p>
+        <div class="callout">
+          <svg cebaIcon="info"></svg>
+          <div>Es la sensibilidad que aprendió el modelo, no una relación causal comprobada. Con la mezcla solo la parte del ensamble reacciona al clima, así que el efecto sale más chico que con el ensamble solo.</div>
+        </div>
+      </div>
+
+      <div class="scn-result" aria-live="polite">
+        @if (errorSim(); as msg) {
+          <ceba-error-state [mensaje]="msg" [reintentar]="false" />
+        } @else if (resultado(); as r) {
+          @let p = parcelaActual();
+          @let e = r.entradas;
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+            <h3 style="font-size:14px">Resultado para <a [routerLink]="['/parcela', r.id]">{{ r.id }}</a> · {{ municipioDe(p) }}</h3>
+          </div>
+          <div class="cmp-row">
+            <div class="nm">Base<small>sin cambios</small></div>
+            <div class="cmp-val"><strong class="num">{{ fmt(r.base.pred, 2) }}</strong><span>t/ha · intervalo {{ fmt(r.base.inf, 2) }} a {{ fmt(r.base.sup, 2) }}</span></div>
+          </div>
+          <div class="cmp-row">
+            <div class="nm">Escenario<small>con tus cambios</small></div>
+            <div class="cmp-val"><strong class="num">{{ fmt(r.escenario.pred, 2) }}</strong><span>t/ha · intervalo {{ fmt(r.escenario.inf, 2) }} a {{ fmt(r.escenario.sup, 2) }}</span></div>
+          </div>
+          <div>
+            <span class="diff-chip" [class.up]="r.diferencia > 0.004" [class.down]="r.diferencia < -0.004">
+              <svg [cebaIcon]="r.diferencia > 0.004 ? 'up' : r.diferencia < -0.004 ? 'down' : 'check'"></svg>Diferencia {{ fmtSigned(r.diferencia, 2) }} t/ha ({{ fmtSigned(r.diferencia_pct, 1) }} %)
+            </span>
+          </div>
+          @if (r.fuera_de_rango.length) {
+            <div class="callout callout-warn" role="alert">
+              <svg cebaIcon="warn"></svg>
+              <div>
+                <strong>El escenario sale del rango observado en los datos de entrenamiento.</strong>
+                @for (f of r.fuera_de_rango; track f.variable) {
+                  {{ f.etiqueta }} de {{ fmt(f.valor, decimalesUnidad(f.unidad)) }} {{ f.unidad }} queda fuera del rango visto ({{ fmt(f.min, decimalesUnidad(f.unidad)) }} a {{ fmt(f.max, decimalesUnidad(f.unidad)) }} {{ f.unidad }}).
+                }
+                Toma el resultado con más cautela: el modelo no aprendió con valores así.
+              </div>
+            </div>
+          }
+          @if (mini(); as g) {
+            <div class="mchart" style="position:relative">
+              @if (g.be; as be) {
+                <div class="mref" [class.end]="be.p > 70" [style.left]="'calc(94px + (100% - 94px) * ' + be.p / 100 + ')'"><span>{{ be.texto }}</span></div>
+              }
+              @for (f of g.filas; track f.nombre) {
+                <div class="cmp-row" style="margin:8px 0">
+                  <div class="nm">{{ f.nombre }}</div>
+                  <div class="mtrack" tabindex="0" [cebaTip]="f.tip">
+                    <div class="mrange" [style.left.%]="f.inf" [style.width.%]="f.ancho" [style.background]="f.color"></div>
+                    <div class="mpt" [style.left.%]="f.pred"></div>
+                  </div>
+                </div>
+              }
+              <div class="cmp-row" style="margin:0">
+                <div></div>
+                <div class="mticks">
+                  @for (t of g.ticks; track t.v) {
+                    <span [style.left.%]="t.p">{{ t.v }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="legend">
+              <span class="legend-item"><span class="sw" style="background:var(--bar-mute);height:10px;width:22px;border-radius:5px"></span>Intervalo base</span>
+              <span class="legend-item"><span class="sw" style="background:var(--bar);height:10px;width:22px;border-radius:5px"></span>Intervalo del escenario</span>
+              <span class="legend-item"><span class="sw" style="background:var(--ink);width:3px;height:14px;border-radius:2px"></span>Predicción</span>
+              <span class="legend-item"><span style="display:inline-block;width:0;height:14px;border-left:2px dashed var(--ink-2)"></span>Equilibrio (t/ha)</span>
+            </div>
+          }
+          <p class="card-sub">
+            Lluvia de mayo: <b class="num">{{ fmt(e.lluvia_mayo_base, 0) }} mm</b> → <b class="num">{{ fmt(e.lluvia_mayo_escenario, 0) }} mm</b> · Temperatura mínima de abril: <b class="num">{{ fmt(e.tmin_abril_base, 1) }} °C</b> → <b class="num">{{ fmt(e.tmin_abril_escenario, 1) }} °C</b>
+          </p>
+          @if (nivelesResultado(); as nr) {
+            <div class="callout">
+              <svg cebaIcon="info"></svg>
+              <div>
+                Con el precio y costo de abajo (equilibrio {{ fmt(estado.equilibrio(), 2) }} t/ha): <ceba-risk-badge [nivel]="nr.base" /> con la predicción base@if (nr.escenario !== nr.base) {, <ceba-risk-badge [nivel]="nr.escenario" /> con el escenario.} @else {; el escenario no cambia el nivel.}
+              </div>
+            </div>
+          }
+        } @else {
+          <ceba-skel [h]="200" />
+        }
+      </div>
+    </div>
+  </section>
+  }
+
+  <section class="card" aria-labelledby="h-risk">
+    <div class="card-head">
+      <div>
+        <h2 id="h-risk">Riesgo crediticio por parcela</h2>
+        <p>Compara lo que se espera que rinda cada parcela contra lo que necesita rendir para cubrir sus costos.</p>
+      </div>
+    </div>
+    <div class="risk-grid" style="margin-top:14px;border-top:1px solid var(--line)">
+      <div class="risk-inputs">
+        <div class="callout">
+          <svg cebaIcon="pencil"></svg>
+          <div><strong>Valores de ejemplo, puedes editarlos.</strong> Cambia el precio y el costo por los que quieras evaluar.</div>
+        </div>
+        <div class="field">
+          <label for="r-precio">Precio por tonelada (MXN)</label>
+          <div class="input-wrap">
+            <span class="pre">$</span>
+            <input #precio id="r-precio" class="input num" type="number" inputmode="decimal" min="1" step="50" [value]="estado.riesgo().precio" (input)="leerEntradas(precio.value, costo.value)" />
+            <span class="edit"><svg cebaIcon="pencil"></svg>Editable</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="r-costo">Costo de producción por hectárea (MXN)</label>
+          <div class="input-wrap">
+            <span class="pre">$</span>
+            <input #costo id="r-costo" class="input num" type="number" inputmode="decimal" min="1" step="500" [value]="estado.riesgo().costo" (input)="leerEntradas(precio.value, costo.value)" />
+            <span class="edit"><svg cebaIcon="pencil"></svg>Editable</span>
+          </div>
+        </div>
+        @if (errorRiesgo()) {
+          <span class="field-err" role="alert">{{ errorRiesgo() }}</span>
+        }
+        <div class="be-box">
+          <div class="lbl">Rendimiento de equilibrio</div>
+          <div class="val num">{{ fmt(estado.equilibrio(), 2) }}<small>t/ha</small></div>
+          <div class="fx">{{ fmtMXN(estado.riesgo().costo) }} ÷ {{ fmtMXN(estado.riesgo().precio) }} por tonelada</div>
+        </div>
+      </div>
+      <div class="risk-main">
+        <div>
+          <div class="risk-cards" role="group" aria-label="Filtrar por nivel de riesgo">
+            @for (n of ordenNiveles; track n) {
+              @let N = niveles[n];
+              <button type="button" class="rcard" [class]="N.cls" [attr.aria-pressed]="nivelSel() === n" (click)="filtrarNivel(n)">
+                <span class="head"><svg [cebaIcon]="N.icono"></svg>{{ N.etiqueta }}</span>
+                <span class="n num">{{ conteo()[n] }}<small>de {{ lista().length }} parcelas</small></span>
+                <span class="rule">{{ N.regla }}</span>
+              </button>
+            }
+          </div>
+          <div class="stackbar" role="img" [attr.aria-label]="'Proporción de parcelas por nivel de riesgo: ' + conteo().bajo + ' bajo, ' + conteo().medio + ' medio, ' + conteo().alto + ' alto'" style="margin-top:14px">
+            @for (n of ordenNiveles; track n) {
+              @if (conteo()[n]) {
+                <span [class]="niveles[n].cls" [style.width.%]="(conteo()[n] / lista().length) * 100"></span>
+              }
+            }
+          </div>
+        </div>
+        <div class="risk-tools">
+          <span class="card-sub">
+            @if (nivelSel(); as sel) {
+              {{ visibles().length }} parcelas con {{ niveles[sel].etiqueta.toLowerCase() }}
+            } @else {
+              Las {{ lista().length }} parcelas, de menor a mayor margen
+            }
+          </span>
+          <button type="button" class="btn btn-sm" (click)="verEnMapa()">
+            <svg cebaIcon="map"></svg>{{ nivelSel() ? 'Ver ' + niveles[nivelSel()!].etiqueta.toLowerCase() + ' en el mapa' : 'Ver en el mapa' }}
+          </button>
+        </div>
+        <div class="risk-list">
+          <table class="tbl">
+            <caption class="sr-only">Parcelas con su nivel de riesgo crediticio</caption>
+            <thead>
+              <tr>
+                <th><button type="button" disabled style="cursor:default">Parcela</button></th>
+                <th><button type="button" disabled style="cursor:default">Municipio</button></th>
+                <th class="r"><button type="button" disabled style="cursor:default">Predicho</button></th>
+                <th class="r"><button type="button" disabled style="cursor:default">Límite inferior</button></th>
+                <th class="r"><button type="button" disabled style="cursor:default">Margen vs. equilibrio</button></th>
+                <th><button type="button" disabled style="cursor:default">Riesgo</button></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of visibles(); track r.p.id) {
+                <tr tabindex="0" [class.is-hl]="r.p.id === actual()" (click)="elegir(r.p.id)" (keydown.enter)="elegir(r.p.id)">
+                  <td class="id"><a [routerLink]="['/parcela', r.p.id]" (click)="$event.stopPropagation()">{{ r.p.id }}</a></td>
+                  <td>{{ r.p.municipio }}</td>
+                  <td class="r num">{{ fmt(r.p.rendimiento_pred, 2) }}</td>
+                  <td class="r num">{{ fmt(r.p.intervalo_inf, 2) }}</td>
+                  <td class="r num">{{ fmtSigned(r.margen, 2) }}</td>
+                  <td><ceba-risk-badge [nivel]="r.n" /></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="risk-note"><strong>Herramienta de apoyo; no sustituye la evaluación crediticia.</strong> El nivel de riesgo se calcula con la predicción de cada parcela y su intervalo, no con su historial ni su situación financiera.</p>
+  </section>
+}

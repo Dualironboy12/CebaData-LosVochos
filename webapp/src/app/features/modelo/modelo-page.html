@@ -1,0 +1,247 @@
+@if (metricas.error(); as e) {
+  <ceba-error-state [mensaje]="e.message" (reintento)="metricas.reload()" />
+} @else if (m(); as m) {
+  @let v = m.validacion;
+  @let l = m.lomo;
+  @let n = this.n();
+
+  <div class="callout">
+    <svg cebaIcon="info"></svg>
+    <div>
+      <strong>Modelo: {{ m.modelo.nombre.toLowerCase() }}.</strong> {{ m.modelo.descripcion }} Cada parcela se predice con un modelo que no la vio al entrenarse, así que estas cifras reflejan cómo se comporta con parcelas nuevas.
+    </div>
+  </div>
+
+  <h2 class="prueba-titulo">Donde se califica <span class="muted">· {{ v.esquema.toLowerCase() }}</span></h2>
+  <section class="grid grid-3" aria-label="Métricas donde se califica">
+    <div class="card metric">
+      <span class="lbl">RMSE</span>
+      <span class="big num">{{ fmt(v.rmse, 3) }}<small>t/ha</small></span>
+      <span class="hint">Error típico de la predicción. Entre menor, mejor.</span>
+      <div class="cmp">
+        <span class="gain"><svg cebaIcon="down"></svg>{{ mejora(v) }} % menos error</span>
+        <span>que {{ v.baseline.nombre.toLowerCase() }} (RMSE {{ fmt(v.baseline.rmse, 3) }})</span>
+      </div>
+    </div>
+    <div class="card metric">
+      <span class="lbl">MAE</span>
+      <span class="big num">{{ fmt(v.mae, 3) }}<small>t/ha</small></span>
+      <span class="hint">Cuánto se desvía la predicción en promedio, sin castigar más los errores grandes.</span>
+      <div class="cmp"><span>En una parcela típica, el modelo se desvía unas {{ fmt(v.mae, 2) }} toneladas por hectárea.</span></div>
+    </div>
+    <div class="card metric">
+      <span class="lbl">R²</span>
+      <span class="big num">{{ fmt(v.r2, 2) }}</span>
+      <span class="hint">Qué parte de las diferencias de rendimiento entre parcelas explica el modelo.</span>
+      <div class="cmp">
+        <span class="gain"><svg cebaIcon="up"></svg>Explica {{ Math.round(v.r2 * 100) }} %</span>
+        <span>{{ v.baseline.nombre }} explica {{ v.baseline.r2 }} %</span>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="prueba-titulo">En una zona nueva de la región <span class="muted">· un municipio fuera (LOMO)</span></h2>
+  <section class="grid grid-3" aria-label="Métricas en una zona nueva">
+    <div class="card metric">
+      <span class="lbl">RMSE</span>
+      <span class="big num">{{ fmt(l.rmse, 3) }}<small>t/ha</small></span>
+      <span class="hint">Se entrena sin un municipio completo y se mide ahí. Es lo que pasa en una zona que el modelo no vio.</span>
+      <div class="cmp">
+        <span class="gain"><svg cebaIcon="down"></svg>{{ mejora(l) }} % menos error</span>
+        <span>que el {{ l.baseline.nombre.toLowerCase() }} (RMSE {{ fmt(l.baseline.rmse, 3) }})</span>
+      </div>
+    </div>
+    <div class="card metric">
+      <span class="lbl">MAE</span>
+      <span class="big num">{{ fmt(l.mae, 3) }}<small>t/ha</small></span>
+      <span class="hint">Desviación promedio en zonas nuevas.</span>
+      <div class="cmp"><span>Sesgo {{ fmtSigned(l.sesgo ?? 0, 3) }} t/ha: {{ (l.sesgo ?? 0) > 0 ? 'en promedio sobreestima' : 'en promedio subestima' }}.</span></div>
+    </div>
+    <div class="card metric">
+      <span class="lbl">R²</span>
+      <span class="big num">{{ fmt(l.r2, 2) }}</span>
+      <span class="hint">Qué parte de las diferencias explica el modelo en zonas nuevas.</span>
+      <div class="cmp"><span class="gain"><svg cebaIcon="up"></svg>Explica {{ Math.round(l.r2 * 100) }} %</span></div>
+    </div>
+  </section>
+
+  <section class="grid grid-2">
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Error de la mezcla (RMSE)</h2><p>Menor es mejor. Cada validación se compara con su propia referencia.</p></div></div>
+      <div class="card-body">
+        <ceba-hbar [items]="errores()" [max]="maxErrores()" [decimales]="3" [labelWidth]="190" [axis]="true" valueName="RMSE" unit="t/ha" />
+        <p class="card-sub" style="margin-top:14px">
+          Donde se califica, el error baja {{ mejora(v) }} % frente a predecir el promedio. En una zona nueva sube a {{ fmt(l.rmse, 3) }}, pero sigue {{ mejora(l) }} % por debajo de predecir el promedio de las demás zonas.
+          Esa referencia da {{ fmt(l.baseline.rmse, 3) }} porque al sacar un municipio grande el promedio del resto cae mucho; por eso conviene citar el {{ fmt(v.baseline.rmse, 3) }}.
+        </p>
+        <div class="legend" style="margin-top:12px">
+          <span class="legend-item"><span class="sw" style="background:var(--bar-mute)"></span>Referencia (promedio)</span>
+          <span class="legend-item"><span class="sw" style="background:var(--bar-strong)"></span>Mezcla</span>
+        </div>
+      </div>
+    </div>
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Importancia por familia de variables</h2><p>Qué tanto pesa cada grupo de variables en las predicciones.</p></div></div>
+      <div class="card-body">
+        <ceba-hbar [items]="importancia()" [max]="maxImportancia()" [decimales]="2" [labelWidth]="170" [axis]="true" valueName="Importancia" />
+      </div>
+    </div>
+  </section>
+
+  <div class="callout callout-warn">
+    <svg cebaIcon="warn"></svg>
+    <div>
+      <strong>Fuera de esta región, el modelo no es confiable.</strong>
+      La longitud solo sirve porque aquí el rendimiento cambia de oeste a este dentro de una caja de unos 45 km. Para usarlo en otro estado o valle harían falta datos de rendimiento de esa zona para reentrenar.
+    </div>
+  </div>
+
+  <section class="grid grid-2">
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Observado contra predicho</h2><p>Cada punto es una parcela medida. Entre más cerca de la línea punteada, mejor acertó el modelo.</p></div></div>
+      <div class="card-body">
+        <div class="chart-box"><ceba-scatter [puntos]="puntos()" [grupos]="grupos" aria="Dispersión de rendimiento observado contra predicho por estado" /></div>
+        <div class="legend" style="margin-top:8px">
+          @for (g of gruposLista; track g.nombre) {
+            <span class="legend-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" [attr.fill]="g.color" aria-hidden="true">
+                @switch (g.forma) {
+                  @case ('circulo') {
+                    <circle cx="7" cy="7" r="5" />
+                  }
+                  @case ('cuadro') {
+                    <rect x="2" y="2" width="10" height="10" rx="1.5" />
+                  }
+                  @default {
+                    <path d="M7 1.5 13 12H1z" stroke-linejoin="round" />
+                  }
+                }
+              </svg>
+              {{ g.nombre }}
+            </span>
+          }
+          <span class="legend-item"><span class="sw-line" style="display:inline-block;width:18px;border-top:2px dashed var(--ink-2)"></span>Predicción perfecta</span>
+        </div>
+        <details style="margin-top:10px">
+          <summary class="btn btn-sm" style="display:inline-flex">Ver datos como tabla</summary>
+          <div class="table-scroll" style="max-height:260px;margin-top:8px">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th><button type="button" disabled style="cursor:default">Parcela</button></th>
+                  <th><button type="button" disabled style="cursor:default">Estado</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Observado</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Predicho</button></th>
+                  <th class="r"><button type="button" disabled style="cursor:default">Diferencia</button></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (x of m.dispersion; track x.id) {
+                  <tr style="cursor:default">
+                    <td class="id">{{ x.id }}</td>
+                    <td>{{ x.estado }}</td>
+                    <td class="r num">{{ fmt(x.obs, 2) }}</td>
+                    <td class="r num">{{ fmt(x.pred, 2) }}</td>
+                    <td class="r num">{{ fmtSigned(x.obs - x.pred, 2) }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card chart-card">
+      <div class="card-head"><div><h2>Distribución de los errores</h2><p>Diferencia entre lo observado y lo predicho. Lo ideal es que se concentre alrededor de cero.</p></div></div>
+      <div class="card-body">
+        <div class="chart-box"><ceba-histogram [values]="m.residuales" [bin]="0.2" aria="Histograma de residuales" /></div>
+        <p class="card-sub" style="margin-top:12px">En {{ dentroMedio() }} de cada 100 parcelas la predicción quedó a menos de 0.5 t/ha del valor medido. Los errores grandes son pocos y se reparten hacia los dos lados.</p>
+        <div class="legend" style="margin-top:8px">
+          <span class="legend-item"><span class="sw" style="background:var(--bar)"></span>Número de parcelas</span>
+          <span class="legend-item"><span class="sw" style="background:var(--ink);width:2px;height:14px;border-radius:0"></span>Cero (sin error)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card chart-card">
+    <div class="card-head"><div><h2>Robustez espacial</h2><p>Error (RMSE) de la mezcla al dejar fuera un municipio completo.</p></div></div>
+    <div class="card-body">
+      <div class="callout" style="margin-bottom:14px">
+        <svg cebaIcon="info"></svg>
+        <div>Esta prueba quita un municipio entero, entrena con los demás y mide qué tan bien predice ahí. <strong>Mide el desempeño en zonas que el modelo no vio</strong>, que es justo lo que pasa cuando se usa en una región nueva. Solo se muestran los municipios con 5 o más parcelas medidas.</div>
+      </div>
+      <ceba-hbar [items]="robustez()" [max]="1.25" [decimales]="2" [labelWidth]="150" [axis]="true" [ref]="{ value: v.rmse, label: 'Donde se califica ' + fmt(v.rmse, 3) }" valueName="RMSE" unit="t/ha" />
+      <div class="legend" style="margin-top:12px">
+        <span class="legend-item"><span class="sw" style="background:var(--bar)"></span>Error similar al de donde se califica</span>
+        <span class="legend-item"><span class="sw" style="background:var(--down)"></span>▲ Error claramente mayor: tomar las predicciones con más cautela</span>
+        <span class="legend-item"><span style="display:inline-block;width:0;height:14px;border-left:2px dashed var(--ink-2)"></span>RMSE donde se califica ({{ fmt(v.rmse, 3) }})</span>
+      </div>
+    </div>
+  </section>
+
+  <details class="details" id="metodo">
+    <summary><span>Metodología</span><svg cebaIcon="chevron"></svg></summary>
+    <div class="prose">
+      <p>Resumen de cómo se construyó el modelo y cómo se evaluó. Está escrito para leerse sin ser especialista en ciencia de datos.</p>
+      <h3>Datos</h3>
+      <p>{{ n.total }} parcelas del altiplano de Hidalgo, Puebla y Tlaxcala durante el ciclo de abril a octubre de 2025. En {{ n.medidas }} se midió el rendimiento en campo y se usaron para entrenar. Las otras {{ n.ocultas }} no tienen medición y son las que el modelo predice.</p>
+      <h3>Variables</h3>
+      <ul>
+        <li><strong>Clima:</strong> lluvia, temperatura máxima y temperatura mínima de cada mes.</li>
+        <li><strong>Satélite:</strong> series de índices de Sentinel-2 y Planet (NDVI, EVI, LAI, NDDI, NDWI y otros). De cada curva se sacan medidas de su forma, como la velocidad de verdeo, la velocidad de senescencia y el valor máximo.</li>
+        <li><strong>Ubicación y topografía:</strong> latitud, longitud, elevación y pendiente.</li>
+      </ul>
+      <h3>El modelo: una mezcla</h3>
+      <p>La predicción es el promedio de dos partes: un <strong>ensamble</strong> (promedio de LightGBM, Random Forest y Elastic Net con todas las variables) y un <strong>LightGBM que solo usa la longitud</strong>. Como referencia se usa un modelo que siempre responde el promedio de las parcelas.</p>
+      <h3>Validación cruzada anidada</h3>
+      <p>Las parcelas se reparten en grupos. Un grupo se aparta para evaluar y con el resto se ajusta el modelo, incluyendo la elección de sus parámetros. Eso se repite hasta que todas las parcelas han sido evaluadas sin que el modelo las haya visto. Así se evita que las cifras salgan más bonitas de lo que serían en la práctica.</p>
+      <p>Se hace de dos maneras. La <strong>estratificada por municipio</strong> mide lo que se va a calificar, porque las parcelas ocultas están en los mismos municipios. La de <strong>un municipio fuera</strong> (LOMO) mide qué tan bien funciona en una zona nueva de la región.</p>
+      <h3>Por qué la mezcla</h3>
+      <p>{{ justificacion() }}</p>
+      <div class="table-scroll" style="max-height:none;margin:8px 0 12px">
+        <table class="tbl">
+          <caption class="sr-only">Comparación de los tres enfoques que se evaluaron</caption>
+          <thead>
+            <tr>
+              <th><button type="button" disabled style="cursor:default">Enfoque</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">Variables</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">RMSE donde se califica</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">MAE</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">RMSE zona nueva</button></th>
+              <th class="r"><button type="button" disabled style="cursor:default">Sesgo zona nueva</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of m.comparacion; track c.id) {
+              <tr style="cursor:default">
+                <td class="id">{{ c.nombre }}@if (c.elegido) { <span class="tag tag-train" style="margin-left:6px">Modelo usado</span> }</td>
+                <td class="r num">{{ c.n_variables }}</td>
+                <td class="r num">{{ fmt(c.estratificada.rmse, 3) }}</td>
+                <td class="r num">{{ fmt(c.estratificada.mae, 3) }}</td>
+                <td class="r num">{{ fmt(c.lomo.rmse, 3) }}</td>
+                <td class="r num">{{ fmtSigned(c.lomo.sesgo ?? 0, 3) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <h3>Intervalos de predicción</h3>
+      <p>Cada predicción viene con un rango. Se construye con el error de la validación cruzada de la mezcla (el cuantil 90 del error absoluto), y es el mismo ancho para todas las parcelas.</p>
+      <h3>Explicación de cada predicción</h3>
+      <p>La gráfica de cascada de la ficha usa valores tipo SHAP. Parte del rendimiento promedio y reparte la diferencia entre las variables que más influyeron. Explica la parte del ensamble, que es la que usa todas las variables.</p>
+      <h3>Qué tomar en cuenta</h3>
+      <ul>
+        <li>El modelo aprendió de una sola temporada. Conviene validarlo con más años antes de depender de él.</li>
+        <li>Fuera de los rangos de lluvia y temperatura que vio al entrenar, las predicciones son menos confiables. El simulador avisa cuando pasa.</li>
+        <li>Fuera de esta región no es confiable: para escalarlo hay que juntar rendimientos de las zonas nuevas.</li>
+        <li>Es una herramienta de apoyo y no sustituye la evaluación crediticia.</li>
+      </ul>
+    </div>
+  </details>
+} @else {
+  <div class="grid grid-3"><ceba-skel-card [alto]="70" /><ceba-skel-card [alto]="70" /><ceba-skel-card [alto]="70" /></div>
+  <div class="grid grid-3"><ceba-skel-card [alto]="70" /><ceba-skel-card [alto]="70" /><ceba-skel-card [alto]="70" /></div>
+  <div class="grid grid-2"><ceba-skel-card [alto]="220" /><ceba-skel-card [alto]="220" /></div>
+  <ceba-skel-card [alto]="200" />
+}

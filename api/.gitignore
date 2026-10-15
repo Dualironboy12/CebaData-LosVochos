@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# dataset del reto (no se versiona)
+DATASET_RETO_AGRO_2026/
+
+# intermedios pesados del pipeline, se regeneran con `python -m pipeline.run_pipeline`
+pipeline/salidas/satelital_*.csv
