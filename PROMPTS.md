@@ -614,3 +614,30 @@ Composer (Cursor, modo Agent).
 - Commits: `d898f5b` (merge ours). Árbol sin cambios funcionales respecto a main integrado.
 - Sin push (pendiente de confirmación). Remotos locales: `main` y `Alfred` adelantados respecto a `origin/*`.
 
+
+## 2026-10-15 — Reporte técnico, guion de video y preparación de entrega
+
+**Modelo**
+
+Composer (Cursor, modo Agent).
+
+**Prompt**
+
+> Reporte técnico, guion de video y entrega del repo. Implement the plan as specified. Do NOT edit the plan file itself. Complete all to-dos.
+
+**Acciones**
+
+- Se redactó el reporte en LaTeX (`reporte/`) con las extensiones de las bases, cifras de `api/artefactos/metricas_dashboard.json` y la prueba pareada del ganador. El anexo resume el trabajo del equipo en bloque y declara el uso de IA.
+- Se generaron figuras de dispersión, residuales, ablación y LOMO, y se compiló `reporte/REPORTE_TECNICO.pdf`.
+- Se escribió `reporte/GUION_VIDEO.md` (máximo 5 minutos).
+- Se dejó el despliegue documentado: `dashboard/vercel.json`, `scripts/fijar_api_url.sh` y `ENTREGA.md`. La publicación en Render/Vercel queda para cuentas del equipo.
+- Se corrigió «122» variables en `api/README.md` (la mezcla usa 121). Se actualizaron `README.md`, `AGENTS.md` y `CUMPLIMIENTO_BASES.md`.
+- Verificación: pytest de la API (38) y del pipeline (11), `npm test` (11), `npm run build` y `latexmk`.
+
+**Afectaciones**
+
+- Creados: `reporte/` (fuente, PDF, figuras, guion, AGENTS), `ENTREGA.md`, `dashboard/vercel.json`, `scripts/fijar_api_url.sh`.
+- Modificados: `README.md`, `AGENTS.md`, `CUMPLIMIENTO_BASES.md`, `api/README.md`, `.gitignore`, `PROMPTS.md`.
+- Sin push. Sin grabar el video ni crear cuentas de despliegue.
+- Pendiente del equipo: video, enlace en línea, prompts de Claude Code de la API y el dashboard, licencia y visibilidad del dataset.
+

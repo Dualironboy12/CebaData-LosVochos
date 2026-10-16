@@ -12,7 +12,7 @@ Un estimado de rendimiento de cebada (t/ha) por parcela y un dashboard web para 
 
 ## Fases y fase actual
 
-La fase actual es **integración y entrega**: API + dashboard conectados; reporte técnico y video pendientes.
+La fase actual es **entrega**: API y dashboard conectados; reporte técnico en `reporte/`; pendiente de grabar el video y publicar el enlace.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
@@ -22,9 +22,9 @@ La fase actual es **integración y entrega**: API + dashboard conectados; report
 | 3. API | Servir artefactos congelados (solo lectura) | Django REST | `api/` |
 | 4. Frontend | Dashboard interactivo | Angular | `dashboard/` |
 
-Cada carpeta de trabajo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `api/`, `dashboard/`) tiene su `AGENTS.md` local que **remite a este archivo**.
+Cada carpeta de trabajo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `api/`, `dashboard/`, `reporte/`) tiene su `AGENTS.md` local que **remite a este archivo**.
 
-Fuera de estas fases quedan el reporte técnico y el video de máximo 5 minutos (ver README).
+El reporte técnico está en `reporte/`. El video (máximo 5 minutos) se graba con [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). La lista de lo que se sube a la plataforma está en [`ENTREGA.md`](ENTREGA.md).
 
 El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA. Esas etapas oficiales conviven con las fases de esta tabla.
 

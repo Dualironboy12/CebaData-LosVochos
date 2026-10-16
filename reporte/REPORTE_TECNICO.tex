@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[round]{natbib}
+\usepackage{hyperref}
+\usepackage{caption}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+\urlstyle{same}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{Estimación del rendimiento de cebada\\con percepción remota y clima\\[0.4em]
+\large Reto AgroCebada FIRA 2026}
+\author{Equipo Los Vochos}
+\date{Octubre de 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\textit{Reporte técnico de la Etapa 1.}\\
+Modelo de entrega: mezcla. Prototipo: dashboard web.
+\end{center}
+\vspace{0.6em}
+
+\input{secciones/01_introduccion}
+\input{secciones/02_justificacion}
+\input{secciones/03_objetivos}
+\input{secciones/04_metodologia}
+\input{secciones/05_resultados}
+\input{secciones/06_inclusion}
+\input{secciones/07_conclusiones}
+
+\bibliographystyle{plainnat}
+\bibliography{referencias}
+
+\appendix
+\input{secciones/08_anexos}
+
+\end{document}

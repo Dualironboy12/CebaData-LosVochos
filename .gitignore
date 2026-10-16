@@ -27,3 +27,13 @@ DATASETS_EXTERNOS/*
 
 # Logs del script de arranque local
 scripts/.logs/
+
+# Auxiliares de LaTeX (el PDF sí se versiona)
+reporte/*.aux
+reporte/*.log
+reporte/*.out
+reporte/*.toc
+reporte/*.fls
+reporte/*.fdb_latexmk
+reporte/*.blg
+reporte/*.bbl

@@ -19,15 +19,14 @@ Documento interno del equipo (2026-10-13). Ante duda, prevalece [`Reto Agrocebad
 1. **Prompts de Claude Code de Alfredo.** Los commits de `api/` y `dashboard/` llevan `Co-Authored-By: Claude Sonnet 5.5` y enlaces `Claude-Session`. Esas conversaciones **no** están en [`PROMPTS.md`](PROMPTS.md). Hay que pedirlas e incorporarlas al anexo de IA. Sesiones conocidas (desde el historial de commits):
    - `https://claude.ai/code/session_01FXyU9Cim2y1EtCkR54vR2V`
    - `https://claude.ai/code/session_016c2kpZiWBUpsnUApbJ4ZTr`
-2. **Reporte técnico** con las extensiones de palabra de las bases y anexos (máx. 2 cuartillas: aportación por integrante + declaración de IA).
-3. **Video** de máximo 5 minutos; si hay despliegue en línea, incluir el enlace.
-4. **Despliegue opcional pero recomendado** (Render/Railway): fijar `DJANGO_ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` y `environment.prod.ts` → `apiUrl`.
-5. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
-6. **Licencia MIT.** Hoy figura un solo titular; sugerir «Equipo Los Vochos» o la lista de integrantes.
+2. **Video** de máximo 5 minutos, grabado a partir de [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). El PDF del reporte ya está en `reporte/REPORTE_TECNICO.pdf`.
+3. **Despliegue** (Render o Railway + Vercel): seguir [`ENTREGA.md`](ENTREGA.md). Hace falta cuenta del equipo para fijar `DJANGO_ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` y `environment.prod.ts`.
+4. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
+5. **Licencia MIT.** Hoy figura un solo titular; sugerir «Equipo Los Vochos» o la lista de integrantes.
 
 ## Riesgos a vigilar (no son descalificación automática)
 
-- **SHAP ≠ mezcla completa.** La cascada explica el LightGBM del ensamble (peso 1/6). El dashboard ya lo aclara; el reporte debe repetirlo.
+- **SHAP ≠ mezcla completa.** La cascada explica el LightGBM del ensamble (peso 1/6). El dashboard y el reporte lo dicen.
 - **Skills de diseño de terceros** (`.claude/` de impeccable etc.) se retiraron del entregable; se declaran como herramientas usadas en la memoria de desarrollo.
 - **Una sola temporada** y la longitud como indicador de zona: límites ya documentados en `modelos/entrega/README.md`.
 

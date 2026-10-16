@@ -1,0 +1,28 @@
+% Máximo 2 cuartillas. Trabajo del equipo en bloque; sin desglose por persona.
+\section{Trabajo del equipo}
+
+El equipo construyó el entregable de punta a punta sobre el dataset oficial. Revisó la calidad de los datos FIRA y, en carriles aparte, la edafología del INEGI y SoilGrids. Congeló una despensa de entrenamiento y comparó cientos de combinaciones de variables con modelos clásicos. Con esa evidencia incorporó la longitud a un pipeline reproducible, comparó ensamble, ubicación y mezcla bajo validación anidada, y descartó sustituir la mezcla por el ganador del barrido o por datos externos. Exportó artefactos congelados, los sirvió con una API de solo lectura y los consultó en un dashboard con mapa, ficha, métricas, hallazgos y simulador. Integró código, pruebas e instrucciones de arranque en un solo repositorio.
+
+\section{Declaración de uso de inteligencia artificial}
+
+El uso de inteligencia artificial está permitido si se indica dónde se usó y se anexan los prompts \citep{fira2026}. El equipo la usó como apoyo de programación, redacción técnica y revisión de código. Las decisiones de modelo (firmar la mezcla, el umbral de 0.010 t/ha, no usar etiquetas ocultas) las fijó el equipo y quedaron escritas antes de aceptar un resultado.
+
+\begin{table}[ht]
+\centering
+\caption{Dónde se usó inteligencia artificial. El detalle de cada prompt está en \texttt{PROMPTS.md} del repositorio.}
+\label{tab:ia}
+\small
+\begin{tabular}{p{3.3cm}p{3.4cm}p{6.6cm}}
+\toprule
+Área & Herramienta & Qué se le pidió (representativo) \\
+\midrule
+Análisis y despensa & Agentes en Cursor & Documentar el dataset, congelar la despensa y comparar carriles FIRA, INEGI y SoilGrids. \\
+Modelos & Agentes en Cursor & Diseñar el superciclo, interpretar al ganador y probarlo dentro del pipeline de la mezcla. \\
+Integración & Agentes en Cursor & Unir API y dashboard al repositorio, reubicar el pipeline y corregir la documentación de ejecución. \\
+API y dashboard & Claude Code & Implementar el backend de artefactos y el tablero Angular. Las sesiones quedaron referenciadas en los commits (\texttt{Co-Authored-By}); la transcripción completa está pendiente de incorporarse a \texttt{PROMPTS.md}. \\
+Este reporte & Agentes en Cursor & Redactar el LaTeX a partir de las cifras de los artefactos y el guion del video. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent No se usó inteligencia artificial para inventar rendimientos, para imputar las 59 etiquetas ocultas ni para alterar el dataset oficial. Los prompts de las sesiones de análisis, modelos, integración y de este reporte están en \texttt{PROMPTS.md}. Los de la construcción original de la API y del dashboard se identifican por el enlace de sesión en el historial de git y quedan como complemento pendiente del equipo.

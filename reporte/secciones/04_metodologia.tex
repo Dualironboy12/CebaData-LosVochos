@@ -1,0 +1,30 @@
+% Meta: 600–700 palabras
+\section{Metodología}
+
+\subsection{Datos y unidad de análisis}
+
+La unidad es la parcela. El archivo oficial aporta el polígono, el identificador \texttt{AGC}, el municipio y, solo en el 70\,\% de los casos, el rendimiento del ciclo abril–octubre de 2025. Se unió cada polígono con series de índices del conjunto Básico (Sentinel-2 y Landsat) y del conjunto PRO (Planet), con lluvia y temperatura mensuales y con elevación y pendiente \citep{esa_s2,huete2002}. Las fechas se leyeron en formato día/mes/año. La lluvia y la temperatura llegan en GeoTIFF mensuales de unos 5 km de lado. La elevación y la pendiente se reproyectaron antes de la estadística zonal. Un rendimiento vacío se dejó vacío: sustituirlo por cero habría fabricado una cosecha nula.
+
+El equipo revisó dos fuentes públicas adicionales: edafología del INEGI y propiedades de SoilGrids, en particular el nitrógeno \citep{inegi,poggio2021}. Sirvieron para un carril paralelo de experimentos. No entran en el modelo de entrega. Una prueba pareada, descrita más adelante, mostró que no mejoran el error bajo un criterio fijado de antemano.
+
+\subsection{Variables}
+
+De la serie satelital no se usó solo el pico del índice. El análisis exploratorio indicó que el máximo casi no separa parcelas, y que sí aportan la velocidad de verdeo, la de senescencia y la integral de la temporada. El modelo de entrega usa 121 variables: dinámicas de índices (NDVI, EVI, LAI, NDWI, NDDI y otros del conjunto oficial), lluvia y temperaturas mensuales del ciclo, elevación, pendiente y coordenadas. El modelo de solo longitud usa una variable, \texttt{lon}.
+
+\subsection{Candidatos y entrenamiento}
+
+Se compararon tres predictores con las mismas 138 parcelas etiquetadas. El ensamble promedia tres algoritmos: LightGBM, bosque aleatorio y red elástica \citep{ke2017,breiman2001,zou2005,pedregosa2011}. Los tres ven las 121 variables. Un imputador de mediana es común; el escalador solo lo usa la red elástica. El segundo candidato es un LightGBM de longitud. La mezcla es el promedio de la predicción del ensamble y la del modelo de longitud. En pesos, cada miembro del ensamble aporta un sexto y la longitud aporta un medio.
+
+Los hiperparámetros del ensamble se eligieron con Optuna anidado: la búsqueda solo ve el pliegue de entrenamiento, no el de prueba \citep{akiba2019}. Así se evita premiar una configuración que ya vio la parcela que se evalúa. Antes de firmar la mezcla, un barrido de modelos clásicos sobre más de mil combinaciones de features (el superciclo) señaló a la longitud como señal fuerte. Ese barrido no sustituyó al pipeline: aportó la hipótesis que luego se probó dentro de la misma validación.
+
+\subsection{Validación}
+
+Hay dos esquemas. El primero es una validación cruzada anidada estratificada por municipio, con cinco pliegues y tres repeticiones. Como las 59 parcelas ocultas están en los mismos municipios que las 138 observadas, este error es el que representa la calificación. El segundo, LOMO, deja fuera un municipio completo en cada ronda y mide el desempeño en una zona no vista de la región. Diferencias menores a 0.010 t/ha se trataron como ruido de la validación, no como mejora.
+
+El criterio para cambiar el modelo de entrega se fijó antes de la prueba del ganador del superciclo. Un candidato solo reemplazaría a la mezcla si bajaba el RMSE estratificado al menos 0.010 t/ha, no empeoraba el LOMO y el intervalo bootstrap del 95\,\% de la diferencia por parcela excluía el cero. Ninguna variante, con o sin nitrógeno y edafología, cumplió las tres condiciones. Por eso la entrega no incorpora datos externos.
+
+\subsection{Explicación y producto}
+
+Las importancias se calcularon con SHAP sobre el LightGBM del ensamble \citep{lundberg2017}. Esa pieza pesa un sexto de la mezcla. La cascada de una parcela explica esa pieza, no el promedio final: el modelo de longitud y los otros dos miembros no entran en el valor SHAP. El reporte y el dashboard lo dicen de forma explícita.
+
+En operación, el pipeline vive en \texttt{modelos/entrega/} y exporta artefactos de unos 2 MB (modelos, métricas y tablas). La API, en Django REST, los carga al arrancar y no reentrena. El dashboard, en Angular, consulta mapa, ficha, métricas, hallazgos, simulador y parcela nueva. El simulador modifica clima dentro del rango observado; como solo el ensamble reacciona al clima, el efecto que ve el usuario es la mitad del que tendría el ensamble solo.

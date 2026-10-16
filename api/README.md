@@ -32,7 +32,7 @@ El paso 07 del pipeline comparó tres enfoques con las mismas 138 parcelas y dos
 |---|---|---|---|---|---|
 | Ensamble | 121 | 0.508 | 0.362 | 0.722 | -0.102 |
 | Solo ubicación | 1 | 0.525 | 0.364 | 0.539 | +0.077 |
-| **Mezcla** | 122 | **0.508** | **0.354** | 0.595 | -0.013 |
+| **Mezcla** | 121 | **0.508** | **0.354** | 0.595 | -0.013 |
 
 Donde se califica, ensamble y mezcla empatan en RMSE (la diferencia es menor a 0.010 t/ha, dentro del ruido) y la mezcla tiene el mejor MAE. En zona nueva la ubicación sola es la mejor, la mezcla queda 0.056 por encima y el ensamble se cae. La mezcla es la que mejor equilibra las dos pruebas: no pierde donde se califica y recorta casi la mitad de la caída del ensamble en zonas nuevas. Esta tabla viaja también en `metricas_dashboard.json` para el panel de metodología del dashboard.
 

@@ -85,7 +85,7 @@ El calendario oficial de FIRA llama «Etapa 1» al desarrollo/entrega y «Etapa 
 | 3. API | Servir artefactos congelados | Django REST | [`api/`](api/) |
 | 4. Frontend | Consulta interactiva | Angular | [`dashboard/`](dashboard/) |
 
-**Fase actual: integración y entrega.** Modelo firmado (mezcla), API y dashboard conectados. Pendientes: reporte técnico, video y despliegue en la nube. Instrucciones: [`AGENTS.md`](AGENTS.md).
+**Fase actual: entrega.** Modelo firmado (mezcla), API y dashboard conectados, reporte en [`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf). Pendientes del equipo: grabar el video y publicar el enlace. Lista: [`ENTREGA.md`](ENTREGA.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
 ## Roadmap
 
@@ -100,7 +100,8 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 2. Modelos | Entrega firmada: mezcla | `modelos/entrega/` |
 | 3. API | Integrada, tests OK | `api/` |
 | 4. Dashboard | Integrado, build OK | `dashboard/` |
-| Reporte y video | Pendientes | — |
+| Reporte | Redactado (PDF) | `reporte/` |
+| Video | Guion listo; falta grabar | `reporte/GUION_VIDEO.md` |
 
 ### Decisiones cerradas (2026-10-01 y posteriores)
 
@@ -114,7 +115,7 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 6 | Datos externos | Dos carriles; evaluados y **no** usados en la entrega |
 | D8 | Modelo de entrega | **Mezcla** (2026-10-13); ver [`modelos/entrega/`](modelos/entrega/) |
 
-**Pendientes humanas:** textos del reporte y video; prompts de sesiones Claude Code de Alfredo para el anexo de IA; despliegue en Render/Railway; confirmar si el repo de GitHub debe permanecer privado respecto al dataset oficial.
+**Pendientes humanas:** grabar el video; prompts de sesiones Claude Code de Alfredo para completar el anexo; desplegar con las cuentas del equipo (ver [`ENTREGA.md`](ENTREGA.md)); confirmar si el repo de GitHub debe permanecer privado respecto al dataset oficial; titular de la licencia.
 
 ### Checklist
 
@@ -123,8 +124,8 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 - [x] Superciclo Classic ML + prueba pareada del ganador
 - [x] Modelo de entrega: mezcla; artefactos en `api/artefactos/`
 - [x] API Django + dashboard Angular integrados al repo
-- [ ] Reporte técnico y video (máx. 5 min)
-- [ ] Enlace en línea para el jurado (opcional pero recomendado)
+- [x] Reporte técnico ([`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf)) y guion de video
+- [ ] Video grabado (máx. 5 min) y enlace en línea para el jurado
 
 El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
@@ -319,6 +320,8 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 - [`AGENTS.md`](AGENTS.md) — instrucciones para agentes (cada carpeta tiene su `AGENTS.md` local).
 - [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
 - [`CUMPLIMIENTO_BASES.md`](CUMPLIMIENTO_BASES.md) — revisión frente a las bases del reto.
+- [`reporte/`](reporte/) — reporte técnico (LaTeX y PDF) y guion del video.
+- [`ENTREGA.md`](ENTREGA.md) — qué se sube a la plataforma y cómo publicar.
 
 ## Licencia
 
