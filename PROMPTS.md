@@ -592,3 +592,25 @@ Composer (Cursor, modo Agent).
 - Fuera de alcance: push, merge a `main`, despliegue en la nube, reporte técnico y video.
 - Pendiente de equipo: anexar prompts de Claude Code de Alfredo; licencia; visibilidad del dataset; despliegue con CORS/hosts reales.
 
+
+## 2026-10-15 — Reconciliación de ramas main y Alfred
+
+**Modelo**
+
+Composer (Cursor, modo Agent).
+
+**Prompt**
+
+> Tenemos 2 ramas en git, main y Alfred, ayudame a reconciliarlas, estan muy diferentes, trata de que se retenga la funcionalidad que se incorporo a main
+
+**Acciones**
+
+- Se comparó `main` / `Alfred` locales con `origin/main` y `origin/Alfred`.
+- Hallazgo: locales y `origin/main` ya coincidían en la integración (`api/`, `dashboard/`, `modelos/entrega/`). `origin/Alfred` divergía con un commit que duplicaba el front en `webapp/` y el pipeline dentro de `api/` (versión previa a la integración).
+- Merge `-s ours` de `origin/Alfred` en `Alfred` y fast-forward de `main` al mismo tip, para conservar el árbol de main y registrar el ancestro remoto.
+
+**Afectaciones**
+
+- Commits: `d898f5b` (merge ours). Árbol sin cambios funcionales respecto a main integrado.
+- Sin push (pendiente de confirmación). Remotos locales: `main` y `Alfred` adelantados respecto a `origin/*`.
+
