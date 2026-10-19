@@ -30,13 +30,3 @@ scripts/.logs/
 
 # Entorno local del submódulo de la API (el código vive en el repo de ALNM7)
 sistema/api/.venv/
-
-# Auxiliares de LaTeX (el PDF sí se versiona)
-reporte/*.aux
-reporte/*.log
-reporte/*.out
-reporte/*.toc
-reporte/*.fls
-reporte/*.fdb_latexmk
-reporte/*.blg
-reporte/*.bbl

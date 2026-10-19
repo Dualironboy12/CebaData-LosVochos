@@ -676,3 +676,26 @@ El plan adjunto (no se transcribe) pedía retirar las copias de `api/`, `dashboa
 - Sin push. Sin editar los repos de ALNM7 ni `DATASET_RETO_AGRO_2026/`.
 - Pendiente del equipo: grabar el video, confirmar que los repos de ALNM7 sean públicos (si no, el jurado no clona los submódulos) y decidir si Render de pago evita el arranque en frío.
 
+
+## 2026-10-18 — El reporte y el video salen de este repositorio
+
+**Modelo**
+
+Grok 4.7 (Cursor, modo Agent).
+
+**Prompt**
+
+> Una compañera del equipo se encarga ahora del desarrollo del reporte y del video, borra la carpeta y contenido de reporte, asi como cualquier referencia al reporte o video que realizamos aqui, ya que enviaremos el reporte y video directamente por correo, no por github
+
+**Acciones**
+
+- Se eliminó la carpeta `reporte/` (fuente LaTeX, PDF, figuras y guion).
+- Se quitaron de README, AGENTS, ENTREGA, CUMPLIMIENTO, el camino a hosting, la propuesta a ALNM7 y `.gitignore` los enlaces a ese borrador. Donde hacía falta, quedó escrito que el reporte y el video se envían por correo.
+- Las entradas anteriores de esta bitácora no se reescribieron.
+
+**Afectaciones**
+
+- Eliminado: `reporte/`.
+- Modificados: `README.md`, `AGENTS.md`, `ENTREGA.md`, `CUMPLIMIENTO_BASES.md`, `docs/CAMINO_A_HOSTING.md`, `docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`, `.gitignore`, `PROMPTS.md`.
+- Sin commit y sin push. Sin tocar `sistema/`, el dataset ni los repos de ALNM7.
+

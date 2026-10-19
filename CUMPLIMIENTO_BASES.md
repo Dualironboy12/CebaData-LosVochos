@@ -19,17 +19,18 @@ Documento interno del equipo (2026-10-13). Ante duda, prevalece [`Reto Agrocebad
 1. **Prompts de Claude Code de Alfredo.** Los commits de `api/` y `dashboard/` llevan `Co-Authored-By: Claude Sonnet 5.5` y enlaces `Claude-Session`. Esas conversaciones **no** están en [`PROMPTS.md`](PROMPTS.md). Hay que pedirlas e incorporarlas al anexo de IA. Sesiones conocidas (desde el historial de commits):
    - `https://claude.ai/code/session_01FXyU9Cim2y1EtCkR54vR2V`
    - `https://claude.ai/code/session_016c2kpZiWBUpsnUApbJ4ZTr`
-2. **Video** de máximo 5 minutos, grabado a partir de [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). El PDF del reporte ya está en `reporte/REPORTE_TECNICO.pdf`.
-3. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
-4. **Repos de ALNM7 públicos.** `sistema/api` y `sistema/dashboard` se clonan desde GitHub. Si esos repos son privados, el jurado no puede bajar los submódulos. El enlace en línea ya no depende de eso: https://dashboard-ceba-data.vercel.app/.
-5. **Licencia MIT.** Hoy figura un solo titular; sugerir «Equipo Los Vochos» o la lista de integrantes.
+2. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
+3. **Repos de ALNM7 públicos.** `sistema/api` y `sistema/dashboard` se clonan desde GitHub. Si esos repos son privados, el jurado no puede bajar los submódulos. El enlace en línea ya no depende de eso: https://dashboard-ceba-data.vercel.app/.
+4. **Licencia MIT.** Hoy figura un solo titular; sugerir «Equipo Los Vochos» o la lista de integrantes.
+
+El reporte técnico y el video demostrativo los prepara otra integrante y se envían por correo. No viven en este repositorio.
 
 ## Riesgos a vigilar (no son descalificación automática)
 
-- **SHAP ≠ mezcla completa.** El reporte lo dice. La ficha publicada es menos precisa; el texto propuesto está en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md).
+- **SHAP ≠ mezcla completa.** La ficha de [`modelos/entrega/`](modelos/entrega/) lo aclara. La ficha publicada es menos precisa; el texto propuesto está en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md).
 - **Skills de diseño de terceros.** Siguen dentro del repo del dashboard (submódulo), porque esa copia es la fuente de verdad. En este repo no se versionan aparte. Se declaran como herramientas usadas.
 - **Submódulos en commit fijo.** Si ALNM7 mueve o cierra el repo, el clon deja de poder inicializar `sistema/`. El enlace de Vercel sigue siendo el que ve el jurado.
-- **`n_variables` 122 en el artefacto publicado.** Este reporte cuenta 121. La corrección está propuesta en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md) y no se aplica sobre el submódulo.
+- **`n_variables` 122 en el artefacto publicado.** La ficha de [`modelos/entrega/`](modelos/entrega/) cuenta 121. La corrección está propuesta en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md) y no se aplica sobre el submódulo.
 - **Una sola temporada** y la longitud como indicador de zona: límites ya documentados en `modelos/entrega/README.md`.
 
 ## Causas de descalificación (chequeo)

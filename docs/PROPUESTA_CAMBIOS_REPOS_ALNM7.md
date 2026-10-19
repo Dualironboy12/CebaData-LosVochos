@@ -2,7 +2,7 @@
 
 No se aplican en este repositorio. Los submódulos quedan en los commits publicados (`cebadata_api` `9d64758`, `DashboardCebaData` `aa766ad`). Si Alfredo los integra, aquí solo se actualiza el puntero del submódulo.
 
-El reporte técnico de este repo sigue usando **121** variables para la mezcla. El artefacto publicado todavía dice 122 en el campo de la mezcla.
+La ficha en [`modelos/entrega/`](../modelos/entrega/) cuenta **121** variables para la mezcla. El artefacto publicado todavía dice 122 en el campo de la mezcla.
 
 ## 1. `n_variables` de la mezcla: 121, no 122
 

@@ -44,7 +44,6 @@ modelos/                  Exploración (superciclo) + ficha de la mezcla
 sistema/api               Submódulo: API Django + pipeline (ALNM7/cebadata_api)
 sistema/dashboard         Submódulo: Angular (ALNM7/DashboardCebaData)
 docs/                     Camino a hosting y propuestas a esos repos
-reporte/                  Reporte técnico y guion del video
 INSTALACION.md            Descargar, instalar y ejecutar en local
 DATASET_RETO_AGRO_2026/   Dataset oficial (no alterar)
 PROMPTS.md                Bitácora de uso de IA
@@ -78,7 +77,7 @@ El calendario oficial de FIRA llama «Etapa 1» al desarrollo/entrega y «Etapa 
 | 3. API | Servir artefactos congelados | Django REST | [`sistema/api`](sistema/api) |
 | 4. Frontend | Consulta interactiva | Angular | [`sistema/dashboard`](sistema/dashboard) |
 
-**Fase actual: entrega.** Este repo documenta el proceso. La API y el dashboard publicados están en sus repos y entran aquí como submódulos. Reporte: [`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf). Pendiente del equipo: grabar el video. Lista: [`ENTREGA.md`](ENTREGA.md).
+**Fase actual: entrega.** Este repo documenta el proceso. La API y el dashboard publicados están en sus repos y entran aquí como submódulos. El reporte técnico y el video se envían por correo y no viven en este repositorio. Lista de lo que sí está aquí: [`ENTREGA.md`](ENTREGA.md).
 
 ## Roadmap
 
@@ -93,8 +92,6 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 2. Modelos | Entrega firmada: mezcla | `modelos/entrega/` |
 | 3. API | Publicada en Render; submódulo | `sistema/api` |
 | 4. Dashboard | Publicado en Vercel; submódulo | `sistema/dashboard` |
-| Reporte | Redactado (PDF) | `reporte/` |
-| Video | Guion listo; falta grabar | `reporte/GUION_VIDEO.md` |
 
 ### Decisiones cerradas (2026-10-01 y posteriores)
 
@@ -108,7 +105,7 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 6 | Datos externos | Dos carriles; evaluados y **no** usados en la entrega |
 | D8 | Modelo de entrega | **Mezcla** (2026-10-13); ver [`modelos/entrega/`](modelos/entrega/) |
 
-**Pendientes humanas:** grabar el video; prompts de sesiones Claude Code de Alfredo para completar el anexo; confirmar que los repos de ALNM7 siguen públicos; confirmar si este repo debe permanecer privado respecto al dataset oficial; titular de la licencia.
+**Pendientes humanas:** prompts de sesiones Claude Code de Alfredo para completar el anexo; confirmar que los repos de ALNM7 siguen públicos; confirmar si este repo debe permanecer privado respecto al dataset oficial; titular de la licencia. El reporte y el video los prepara otra integrante y se envían por correo.
 
 ### Checklist
 
@@ -117,9 +114,7 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 - [x] Superciclo Classic ML + prueba pareada del ganador
 - [x] Modelo de entrega: mezcla; artefactos en `sistema/api/artefactos/`
 - [x] API y dashboard en sus repos, incluidos aquí como submódulos
-- [x] Reporte técnico ([`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf)) y guion de video
 - [x] Enlace en línea: https://dashboard-ceba-data.vercel.app/
-- [ ] Video grabado (máx. 5 min)
 
 El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
@@ -187,7 +182,7 @@ Se sube a la plataforma del reto con esta estructura:
 | Bibliografía | — |
 | Anexos | máximo 2 cuartillas |
 
-En anexos debe describirse la actividad y la aportación de cada integrante. Si el equipo es finalista, el jurado considera esa información. El uso de inteligencia artificial es válido si el escrito indica dónde se usó y anexa los prompts. La bitácora de esos prompts es [`PROMPTS.md`](PROMPTS.md).
+En anexos debe describirse la actividad y la aportación de cada integrante. Si el equipo es finalista, el jurado considera esa información. El uso de inteligencia artificial es válido si el escrito indica dónde se usó y anexa los prompts. La bitácora de esos prompts es [`PROMPTS.md`](PROMPTS.md). El reporte y el video no se versionan aquí: se envían por correo.
 
 ### Aplicación o interfaz
 
@@ -319,8 +314,7 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 - [`AGENTS.md`](AGENTS.md) — instrucciones para agentes (cada carpeta tiene su `AGENTS.md` local).
 - [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
 - [`CUMPLIMIENTO_BASES.md`](CUMPLIMIENTO_BASES.md) — revisión frente a las bases del reto.
-- [`reporte/`](reporte/) — reporte técnico (LaTeX y PDF) y guion del video.
-- [`ENTREGA.md`](ENTREGA.md) — qué se sube a la plataforma.
+- [`ENTREGA.md`](ENTREGA.md) — qué queda en este repositorio. El reporte y el video se envían por correo.
 
 ## Licencia
 

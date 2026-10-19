@@ -17,7 +17,7 @@ La API y el dashboard volvieron a sus repos propios, que son los que están cone
 | API en Render | https://github.com/ALNM7/cebadata_api | https://cebadata-api.onrender.com |
 | Dashboard en Vercel | https://github.com/ALNM7/DashboardCebaData | https://dashboard-ceba-data.vercel.app/ |
 
-Este repositorio se quedó como documentación del proceso (análisis, despensa, superciclo, prueba pareada, reporte) y como envoltorio para clonar el sistema completo.
+Este repositorio se quedó como documentación del proceso (análisis, despensa, superciclo y prueba pareada) y como envoltorio para clonar el sistema completo.
 
 ## 3. Cómo quedó el enlace entre los dos
 

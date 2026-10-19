@@ -1,6 +1,0 @@
-% Meta: ~200 palabras
-\section{Objetivos}
-
-El objetivo general es estimar el rendimiento de cebada (t/ha) en las 197 parcelas del reto y ofrecerlo en un dashboard que permita consultarlo parcela por parcela.
-
-Los objetivos específicos son cuatro. Primero, construir una matriz de una fila por parcela a partir del dataset oficial, con índices de vegetación, clima mensual, topografía y ubicación, sin rellenar las 59 etiquetas ocultas. Segundo, comparar candidatos con la misma validación anidada: un ensamble de tres algoritmos, un modelo de solo longitud y la mezcla de ambos, y firmar como entrega el que equilibre el error donde se califica y el error en zona nueva. Tercero, interpretar el modelo firmado lo suficiente para responder qué índice, qué variable climática y qué bloque de variables aportan más, declarando que la explicación SHAP no cubre la mezcla completa. Cuarto, servir las predicciones congeladas mediante una API de solo lectura y un tablero con mapa, ficha, métricas, hallazgos y simulador, documentado para ejecutarse desde el repositorio. El objetivo no es maximizar un indicador a costa de opacidad: el error, el esquema de validación y los límites de transferencia deben poder leerse junto con el número de cada parcela. También queda escrito cómo regenerar los artefactos.

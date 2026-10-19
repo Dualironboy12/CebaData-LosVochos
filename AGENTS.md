@@ -12,7 +12,7 @@ Un estimado de rendimiento de cebada (t/ha) por parcela y un dashboard web para 
 
 ## Fases y fase actual
 
-La fase actual es **entrega**: el proceso está documentado aquí; la API y el dashboard publicados viven en sus repos y se incluyen como submódulos. Pendiente de grabar el video.
+La fase actual es **entrega**: el proceso está documentado aquí; la API y el dashboard publicados viven en sus repos y se incluyen como submódulos. El reporte técnico y el video los prepara otra integrante y se envían por correo; no se agregan a este repositorio.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
@@ -22,9 +22,9 @@ La fase actual es **entrega**: el proceso está documentado aquí; la API y el d
 | 3. API | Servir artefactos congelados (solo lectura) | Django REST | `sistema/api` (submódulo) |
 | 4. Frontend | Dashboard interactivo | Angular | `sistema/dashboard` (submódulo) |
 
-Cada carpeta de trabajo de este repo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `reporte/`) tiene su `AGENTS.md` local que **remite a este archivo**. `sistema/` no se edita aquí.
+Cada carpeta de trabajo de este repo (`analisis/`, `dataset_entrenamiento/`, `modelos/`) tiene su `AGENTS.md` local que **remite a este archivo**. `sistema/` no se edita aquí.
 
-El reporte técnico está en `reporte/`. El video (máximo 5 minutos) se graba con [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). La lista de lo que se sube a la plataforma está en [`ENTREGA.md`](ENTREGA.md). Cómo ejecutar en local: [`INSTALACION.md`](INSTALACION.md). El camino a Render y Vercel: [`docs/CAMINO_A_HOSTING.md`](docs/CAMINO_A_HOSTING.md).
+La lista de lo que queda en el repositorio está en [`ENTREGA.md`](ENTREGA.md). Cómo ejecutar en local: [`INSTALACION.md`](INSTALACION.md). El camino a Render y Vercel: [`docs/CAMINO_A_HOSTING.md`](docs/CAMINO_A_HOSTING.md).
 
 ## Submódulos
 
@@ -34,7 +34,7 @@ El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA. Esas etapas ofi
 
 ## Bitácora obligatoria
 
-Todo agente que trabaje en el repo agrega una entrada en [`PROMPTS.md`](PROMPTS.md), al final, sin reescribir ni borrar entradas anteriores. Sirve para el anexo de uso de inteligencia artificial que pide el reporte.
+Todo agente que trabaje en el repo agrega una entrada en [`PROMPTS.md`](PROMPTS.md), al final, sin reescribir ni borrar entradas anteriores. Sirve para el anexo de uso de inteligencia artificial. Ese anexo va en el reporte, que se envía por correo y no se versiona aquí.
 
 Formato:
 
@@ -80,11 +80,9 @@ El detalle de rangos, nubosidad y software para abrir cada formato está en la g
 
 ## Entregables posteriores
 
-Cuando el trabajo llegue al reporte o al video:
+El reporte técnico y el video demostrativo no se escriben en este repositorio. Los prepara otra integrante y se envían por correo. No recrear `reporte/` ni un guion aquí.
 
-- Respetar las extensiones de palabra del README. En anexos, máximo 2 cuartillas, con la aportación de cada integrante y la declaración de uso de agentes apoyada en `PROMPTS.md`.
-- El video demostrativo dura como máximo 5 minutos.
-- La aplicación tiene que poder ejecutarse con el código y la documentación del repo (`bash scripts/levantar_local.sh`).
+La aplicación tiene que poder ejecutarse con el código y la documentación del repo (`bash scripts/levantar_local.sh`).
 
 ## Convenciones de trabajo
 
