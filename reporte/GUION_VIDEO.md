@@ -15,7 +15,7 @@ No afirmar causalidad (la lluvia de mayo y la longitud pueden ser indicadores de
 | 5 | Mapa del dashboard, clic en una parcela (p. ej. AGC_003) | Ficha, intervalo, cascada SHAP |
 | 6 | Panel de métricas y de hallazgos | NDVI, lluvia de mayo, bloques |
 | 7 | Simulador y, si da tiempo, parcela nueva | Un solo cambio de clima |
-| 8 | Cierre: repo, comando `bash scripts/levantar_local.sh`, enlace en línea | El enlace se dice solo si ya está publicado |
+| 8 | Cierre: https://dashboard-ceba-data.vercel.app/ y, si se muestra la terminal, `bash scripts/levantar_local.sh` | La demo puede ser el sitio en línea o el local |
 
 ## Guion
 
@@ -53,7 +53,7 @@ No afirmar causalidad (la lluvia de mayo y la longitud pueden ser indicadores de
 
 **Se ve:** URL del repositorio y, si existe, la de la aplicación. Comando de arranque en texto.
 
-**Se dice:** El código, el reporte y las instrucciones están en el repositorio del equipo. En local se levanta con un script: la API en el puerto 8000 y el dashboard en el 4200. [Si hay enlace:] La aplicación en línea está en esta dirección. Gracias.
+**Se dice:** La aplicación en línea está en dashboard-ceba-data punto vercel punto app. El código y el reporte están en el repositorio del equipo. Quien quiera repetirlo en su máquina clona con los submódulos y levanta la API en el puerto 8000 y el dashboard en el 4200. Gracias.
 
 ## Qué no decir
 

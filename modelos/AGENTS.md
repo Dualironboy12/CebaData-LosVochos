@@ -6,7 +6,7 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 
 ## Alcance
 
-- Fase 2 **cerrada en entrega** (2026-10-13): modelo firmado = **mezcla** en [`entrega/`](entrega/).
+- Fase 2 **cerrada en entrega** (2026-10-13): modelo firmado = **mezcla**. La ficha está en [`entrega/README.md`](entrega/README.md). El pipeline vive en el submódulo [`../sistema/api/pipeline/`](../sistema/api/pipeline/).
 - Exploración / superciclo: `src/ceba_modelos`, `scripts/`, `comparativas/`.
 - Leer features desde `dataset_entrenamiento/` vía `src/ceba_modelos`; no re-curar el dataset oficial aquí.
 - Diseño: [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md), [`ESTADO_DATOS.md`](ESTADO_DATOS.md), [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md) (D1–D8).
@@ -26,9 +26,9 @@ Contexto de esta carpeta: [`README.md`](README.md). Tablas de entrada: [`../data
 3. Validación **oficial por municipio**; reportar también chequeo por píxel de clima cuando se comparen corridas. No presentar corte aleatorio de parcelas como criterio oficial.
 4. Al comparar CSVs o arquitecturas: misma CV, mismas semillas, mismas métricas; citar versión del CSV y manifiesto.
 5. Separar artefactos/código de `solo_reto/` y `extendido/`; respetar el flujo de ramas del [`README.md`](README.md) (merge entre ramas de modelos antes de ir a `main`).
-6. El pipeline de entrega (`entrega/pipeline/`) exporta a `../api/artefactos/`. No mover el pipeline de vuelta a `api/`.
+6. El pipeline de la mezcla está en `sistema/api` (submódulo). No se copia a esta carpeta. Reentrenar sigue las instrucciones del README de ese repo.
 7. D8 ya firmó la mezcla; no cambiar el modelo de entrega sin acuerdo explícito del equipo. La prueba pareada está en `comparativas/prueba_ganador_en_pipeline/`.
-8. Dashboard y API viven fuera de esta carpeta (`../dashboard/`, `../api/`).
+8. No editar `sistema/api` ni `sistema/dashboard` desde aquí. Un cambio va al repo de ALNM7; aquí solo se mueve el puntero del submódulo.
 
 ## Fuera de alcance (salvo pedido explícito)
 

@@ -2,7 +2,7 @@
 
 Fase 2: entrenar y evaluar estimadores de rendimiento (t/ha) en Python. Entradas desde [`../dataset_entrenamiento/`](../dataset_entrenamiento/).
 
-**Modelo de entrega firmado: la mezcla.** Arquitectura, métricas y cómo reentrenar: [`entrega/`](entrega/). La API sirve `../api/artefactos/`; el dashboard es [`../dashboard/`](../dashboard/).
+**Modelo de entrega firmado: la mezcla.** Arquitectura y métricas: [`entrega/`](entrega/). El pipeline y los artefactos están en el submódulo [`../sistema/api`](../sistema/api); el dashboard, en [`../sistema/dashboard`](../sistema/dashboard).
 
 Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap [`../README.md#roadmap`](../README.md#roadmap).
 
@@ -13,7 +13,7 @@ Reglas: [`AGENTS.md`](AGENTS.md) · [`../AGENTS.md`](../AGENTS.md) · roadmap [`
 | [`ESTADO_DATOS.md`](ESTADO_DATOS.md) | Readiness de despensas/matriz |
 | [`PROPUESTA_MODELOS.md`](PROPUESTA_MODELOS.md) | Familias Classic ML y CV |
 | [`DECISIONES_ABIERTAS.md`](DECISIONES_ABIERTAS.md) | D1–D8 (D8 = modelo de entrega: mezcla) |
-| [`entrega/README.md`](entrega/README.md) | Arquitectura firmada de la mezcla y pipeline 01–10 |
+| [`entrega/README.md`](entrega/README.md) | Arquitectura firmada de la mezcla (el pipeline está en `sistema/api`) |
 | [`config/superciclo.yaml`](config/superciclo.yaml) | Grid 1024, modelos, HPO top-K |
 | [`comparativas/superciclo_v1/informe_superciclo.html`](comparativas/superciclo_v1/informe_superciclo.html) | Informe técnico del superciclo |
 | [`comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf`](comparativas/superciclo_v1/resumen_equipo/Resumen_equipo_superciclo_Classic_ML.pdf) | **PDF para el equipo** (lenguaje claro, top 10, heatmaps) |
@@ -46,7 +46,7 @@ modelos/
   salidas/superciclo_v1/
   comparativas/superciclo_v1/
   comparativas/prueba_ganador_en_pipeline/
-  entrega/                      ← modelo firmado (pipeline + README)
+  entrega/                      ← ficha del modelo firmado (el pipeline está en sistema/api)
   requirements.txt
 ```
 
@@ -71,7 +71,7 @@ Deps: numpy, pandas, scikit-learn, pyyaml, joblib, lightgbm, matplotlib.
 
 - [x] Fase 2 abierta; ingesta + barrido piloto 9 CSVs.
 - [x] Superciclo v1 (1024 × 5 modelos + HPO) e informe HTML.
-- [x] Modelo de entrega firmado: **mezcla** (D8); pipeline en `entrega/`.
+- [x] Modelo de entrega firmado: **mezcla** (D8); pipeline en `sistema/api`.
 - [x] Prueba pareada: el ganador del superciclo no supera a la mezcla.
 - [x] API + dashboard integrados al repo.
 

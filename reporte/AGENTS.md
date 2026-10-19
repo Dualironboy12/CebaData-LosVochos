@@ -9,7 +9,7 @@ Reporte técnico en LaTeX del Reto AgroCebada y guion del video de 5 minutos.
 - Fuente: `REPORTE_TECNICO.tex` y `secciones/`.
 - PDF: `make pdf` (requiere `latexmk` y `pdflatex`).
 - Conteo: `make palabras` (`texcount`). Respetar las extensiones de las bases.
-- Cifras: solo las de `api/artefactos/metricas_dashboard.json` y las tablas del pipeline en `modelos/entrega/`. No inventar métricas.
+- Cifras: solo las de `sistema/api/artefactos/metricas_dashboard.json` y las tablas de `sistema/api/pipeline/salidas/`. No inventar métricas. El artefacto publicado cuenta 122 variables en la mezcla; el texto del reporte usa 121 y lo anota.
 - El anexo resume el trabajo del equipo en bloque. No desglosar aportaciones por persona.
 - Guion: `GUION_VIDEO.md`. La grabación la hace el equipo.
 

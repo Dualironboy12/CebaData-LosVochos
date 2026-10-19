@@ -8,23 +8,27 @@ Leer este archivo al empezar una tarea. Antes de cerrarla, agregar una entrada a
 
 Un estimado de rendimiento de cebada (t/ha) por parcela y un dashboard web para consultarlo. La etiqueta observada es el ciclo **abril–octubre de 2025**. Hay 197 parcelas (`AGC_001` … `AGC_197`): 138 de `ENTRENAMIENTO` con rendimiento y 59 de `PREDICCION` sin él. Esa partición es la oficial; las 59 se estiman al entregar.
 
-**Modelo de entrega firmado:** la **mezcla** (ensamble LightGBM + RF + Elastic Net + LightGBM de solo longitud). Detalle en [`modelos/entrega/`](modelos/entrega/).
+**Modelo de entrega firmado:** la **mezcla** (ensamble LightGBM + RF + Elastic Net + LightGBM de solo longitud). Ficha en [`modelos/entrega/`](modelos/entrega/). El pipeline y la API están en el submódulo [`sistema/api`](sistema/api) (fuente de verdad: [cebadata_api](https://github.com/ALNM7/cebadata_api)). El dashboard está en [`sistema/dashboard`](sistema/dashboard) ([DashboardCebaData](https://github.com/ALNM7/DashboardCebaData)).
 
 ## Fases y fase actual
 
-La fase actual es **entrega**: API y dashboard conectados; reporte técnico en `reporte/`; pendiente de grabar el video y publicar el enlace.
+La fase actual es **entrega**: el proceso está documentado aquí; la API y el dashboard publicados viven en sus repos y se incluyen como submódulos. Pendiente de grabar el video.
 
 | Fase | Alcance | Stack | Dónde va el código |
 | --- | --- | --- | --- |
 | 1. Análisis de datos | Calidad, distribuciones, relaciones, filtros y variables candidatas. Tres carriles: FIRA, INEGI, SoilGrids | R | `analisis/` |
 | — | Despensa congelada y CSVs curados (reto y extendidos) | — | `dataset_entrenamiento/` |
-| 2. Modelos | Entrenar, evaluar y firmar el modelo de entrega | Python | `modelos/` (exploración) y `modelos/entrega/` (pipeline de la mezcla) |
-| 3. API | Servir artefactos congelados (solo lectura) | Django REST | `api/` |
-| 4. Frontend | Dashboard interactivo | Angular | `dashboard/` |
+| 2. Modelos | Explorar, comparar y firmar el modelo de entrega | Python | `modelos/` (la ficha de la mezcla en `modelos/entrega/`; el pipeline en `sistema/api/pipeline/`) |
+| 3. API | Servir artefactos congelados (solo lectura) | Django REST | `sistema/api` (submódulo) |
+| 4. Frontend | Dashboard interactivo | Angular | `sistema/dashboard` (submódulo) |
 
-Cada carpeta de trabajo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `api/`, `dashboard/`, `reporte/`) tiene su `AGENTS.md` local que **remite a este archivo**.
+Cada carpeta de trabajo de este repo (`analisis/`, `dataset_entrenamiento/`, `modelos/`, `reporte/`) tiene su `AGENTS.md` local que **remite a este archivo**. `sistema/` no se edita aquí.
 
-El reporte técnico está en `reporte/`. El video (máximo 5 minutos) se graba con [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). La lista de lo que se sube a la plataforma está en [`ENTREGA.md`](ENTREGA.md).
+El reporte técnico está en `reporte/`. El video (máximo 5 minutos) se graba con [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). La lista de lo que se sube a la plataforma está en [`ENTREGA.md`](ENTREGA.md). Cómo ejecutar en local: [`INSTALACION.md`](INSTALACION.md). El camino a Render y Vercel: [`docs/CAMINO_A_HOSTING.md`](docs/CAMINO_A_HOSTING.md).
+
+## Submódulos
+
+`sistema/api` y `sistema/dashboard` apuntan a commits fijos de los repos de ALNM7. No se modifican desde este árbol. Un cambio se propone en ese repo (ver [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md)); cuando se integra, aquí se actualiza el puntero del submódulo.
 
 El README llama «Etapa 1» y «Etapa 2» al calendario de FIRA. Esas etapas oficiales conviven con las fases de esta tabla.
 
@@ -88,4 +92,4 @@ Cuando el trabajo llegue al reporte o al video:
 - Commits y push solo si el prompt lo pide.
 - Dejar el dataset crudo, `LICENSE` y los PDF de las bases como están, salvo pedido explícito.
 - Preferir cambios acotados a la fase y a los archivos que la tarea necesita.
-- No re-curar el dataset oficial dentro de `modelos/` ni reentrenar la mezcla sin acuerdo: los artefactos en `api/artefactos/` son la fuente de verdad en runtime.
+- No re-curar el dataset oficial dentro de `modelos/` ni reentrenar la mezcla sin acuerdo: los artefactos en `sistema/api/artefactos/` son la fuente de verdad en runtime, y el repo de ALNM7 manda sobre esa carpeta.

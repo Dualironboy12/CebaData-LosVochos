@@ -7,7 +7,7 @@ Documento interno del equipo (2026-10-13). Ante duda, prevalece [`Reto Agrocebad
 | Requisito | Estado |
 | --- | --- |
 | Modelo que predice rendimiento de cebada (Hidalgo, Tlaxcala, Puebla) | Sí: mezcla, 197 parcelas, ciclo 2025 |
-| Prototipo funcional (dashboard) + código + documentación de ejecución | Sí: `dashboard/` + `api/` + `scripts/levantar_local.sh` |
+| Prototipo funcional (dashboard) + código + documentación de ejecución | Sí: https://dashboard-ceba-data.vercel.app/ y, en local, `sistema/` + [`INSTALACION.md`](INSTALACION.md) |
 | Estimar el 30 % oculto; no usar sus etiquetas | Sí: `RENDIMIENTO_T_HA` vacío en PREDICCION; predicciones en artefactos |
 | Métricas RMSE / MAE / r² | Sí: en `metricas_dashboard.json` y panel del dashboard |
 | Datos públicos adicionales permitidos | Sí; INEGI/SoilGrids se evaluaron y **no** entran en la entrega |
@@ -20,14 +20,16 @@ Documento interno del equipo (2026-10-13). Ante duda, prevalece [`Reto Agrocebad
    - `https://claude.ai/code/session_01FXyU9Cim2y1EtCkR54vR2V`
    - `https://claude.ai/code/session_016c2kpZiWBUpsnUApbJ4ZTr`
 2. **Video** de máximo 5 minutos, grabado a partir de [`reporte/GUION_VIDEO.md`](reporte/GUION_VIDEO.md). El PDF del reporte ya está en `reporte/REPORTE_TECNICO.pdf`.
-3. **Despliegue** (Render o Railway + Vercel): seguir [`ENTREGA.md`](ENTREGA.md). Hace falta cuenta del equipo para fijar `DJANGO_ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` y `environment.prod.ts`.
-4. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
+3. **Visibilidad del dataset en GitHub.** El dataset oficial está versionado en el repo. Confirmar que el remoto es privado o decidir no redistribuir el zip oficial.
+4. **Repos de ALNM7 públicos.** `sistema/api` y `sistema/dashboard` se clonan desde GitHub. Si esos repos son privados, el jurado no puede bajar los submódulos. El enlace en línea ya no depende de eso: https://dashboard-ceba-data.vercel.app/.
 5. **Licencia MIT.** Hoy figura un solo titular; sugerir «Equipo Los Vochos» o la lista de integrantes.
 
 ## Riesgos a vigilar (no son descalificación automática)
 
-- **SHAP ≠ mezcla completa.** La cascada explica el LightGBM del ensamble (peso 1/6). El dashboard y el reporte lo dicen.
-- **Skills de diseño de terceros** (`.claude/` de impeccable etc.) se retiraron del entregable; se declaran como herramientas usadas en la memoria de desarrollo.
+- **SHAP ≠ mezcla completa.** El reporte lo dice. La ficha publicada es menos precisa; el texto propuesto está en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md).
+- **Skills de diseño de terceros.** Siguen dentro del repo del dashboard (submódulo), porque esa copia es la fuente de verdad. En este repo no se versionan aparte. Se declaran como herramientas usadas.
+- **Submódulos en commit fijo.** Si ALNM7 mueve o cierra el repo, el clon deja de poder inicializar `sistema/`. El enlace de Vercel sigue siendo el que ve el jurado.
+- **`n_variables` 122 en el artefacto publicado.** Este reporte cuenta 121. La corrección está propuesta en [`docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md) y no se aplica sobre el submódulo.
 - **Una sola temporada** y la longitud como indicador de zona: límites ya documentados en `modelos/entrega/README.md`.
 
 ## Causas de descalificación (chequeo)

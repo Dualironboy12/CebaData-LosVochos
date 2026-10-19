@@ -103,7 +103,7 @@ Parcela (AGC_###)
 | Código | [`datos_fira/R/`](datos_fira/R/) · setup en [`R/00_setup.R`](R/00_setup.R) |
 | Resumen del suelo INEGI | [`RESUMEN_DATOS_INEGI.md`](RESUMEN_DATOS_INEGI.md) |
 | Resumen SoilGrids | [`RESUMEN_DATOS_SOILGRIDS.md`](RESUMEN_DATOS_SOILGRIDS.md) |
-| Congelar CSVs / modelos / dashboard | [`../dataset_entrenamiento/`](../dataset_entrenamiento/) · [`../modelos/`](../modelos/) · [`../dashboard/`](../dashboard/) |
+| Congelar CSVs / modelos / dashboard | [`../dataset_entrenamiento/`](../dataset_entrenamiento/) · [`../modelos/`](../modelos/) · [`../sistema/dashboard/`](../sistema/dashboard/) |
 
 Figuras útiles:
 

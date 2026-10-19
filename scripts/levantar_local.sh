@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
-# Levanta la API (Django :8000) y el dashboard (Angular :4200) en local.
+# Levanta la API (Django :8000) y el dashboard (Angular :4200) desde los submódulos.
 # Uso, desde la raíz del repo:
 #   bash scripts/levantar_local.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-API_DIR="$ROOT/api"
-DASH_DIR="$ROOT/dashboard"
+API_DIR="$ROOT/sistema/api"
+DASH_DIR="$ROOT/sistema/dashboard"
 API_VENV="${API_VENV:-$API_DIR/.venv}"
 LOG_DIR="$ROOT/scripts/.logs"
+
+if [[ ! -f "$API_DIR/manage.py" || ! -f "$DASH_DIR/package.json" ]]; then
+  echo "Faltan los submódulos de sistema/api o sistema/dashboard." >&2
+  echo "Desde la raíz del repo: git submodule update --init" >&2
+  exit 1
+fi
+
 mkdir -p "$LOG_DIR"
 
 PY=/usr/bin/python3
@@ -22,8 +29,8 @@ if [[ ! -d "$API_VENV" ]]; then
 fi
 
 if [[ ! -d "$DASH_DIR/node_modules" ]]; then
-  echo "==> npm install en dashboard/"
-  (cd "$DASH_DIR" && npm install)
+  echo "==> npm ci en sistema/dashboard/"
+  (cd "$DASH_DIR" && npm ci)
 fi
 
 cleanup() {
@@ -40,11 +47,10 @@ echo "==> API en http://localhost:8000"
   env -i HOME="$HOME" PATH="$API_VENV/bin:/usr/bin:/bin" \
     DJANGO_DEBUG=1 \
     CORS_ALLOWED_ORIGINS="http://localhost:4200,http://127.0.0.1:4200" \
-    python manage.py runserver 8000
+    python manage.py runserver 127.0.0.1:8000
 ) >"$LOG_DIR/api.log" 2>&1 &
 API_PID=$!
 
-# Espera salud
 for i in $(seq 1 40); do
   if curl -sf http://127.0.0.1:8000/api/salud >/dev/null; then
     echo "    /api/salud OK"
@@ -70,8 +76,9 @@ DASH_PID=$!
 
 echo ""
 echo "Listo."
-echo "  API:       http://localhost:8000/api/salud"
-echo "  Dashboard: http://localhost:4200"
+echo "  API:       http://127.0.0.1:8000/api/salud"
+echo "  Dashboard: http://127.0.0.1:4200"
+echo "  Proxy:     http://127.0.0.1:4200/api/salud"
 echo "  Logs:      $LOG_DIR/"
 echo "Ctrl+C para detener ambos."
 wait

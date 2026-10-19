@@ -33,7 +33,7 @@ plt.rcParams.update({
     "grid.linewidth": 0.6,
 })
 
-d = json.loads((RAIZ / "api/artefactos/metricas_dashboard.json").read_text())
+d = json.loads((RAIZ / "sistema/api/artefactos/metricas_dashboard.json").read_text())
 
 # Dispersión observado vs. predicho
 fig, ax = plt.subplots(figsize=(5.4, 5.0))
@@ -88,7 +88,7 @@ fig.tight_layout()
 fig.savefig(DEST / "lomo_municipio.png", dpi=160)
 plt.close()
 
-origen = RAIZ / "modelos/entrega/pipeline/salidas"
+origen = RAIZ / "sistema/api/pipeline/salidas"
 for nombre in ("fig_shap_familias.png", "fig_shap_resumen.png"):
     shutil.copy(origen / nombre, DEST / nombre)
 

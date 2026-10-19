@@ -1,0 +1,6 @@
+[submodule "sistema/api"]
+	path = sistema/api
+	url = https://github.com/ALNM7/cebadata_api.git
+[submodule "sistema/dashboard"]
+	path = sistema/dashboard
+	url = https://github.com/ALNM7/DashboardCebaData.git

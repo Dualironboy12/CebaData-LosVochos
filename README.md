@@ -40,38 +40,31 @@ La guía de archivos, unidades y cruces está en [`DATASET_RETO_AGRO_2026/README
 ```text
 analisis/                 KDD en R (FIRA, INEGI, SoilGrids)
 dataset_entrenamiento/    Despensa + 1024 CSVs curados
-modelos/                  Exploración (superciclo) + entrega/
-  entrega/                Pipeline de la mezcla → exporta api/artefactos/
-api/                      Django REST (artefactos congelados)
-dashboard/                Angular (mapa, ficha, métricas, hallazgos, simulador)
-scripts/levantar_local.sh Arranque local API + dashboard
+modelos/                  Exploración (superciclo) + ficha de la mezcla
+sistema/api               Submódulo: API Django + pipeline (ALNM7/cebadata_api)
+sistema/dashboard         Submódulo: Angular (ALNM7/DashboardCebaData)
+docs/                     Camino a hosting y propuestas a esos repos
+reporte/                  Reporte técnico y guion del video
+INSTALACION.md            Descargar, instalar y ejecutar en local
 DATASET_RETO_AGRO_2026/   Dataset oficial (no alterar)
 PROMPTS.md                Bitácora de uso de IA
 ```
 
-## Levantar el proyecto
+En línea: [dashboard](https://dashboard-ceba-data.vercel.app/) y [API](https://cebadata-api.onrender.com).
 
-Requisitos: Python ≥ 3.12, Node ≥ 20.19 (o ≥ 22.12), npm.
+## Ejecutar localmente
+
+Instrucciones completas: [`INSTALACION.md`](INSTALACION.md). Resumen:
 
 ```bash
+git clone --recurse-submodules https://github.com/Dualironboy12/CebaData-LosVochos.git
+cd CebaData-LosVochos
 bash scripts/levantar_local.sh
-# API:       http://localhost:8000/api/salud
-# Dashboard: http://localhost:4200
+# API:       http://127.0.0.1:8000/api/salud
+# Dashboard: http://127.0.0.1:4200
 ```
 
-A mano:
-
-```bash
-# API
-cd api && python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python manage.py runserver   # :8000
-
-# Dashboard (otra terminal)
-cd dashboard && npm install && npm start   # :4200, proxy /api → 8000
-```
-
-Modelo de entrega: **mezcla** ([`modelos/entrega/`](modelos/entrega/)). Regenerar artefactos solo desde ahí.
+Modelo de entrega: **mezcla** ([`modelos/entrega/`](modelos/entrega/)). El pipeline que lo regenera está en `sistema/api`, no en esta carpeta.
 
 ## Plan de trabajo del equipo
 
@@ -82,10 +75,10 @@ El calendario oficial de FIRA llama «Etapa 1» al desarrollo/entrega y «Etapa 
 | 1. Análisis | Calidad, relaciones, variables candidatas | R | [`analisis/`](analisis/) |
 | — | Despensa y CSVs curados | — | [`dataset_entrenamiento/`](dataset_entrenamiento/) |
 | 2. Modelos | Entrenar, comparar y firmar el predictor | Python | [`modelos/`](modelos/), [`modelos/entrega/`](modelos/entrega/) |
-| 3. API | Servir artefactos congelados | Django REST | [`api/`](api/) |
-| 4. Frontend | Consulta interactiva | Angular | [`dashboard/`](dashboard/) |
+| 3. API | Servir artefactos congelados | Django REST | [`sistema/api`](sistema/api) |
+| 4. Frontend | Consulta interactiva | Angular | [`sistema/dashboard`](sistema/dashboard) |
 
-**Fase actual: entrega.** Modelo firmado (mezcla), API y dashboard conectados, reporte en [`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf). Pendientes del equipo: grabar el video y publicar el enlace. Lista: [`ENTREGA.md`](ENTREGA.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
+**Fase actual: entrega.** Este repo documenta el proceso. La API y el dashboard publicados están en sus repos y entran aquí como submódulos. Reporte: [`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf). Pendiente del equipo: grabar el video. Lista: [`ENTREGA.md`](ENTREGA.md).
 
 ## Roadmap
 
@@ -98,8 +91,8 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 1. Análisis (R) | Cerrada (referencia) | `analisis/datos_*` |
 | Despensa / CSVs | Lista (1024 CSVs) | `dataset_entrenamiento/` |
 | 2. Modelos | Entrega firmada: mezcla | `modelos/entrega/` |
-| 3. API | Integrada, tests OK | `api/` |
-| 4. Dashboard | Integrado, build OK | `dashboard/` |
+| 3. API | Publicada en Render; submódulo | `sistema/api` |
+| 4. Dashboard | Publicado en Vercel; submódulo | `sistema/dashboard` |
 | Reporte | Redactado (PDF) | `reporte/` |
 | Video | Guion listo; falta grabar | `reporte/GUION_VIDEO.md` |
 
@@ -115,17 +108,18 @@ Lecturas cortas: [`analisis/RESUMEN_DATOS_FIRA.md`](analisis/RESUMEN_DATOS_FIRA.
 | 6 | Datos externos | Dos carriles; evaluados y **no** usados en la entrega |
 | D8 | Modelo de entrega | **Mezcla** (2026-10-13); ver [`modelos/entrega/`](modelos/entrega/) |
 
-**Pendientes humanas:** grabar el video; prompts de sesiones Claude Code de Alfredo para completar el anexo; desplegar con las cuentas del equipo (ver [`ENTREGA.md`](ENTREGA.md)); confirmar si el repo de GitHub debe permanecer privado respecto al dataset oficial; titular de la licencia.
+**Pendientes humanas:** grabar el video; prompts de sesiones Claude Code de Alfredo para completar el anexo; confirmar que los repos de ALNM7 siguen públicos; confirmar si este repo debe permanecer privado respecto al dataset oficial; titular de la licencia.
 
 ### Checklist
 
 - [x] Decisiones 1–6 y D1–D8
 - [x] Despensa + matriz curada v1
 - [x] Superciclo Classic ML + prueba pareada del ganador
-- [x] Modelo de entrega: mezcla; artefactos en `api/artefactos/`
-- [x] API Django + dashboard Angular integrados al repo
+- [x] Modelo de entrega: mezcla; artefactos en `sistema/api/artefactos/`
+- [x] API y dashboard en sus repos, incluidos aquí como submódulos
 - [x] Reporte técnico ([`reporte/REPORTE_TECNICO.pdf`](reporte/REPORTE_TECNICO.pdf)) y guion de video
-- [ ] Video grabado (máx. 5 min) y enlace en línea para el jurado
+- [x] Enlace en línea: https://dashboard-ceba-data.vercel.app/
+- [ ] Video grabado (máx. 5 min)
 
 El uso de agentes de desarrollo está permitido. Cada agente anota en [`PROMPTS.md`](PROMPTS.md). Instrucciones: [`AGENTS.md`](AGENTS.md).
 
@@ -163,7 +157,11 @@ Se evaluó el ganador del superciclo (con y sin externos; hiperparámetros fijos
 
 ### 8. Integración al monorepo (2026-10-13)
 
-`api/` y `dashboard/` entraron por `git subtree` (historial de Alfredo conservado); el pipeline pasó a `modelos/entrega/`; se corrigió `n_variables` (121), Python 3.12+, proxy/CORS, textos SHAP y `.gitignore`. **Por qué:** un solo repo ejecutable para el jurado, con modelo firmado, API y front documentados.
+`api/` y `dashboard/` entraron por `git subtree` (historial de Alfredo conservado). **Por qué:** un solo repo ejecutable para el jurado, con modelo firmado, API y front documentados.
+
+### 9. Separación en repos y hosting (2026-10-18)
+
+Render y Vercel despliegan un servicio por repo. La API y el dashboard volvieron a [cebadata_api](https://github.com/ALNM7/cebadata_api) y [DashboardCebaData](https://github.com/ALNM7/DashboardCebaData), publicados en https://cebadata-api.onrender.com y https://dashboard-ceba-data.vercel.app/. Este repositorio documenta el proceso y los incluye como submódulos en commits fijos. **Por qué:** el hosting no admite bien el monorepo, y duplicar el código aquí divergía de lo que está en línea. Detalle: [`docs/CAMINO_A_HOSTING.md`](docs/CAMINO_A_HOSTING.md).
 
 ## Cómo se desarrolla el reto
 
@@ -313,15 +311,16 @@ Lo no previsto lo resuelve el comité organizador y su decisión es inapelable. 
 - [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md) — guía del dataset oficial (no se altera).
 - [`analisis/`](analisis/) — KDD en R (carriles FIRA / INEGI / SoilGrids).
 - [`dataset_entrenamiento/`](dataset_entrenamiento/) — despensa y CSVs curados.
-- [`modelos/`](modelos/) — exploración; [`modelos/entrega/`](modelos/entrega/) — modelo firmado (mezcla).
-- [`api/`](api/) — backend Django REST.
-- [`dashboard/`](dashboard/) — frontend Angular.
-- [`scripts/levantar_local.sh`](scripts/levantar_local.sh) — arranque local API + dashboard.
+- [`modelos/`](modelos/) — exploración; [`modelos/entrega/`](modelos/entrega/) — ficha del modelo firmado (mezcla).
+- [`sistema/api`](sistema/api) — submódulo de la API y del pipeline.
+- [`sistema/dashboard`](sistema/dashboard) — submódulo del dashboard.
+- [`INSTALACION.md`](INSTALACION.md) — descargar, instalar y ejecutar en local.
+- [`docs/CAMINO_A_HOSTING.md`](docs/CAMINO_A_HOSTING.md) — de este repo a Render y Vercel.
 - [`AGENTS.md`](AGENTS.md) — instrucciones para agentes (cada carpeta tiene su `AGENTS.md` local).
 - [`PROMPTS.md`](PROMPTS.md) — bitácora de prompts, acciones y afectaciones.
 - [`CUMPLIMIENTO_BASES.md`](CUMPLIMIENTO_BASES.md) — revisión frente a las bases del reto.
 - [`reporte/`](reporte/) — reporte técnico (LaTeX y PDF) y guion del video.
-- [`ENTREGA.md`](ENTREGA.md) — qué se sube a la plataforma y cómo publicar.
+- [`ENTREGA.md`](ENTREGA.md) — qué se sube a la plataforma.
 
 ## Licencia
 

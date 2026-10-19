@@ -3,7 +3,7 @@
 
 Prueba pareada: el ganador del superciclo (LightGBM sobre `lon + pixel_clima + N + edafología`
 más las 9 variables base del reto; 13 variables) se evalúa DENTRO del esquema de validación del
-pipeline de entrega (modelos/entrega/pipeline/pasos/paso07_optimizacion.py), con los mismos
+pipeline de la API (sistema/api/pipeline/pasos/paso07_optimizacion.py), con los mismos
 folds, las mismas 138 parcelas y las mismas métricas que la mezcla actual.
 
 Validaciones (idénticas a las del paso 07; se importan del pipeline sin modificarlo):
@@ -28,12 +28,14 @@ Criterio de decisión, FIJADO ANTES DE CORRER (misma regla de ruido que usa el p
 
 Uso (desde la raíz del repo):
   env -i HOME="$HOME" PATH="$PWD/modelos/.venv-prueba/bin:/usr/bin:/bin" \
-    PYTHONPATH=modelos/entrega:modelos/src python modelos/scripts/prueba_ganador_en_pipeline.py
+    CEBADATA_DATASET=$PWD/DATASET_RETO_AGRO_2026 \
+    PYTHONPATH=sistema/api:modelos/src python modelos/scripts/prueba_ganador_en_pipeline.py
   ... --analizar    solo recalcula tablas desde modelos/comparativas/prueba_ganador_en_pipeline/
 """
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import time
 from pathlib import Path
@@ -43,7 +45,8 @@ import pandas as pd
 from joblib import Parallel, delayed
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "modelos" / "entrega"))
+os.environ.setdefault("CEBADATA_DATASET", str(ROOT / "DATASET_RETO_AGRO_2026"))
+sys.path.insert(0, str(ROOT / "sistema" / "api"))
 sys.path.insert(0, str(ROOT / "modelos" / "src"))
 
 SALIDA = ROOT / "modelos" / "comparativas" / "prueba_ganador_en_pipeline"
@@ -156,7 +159,7 @@ def correr_cv(d, cols, ganadores, n_jobs):
 
 def predicciones_59(d, cols, ganadores):
     """Efecto sobre las 59 ocultas: ganador ajustado a las 138 vs. lo que hoy sirve la API."""
-    ref = pd.read_csv(ROOT / "modelos" / "entrega" / "pipeline" / "salidas" / "predicciones_59_parcelas.csv")
+    ref = pd.read_csv(ROOT / "sistema" / "api" / "pipeline" / "salidas" / "predicciones_59_parcelas.csv")
     ref = ref.set_index("ID_POLIGONO").loc[d.ids_pred]
     out = pd.DataFrame({"id": d.ids_pred, "pred_ensamble": ref["pred_ensamble"].to_numpy(),
                         "pred_ubicacion": ref["pred_ubicacion"].to_numpy(),
@@ -212,7 +215,7 @@ def metricas(df):
 
 def verificar_reproduccion(met):
     """Las tres cifras del pipeline deben salir igual que las publicadas en pipeline/salidas."""
-    sal = ROOT / "modelos" / "entrega" / "pipeline" / "salidas"
+    sal = ROOT / "sistema" / "api" / "pipeline" / "salidas"
     est = pd.read_csv(sal / "metricas_optimizadas.csv").set_index("modelo")
     lomo = pd.read_csv(sal / "metricas_lomo.csv").set_index("modelo")
     filas = []

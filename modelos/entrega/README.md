@@ -1,6 +1,8 @@
 # Modelo de entrega: mezcla
 
-Arquitectura firmada por el equipo (2026-10-13) para el Reto AgroCebada FIRA 2026. La API en [`../../api/`](../../api/) carga los artefactos exportados aquí; el dashboard en [`../../dashboard/`](../../dashboard/) los consulta.
+Arquitectura firmada por el equipo (2026-10-13) para el Reto AgroCebada FIRA 2026.
+
+El código que entrena y el que predice en runtime están en el submódulo [`../../sistema/api/`](../../sistema/api/) (repo [cebadata_api](https://github.com/ALNM7/cebadata_api), commit fijado). El dashboard que los consulta es [`../../sistema/dashboard/`](../../sistema/dashboard/). Esta carpeta guarda la decisión; no duplica el pipeline.
 
 ## Arquitectura
 
@@ -17,7 +19,7 @@ La predicción final es el **promedio** de dos bloques:
 - El bloque LightGBM + RF + Elastic Net forma el **ensamble** (promedio simple de los tres).
 - La **mezcla** es `(ensamble + lgbm_longitud) / 2`.
 
-Código de inferencia en runtime: [`../../api/api/predictor.py`](../../api/api/predictor.py). Entrenamiento: [`pipeline/`](pipeline/) (pasos 01–10).
+Inferencia: `sistema/api/api/predictor.py`. Entrenamiento: `sistema/api/pipeline/` (pasos 01–10). Cómo reentrenar: el README de [`sistema/api`](../../sistema/api/README.md). El artefacto publicado cuenta 122 variables en la mezcla; la cuenta de esta ficha es 121 (`lon` ya va en las columnas del ensamble). La corrección propuesta está en [`../../docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`](../../docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md).
 
 ## Métricas (validación anidada, 138 parcelas)
 
@@ -33,41 +35,15 @@ Código de inferencia en runtime: [`../../api/api/predictor.py`](../../api/api/p
 
 ## Por qué se eligió
 
-1. **Paso 07 del pipeline** comparó los tres candidatos con las dos validaciones. Donde se califica, ensamble y mezcla empatan (diferencia < 0.010 t/ha); la mezcla tiene el mejor MAE y recorta casi a la mitad la caída del ensamble en LOMO.
+1. El paso 07 del pipeline comparó los tres candidatos con las dos validaciones. Donde se califica, ensamble y mezcla empatan (diferencia < 0.010 t/ha); la mezcla tiene el mejor MAE y recorta casi a la mitad la caída del ensamble en LOMO.
 2. **Prueba pareada del ganador del superciclo** ([`../comparativas/prueba_ganador_en_pipeline/INFORME.md`](../comparativas/prueba_ganador_en_pipeline/INFORME.md)): el LightGBM ganador del superciclo (13 variables con N + edafología) no supera a la mezcla bajo el criterio fijado de antemano (≥ 0.010 de mejora estratificada, LOMO no peor, IC bootstrap excluye 0). Los datos externos tampoco lo cumplen.
 3. El aporte del superciclo a la entrega es la **idea de la longitud** como señal espacial fuerte en esta caja geográfica, no el CSV ni el joblib del ganador.
 
-## Límites (hay que decirlos tal cual)
+## Límites
 
 - Una sola temporada (abril–octubre 2025).
 - La longitud funciona porque el rendimiento cambia de oeste a este dentro de ~45 km; fuera de esta región ninguno es confiable.
 - Con la mezcla solo la parte del ensamble reacciona al clima: en el simulador el efecto sale la mitad de grande.
 - La lluvia de mayo puede actuar como indicador de zona; su peso SHAP no prueba causalidad.
-- **SHAP explica solo el LightGBM del ensamble** (peso 1/6), no la mezcla completa. La cascada de la ficha y los paneles de importancia lo deben indicar.
+- **SHAP explica solo el LightGBM del ensamble** (peso 1/6), no la mezcla completa.
 - Herramienta de apoyo; no sustituye la evaluación crediticia.
-
-## Cómo reentrenar y exportar
-
-```bash
-# Desde la raíz del repo
-python3 -m venv modelos/entrega/.venv
-source modelos/entrega/.venv/bin/activate
-pip install -r modelos/entrega/pipeline/requirements-pipeline.txt
-
-# DATASET_RETO_AGRO_2026 debe estar en la raíz (o CEBADATA_DATASET=...)
-PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline           # pasos 01–10 (~8 min)
-PYTHONPATH=modelos/entrega python -m pipeline.run_pipeline --desde 10  # solo reexportar api/artefactos/
-
-PYTHONPATH=modelos/entrega python -m pytest modelos/entrega/pipeline/tests -p no:django
-```
-
-Después: `git diff api/artefactos/`, pruebas de la API (`cd api && pytest`) y commit.
-
-## Artefactos que consume la API
-
-`api/artefactos/` (versionados, ~2 MB):
-
-- `modelo/`: imputador, escalador, lgbm, rf, enet, lgbm_longitud
-- `metadata.json`: orden de las 121 variables, pesos, versiones, checksums
-- `metricas_dashboard.json`: métricas y hallazgos para el panel
-- `tablas/`: parcelas, predicciones, features, SHAP, clima, serie satelital, vecinos

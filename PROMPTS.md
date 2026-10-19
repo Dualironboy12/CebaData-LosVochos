@@ -641,3 +641,38 @@ Composer (Cursor, modo Agent).
 - Sin push. Sin grabar el video ni crear cuentas de despliegue.
 - Pendiente del equipo: video, enlace en línea, prompts de Claude Code de la API y el dashboard, licencia y visibilidad del dataset.
 
+
+## 2026-10-18 — Repo de documentación con el sistema en submódulos
+
+**Modelo**
+
+Grok 4.7 (Cursor, modo Agent).
+
+**Prompt**
+
+> CebaData como repo de documentación con el sistema en submódulos
+>
+> Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.
+>
+> To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos.
+
+El plan adjunto (no se transcribe) pedía retirar las copias de `api/`, `dashboard/` y `modelos/entrega/pipeline`, fijar submódulos HTTPS, reescribir la instalación, documentar el camino a hosting y proponer —sin aplicar— los cambios que solo existían en este repo.
+
+**Acciones**
+
+- Se quitaron del árbol `api/`, `dashboard/`, `modelos/entrega/pipeline`, `modelos/entrega/pytest.ini` y `scripts/fijar_api_url.sh`. El historial queda en git.
+- Se agregaron submódulos por HTTPS: `sistema/api` en `9d64758` (ALNM7/cebadata_api) y `sistema/dashboard` en `aa766ad` (ALNM7/DashboardCebaData). En esta máquina el clon anónimo por HTTPS pidió usuario; se poblaron por SSH y `.gitmodules` quedó en HTTPS.
+- Se escribió `INSTALACION.md` y se reescribió `scripts/levantar_local.sh` para esos directorios. El script arrancó la API en :8000 y el dashboard en :4200; `/api/salud`, `/api/parcelas` y el proxy respondieron 200.
+- Se escribió `docs/CAMINO_A_HOSTING.md` y `docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md` (121 variables, texto de SHAP, Python 3.12). Esos cambios no se aplicaron a los repos de ALNM7.
+- Se actualizaron README, AGENTS, la ficha de `modelos/entrega`, ENTREGA, CUMPLIMIENTO y `prueba_ganador_en_pipeline.py` para leer el pipeline del submódulo. `--analizar` reprodujo la mezcla con diferencia 0.0.
+- El reporte apunta a `sistema/api`, nombra Render y Vercel, y se recompiló (9 páginas; metodología 699, conclusiones 401). El guion cierra con la URL de Vercel.
+- Pruebas del submódulo de la API: 37 pasan, 1 se omite y `test_la_api_no_importa_el_pipeline` falla en la suite completa porque pytest también recolecta `pipeline/tests`. Pasa si se corre sola. Dashboard: 11 pruebas y build. Render respondió 200 en unos 62 s; Vercel en menos de un segundo.
+
+**Afectaciones**
+
+- Creados: `INSTALACION.md`, `docs/CAMINO_A_HOSTING.md`, `docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`, `.gitmodules`, punteros `sistema/api` y `sistema/dashboard`.
+- Eliminados del árbol (siguen en el historial): `api/`, `dashboard/`, `modelos/entrega/pipeline/`, `modelos/entrega/pytest.ini`, `scripts/fijar_api_url.sh`.
+- Modificados: README, AGENTS, ENTREGA, CUMPLIMIENTO, modelos, reporte (incluida el PDF), `scripts/levantar_local.sh`, `.gitignore`, `PROMPTS.md`.
+- Sin push. Sin editar los repos de ALNM7 ni `DATASET_RETO_AGRO_2026/`.
+- Pendiente del equipo: grabar el video, confirmar que los repos de ALNM7 sean públicos (si no, el jurado no clona los submódulos) y decidir si Render de pago evita el arranque en frío.
+
