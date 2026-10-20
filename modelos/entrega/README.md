@@ -39,6 +39,10 @@ Inferencia: `sistema/api/api/predictor.py`. Entrenamiento: `sistema/api/pipeline
 2. **Prueba pareada del ganador del superciclo** ([`../comparativas/prueba_ganador_en_pipeline/INFORME.md`](../comparativas/prueba_ganador_en_pipeline/INFORME.md)): el LightGBM ganador del superciclo (13 variables con N + edafología) no supera a la mezcla bajo el criterio fijado de antemano (≥ 0.010 de mejora estratificada, LOMO no peor, IC bootstrap excluye 0). Los datos externos tampoco lo cumplen.
 3. El aporte del superciclo a la entrega es la **idea de la longitud** como señal espacial fuerte en esta caja geográfica, no el CSV ni el joblib del ganador.
 
+## Predicciones de las 59 parcelas
+
+[`ID_area_rendimiento_70_30_con_predicciones.csv`](ID_area_rendimiento_70_30_con_predicciones.csv) copia el CSV oficial (`ID_POLIGONO`, `AREA_HA`, `RENDIMIENTO_T_HA`, `CONJUNTO`) y rellena solo las 59 filas de `PREDICCION` con la predicción de la mezcla que sirve la API (`sistema/api/artefactos/tablas/predicciones.csv`). Las 138 de entrenamiento conservan el rendimiento observado. El archivo oficial en `DATASET_RETO_AGRO_2026/` no se modifica.
+
 ## Límites
 
 - Una sola temporada (abril–octubre 2025).

@@ -699,3 +699,47 @@ Grok 4.7 (Cursor, modo Agent).
 - Modificados: `README.md`, `AGENTS.md`, `ENTREGA.md`, `CUMPLIMIENTO_BASES.md`, `docs/CAMINO_A_HOSTING.md`, `docs/PROPUESTA_CAMBIOS_REPOS_ALNM7.md`, `.gitignore`, `PROMPTS.md`.
 - Sin commit y sin push. Sin tocar `sistema/`, el dataset ni los repos de ALNM7.
 
+
+## 2026-10-19 — CSV oficial rellenado con la mezcla
+
+**Modelo**
+
+Grok 4.7 (Cursor, modo Agent).
+
+**Prompt**
+
+> Dame el csv en el formato original pero rellenado con nuestras predicciones de nuestro modelo final
+
+**Acciones**
+
+- Se confirmó que las 59 filas de `PREDICCION` del CSV oficial siguen vacías.
+- Se escribió una copia con las mismas columnas y se rellenó `RENDIMIENTO_T_HA` solo en esas 59, con la predicción de la mezcla que sirve la API.
+
+**Afectaciones**
+
+- Creado: `modelos/entrega/ID_area_rendimiento_70_30_con_predicciones.csv`.
+- Modificados: `modelos/entrega/README.md`, `PROMPTS.md`.
+- El CSV de `DATASET_RETO_AGRO_2026/` no se alteró. Sin commit.
+
+
+## 2026-10-20 — README orientado al sistema
+
+**Modelo**
+
+Grok 4.7 (Cursor, modo Agent).
+
+**Prompt**
+
+> Vamos a hacer unos cambios, especificamente a la documentacion del repo, en el readme principal, vamos a cambiar el enfoque, no es necesario poner ya los lineamientos de la competencia, el enfoque ahora debe ser mas simple: Que es el repo, como funciona la arquitectura, explicado en texto y con diagramas, como acceder al dashboard, donde estan los repos de backend y de frontend operativos, como descargar y correr en windows, linux, y macOS el server de forma local, asi como un indice que facilite la lectura del documento, y una breve seccion de historia de desarrollo
+
+**Acciones**
+
+- Se reescribió `README.md`: índice, qué es el repo, arquitectura con tres diagramas, enlace del dashboard, repos operativos de API y dashboard, e instalación local para Linux, macOS y Windows. La historia quedó en un resumen corto.
+- Se quitaron del README las bases de participación, el calendario, los criterios y las ecuaciones de índices.
+- Se ajustó la primera frase de `AGENTS.md` para que ya no presente el README como resumen de las bases.
+
+**Afectaciones**
+
+- Modificados: `README.md`, `AGENTS.md`, `PROMPTS.md`.
+- Sin commit. Sin tocar `sistema/`, el dataset ni `INSTALACION.md`.
+

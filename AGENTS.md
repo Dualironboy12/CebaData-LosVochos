@@ -1,6 +1,6 @@
 # Instrucciones para agentes
 
-Reglas operativas del repositorio **CebaData** (equipo Los Vochos, Reto AgroCebada FIRA 2026). El contexto del reto para personas está en [`README.md`](README.md). El diccionario de datos está en [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md).
+Reglas operativas del repositorio **CebaData** (equipo Los Vochos, Reto AgroCebada FIRA 2026). El README explica qué es el repo, la arquitectura y cómo ejecutarlo. El diccionario de datos está en [`DATASET_RETO_AGRO_2026/README.md`](DATASET_RETO_AGRO_2026/README.md).
 
 Leer este archivo al empezar una tarea. Antes de cerrarla, agregar una entrada al final de [`PROMPTS.md`](PROMPTS.md).
 
